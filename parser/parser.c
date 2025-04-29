@@ -12,9 +12,6 @@
 
 #include "../minishell.h"
 
-void			free_tokens(t_tokens **tokens);
-t_tokens	*new_token(char *content);
-
 static int	single_quotes(char **str, char **start)
 {
 	int	len;

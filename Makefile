@@ -1,9 +1,11 @@
 NAME = minishell
 SOURCES = ./minishell.c \
-					./parser/parser.c ./parser/parser_utils.c
+					./parser/parser.c ./parser/parser_utils.c \
+					./builtins/echo.c ./builtins/cd.c ./builtins/pwd.c
 
 OBJECTS = ./objects/minishell.o \
-					./objects/parser.o ./objects/parser_utils.o
+					./objects/parser.o ./objects/parser_utils.o \
+					./objects/echo.o ./objects/cd.o ./objects/pwd.o
 
 LIBFT = ./objects/libft.a
 
