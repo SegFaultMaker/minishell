@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 13:35:04 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/28 14:08:39 by nasargsy         ###   ########.fr       */
-/*                                                                            */
+/*																			  */
+/*														  :::	   ::::::::   */
+/*	 parser.c											:+:		 :+:	:+:   */
+/*													  +:+ +:+		  +:+	  */
+/*	 By: nasargsy <nasargsy@student.42yerevan.am>	+#+  +:+	   +#+		  */
+/*												  +#+#+#+#+#+	+#+			  */
+/*	 Created: 2025/04/28 13:35:04 by nasargsy		   #+#	  #+#			  */
+/*	 Updated: 2025/04/28 14:08:39 by nasargsy		  ###	########.fr		  */
+/*																			  */
 /* ************************************************************************** */
 
 #include "../minishell.h"
@@ -27,6 +27,7 @@ static int	single_quotes(char **str, char **start)
 		len++;
 		(*str)++;
 	}
+	(*str)++;
 	return (len);
 }
 
@@ -64,6 +65,7 @@ t_tokens	*parser(char *str)
 	t_tokens	*current;
 	t_tokens	*new;
 
+	head = NULL;
 	while (*str)
 	{
 		new = get_token(&str);
@@ -76,22 +78,4 @@ t_tokens	*parser(char *str)
 		current = new;
 	}
 	return (head);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc < 2)
-		return (printf("To few Arguments\n"));
-	t_tokens	*tokens = parser(argv[1]);
-	if (!tokens)
-		return(printf("Error: No Tokens\n"));
-	t_tokens	*tmp;
-
-	tmp = tokens;
-	while (tmp)
-	{
-		printf("%s\n", tmp->token);
-		tmp = tmp->next;
-	}
-	free_tokens(&tokens);
 }
