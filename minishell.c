@@ -6,21 +6,27 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/29 15:23:44 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:11:53 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*read_input(void)
+int	main(void)
 {
 	char	*line;
 
-	line = readline("minishell $: ");
-	return (line);
-}
-
-int	main(void)
-{
+	line = readline("minishell $ ");
+	printf("Line: %s\n", line);
+	t_tokens *tokens = parser(line);
+	t_tokens *tmp = tokens;
+	int	i = 1;
+	while (tmp)
+	{
+		printf("Token %d: %s\n", i, tmp->token);
+		i++;
+		tmp = tmp->next;
+	}
+	free_tokens(&tokens);
 	return (0);
 }

@@ -12,12 +12,18 @@
 
 #include "../minishell.h"
 
+static int	ft_isquote(char c)
+{
+	return (c == '\'' || c == '\"');
+}
+
 static int	single_quotes(char **str, char **start)
 {
 	int	len;
 
 	len = 0;
-	(*str)++;
+	if (**str == '\'')
+		(*str)++;
 	*start = *str;
 	while (**str && **str != '\'')
 	{
@@ -42,13 +48,13 @@ static t_tokens	*get_token(char **str)
 	else
 	{
 		start = *str;
-		while (**str && !ft_isspace(**str))
+		while (**str && !ft_isspace(**str) && !ft_isquote(**str))
 		{
 			len++;
 			(*str)++;
 		}
 	}
-	while (ft_isspace(**str))
+	while (ft_isspace(**str) || ft_isquote(**str))
 		(*str)++;
 	token = ft_substr(start, 0, len);
 	if (!token)
