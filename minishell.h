@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/29 13:35:42 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:09:46 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <signal.h>
 # include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -26,6 +27,9 @@ typedef struct s_tokens
 	char			*token;
 	struct s_tokens	*next;
 }	t_tokens;
+
+// Init
+void		init_signals(void);
 
 // Parser
 t_tokens	*parser(char *str);
