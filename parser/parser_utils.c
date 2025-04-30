@@ -6,11 +6,16 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/29 13:37:11 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:26:29 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_isquote(char c)
+{
+	return (c == '\'' || c == '\"');
+}
 
 void	free_tokens(t_tokens **tokens)
 {

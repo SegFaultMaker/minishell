@@ -12,11 +12,6 @@
 
 #include "../minishell.h"
 
-static int	ft_isquote(char c)
-{
-	return (c == '\'' || c == '\"');
-}
-
 static int	single_quotes(char **str, char **start)
 {
 	int	len;
@@ -93,5 +88,42 @@ t_tokens	*parser(char *str)
 			current->next = new;
 		current = new;
 	}
+	assign_types(&head);
 	return (head);
+}
+
+int	main()
+{
+	char	*line;
+
+	line = readline("$ ");
+	t_tokens	*tokens = parser(line);
+	t_tokens	*tmp = tokens;
+	int			i = 1;
+	while (tmp)
+	{
+		ft_printf("Token %d: %s ", i, tmp->token);
+		if (tmp->type == BUILTIN)
+			ft_printf("BUILTIN\n");
+		else if (tmp->type == COMMAND)
+			ft_printf("COMMAND\n");
+		else if (tmp->type == ARGUMENT)
+			ft_printf("ARGUMENT\n");
+		else if (tmp->type == PIPE)
+			ft_printf("PIPE\n");
+		else if (tmp->type == INPUT)
+			ft_printf("INPUT\n");
+		else if (tmp->type == OUTPUT)
+			ft_printf("OUTPUT\n");
+		else if (tmp->type == HERE_DOC)
+			ft_printf("HERE_DOC\n");
+		else if (tmp->type == APPEND)
+			ft_printf("APPEND\n");
+		else
+			ft_printf("FILE_NAME\n");
+		i++;
+		tmp = tmp->next;
+	}
+	free_tokens(&tokens);
+	free(line);
 }
