@@ -6,16 +6,16 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:23:23 by armarake          #+#    #+#             */
-/*   Updated: 2025/04/30 18:34:38 by armarake         ###   ########.fr       */
+/*   Updated: 2025/04/30 23:02:19 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hash_table.h"
 
-static long	hash_pow(int num, int power)
+static double	hash_pow(double num, int power)
 {
 	long	i;
-	long	pow;
+	double	pow;
 
 	if (power < 0)
 		return (0);
@@ -31,19 +31,20 @@ static long	hash_pow(int num, int power)
 	return (pow);
 }
 
+#include <stdio.h>
 static int	do_hash(char *s, int a, int m)
 {
 	int		i;
 	long	hash;
 	int		s_len;
-	
+
 	i = 0;
 	hash = 0;
 	s_len = ft_strlen(s);
 	while (s[i])
 	{
-		hash += (long)pow(a, s_len - (i + 1)) * s[i];
-		hash = hash % m;
+		hash += (long)hash_pow(a, s_len - (i + 1)) * s[i];
+		hash = hash % m;;
 		i++;
 	}
 	return ((int)hash);

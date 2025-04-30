@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/04/30 18:40:52 by armarake         ###   ########.fr       */
+/*   Updated: 2025/04/30 22:49:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char *get_key(char *env_var)
     return key;
 }
 
-int main(int argc, char *argv[], char *env[]) // compile using: cc -lm ../libft/*c *.c
+int main(int argc, char *argv[], char *env[]) // compile using: cc ../libft/*c *.c -lm
 {
 	t_hash_table	*ht;
 	char			*key;
