@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 13:55:58 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:31:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ int main(int argc, char *argv[], char *env[])
 {
 	t_hash_table	*ht;
 	char			*key;
+	char			*res;
 	int				i;
+	int				ins_res;
 
 	i = 0;
 	ht = ht_new(env);
@@ -62,13 +64,27 @@ int main(int argc, char *argv[], char *env[])
 		key = NULL;
 		i++;
 	}
-	i = 0;
-	while (i < ht->size)
-	{
-		if (ht->items[i] != NULL && ht->items[i] != ht->deleted)
-			printf("%s=%s\n", ht->items[i]->key, ht->items[i]->value);
-		i++;
-	}
+	if (argc != 2)
+		return (0);
+	res = ht_search(ht, argv[1]);
+	if (res)
+		printf("Found value \"%s\" with key \"%s\"\n\n", res, argv[1]);
+	else
+		printf("Nothing found\n\n");
+	ins_res = ht_insert(ht, argv[1], "DOUBLE NIGGER");
+	if (!ins_res)
+		printf("Allocation error\n\n");
+	else if (ins_res == 1)
+		printf("Added new key \"%s\" with value \"%s\"\n\n", argv[1], "DOUBLE NIGGER");
+	else if (ins_res == 2)
+		printf("Value of \"%s\" updated to: %s\n\n", argv[1], "DOUBLE NIGGER");
+	else if (ins_res == 3)
+		return (printf("Need to resize\n"), 0);
+	res = ht_search(ht, argv[1]);
+	if (res)
+		printf("Found value \"%s\" with key \"%s\"\n", res, argv[1]);
+	else
+		printf("Nothing found\n");
 	del_hash_table(ht);
 	return (0);
 }

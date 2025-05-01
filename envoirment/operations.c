@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 13:50:41 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:30:15 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int 	ht_insert(t_hash_table *ht, char *key, char *value)
 	if (!item)
 		return (0);
 	i = 0;
-	while (!fount_slot)
+	while (i < ht->size)
 	{
 		index = ht_get_hash(item->key, ht->size, i);
 		cur_item = ht->items[index];
@@ -40,7 +40,7 @@ int 	ht_insert(t_hash_table *ht, char *key, char *value)
 			free(cur_item->value);
 			cur_item->value = ft_strdup(value);
 			ht_del_item(item);
-			return (1);
+			return (2);
 		}
 		i++;
 	}
@@ -48,10 +48,9 @@ int 	ht_insert(t_hash_table *ht, char *key, char *value)
 	{
 		ht->items[index] = item;
 		ht->count++;
+		return (1);
 	}
-	else
-		return (printf("Need to resize\n"), ht_del_item(item), 0);
-	return (1);
+	return (3);
 }
 
 char	*ht_search(t_hash_table *ht, char *key)
@@ -59,19 +58,17 @@ char	*ht_search(t_hash_table *ht, char *key)
 	int			i;
 	int			index;
 	t_ht_item	*item;
-	
-	i = 1;
-	index = ht_get_hash(key, ht->size, 0);
-	item = ht->items[index];
-	while (item)
+
+	i = 0;
+	while (i < ht->size)
 	{
-		if (item != ht->deleted)
+		index = ht_get_hash(key, ht->size, i);
+		item = ht->items[index];
+		if (item != NULL && item != ht->deleted)
 		{
 			if (ft_strcmp(item->key, key) == 0)
 				return (item->value);
 		}
-		index = ht_get_hash(key, ht->size, i);
-		item = ht->items[index];
 		i++;
 	}
 	return (NULL);
