@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:34:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 13:47:42 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:58:21 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ int				ht_get_hash(char *s, int size, int attempt);
 //					hash table operations
 int 			ht_insert(t_hash_table *ht, char *key, char *value);
 char			*ht_search(t_hash_table *ht, char *key);
-void 			ht_delete(t_hash_table *h, char *key);
+void 			ht_delete(t_hash_table *ht, char *key);
 
 #endif

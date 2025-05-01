@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 15:31:43 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:06:46 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ int main(int argc, char *argv[], char *env[])
 	if (res)
 		printf("Found value \"%s\" with key \"%s\"\n\n", res, argv[1]);
 	else
-		printf("Nothing found\n\n");
+		return (printf("Nothing found\n"), 0);
+	ht_delete(ht, argv[1]);
+	printf("Deleted \"%s\"\n\n", argv[1]);
 	ins_res = ht_insert(ht, argv[1], "DOUBLE NIGGER");
 	if (!ins_res)
 		printf("Allocation error\n\n");

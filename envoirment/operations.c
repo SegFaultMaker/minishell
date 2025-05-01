@@ -6,13 +6,13 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 15:30:15 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:01:07 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hash_table.h"
 
-int 	ht_insert(t_hash_table *ht, char *key, char *value)
+int	ht_insert(t_hash_table *ht, char *key, char *value)
 {
 	int			i;
 	int			index;
@@ -74,18 +74,18 @@ char	*ht_search(t_hash_table *ht, char *key)
 	return (NULL);
 }
 
-void 	ht_delete(t_hash_table *ht, char *key)
+void	ht_delete(t_hash_table *ht, char *key)
 {
 	int			i;
 	int			index;
 	t_ht_item	*item;
 
-	i = 1;
-	index = ht_get_hash(key, ht->size, 0);
-	item = ht->items[index];
-	while (item)
+	i = 0;
+	while (i < ht->size)
 	{
-		if (item != ht->deleted)
+		index = ht_get_hash(key, ht->size, i);
+		item = ht->items[index];
+		if (item != NULL && item != ht->deleted)
 		{
 			if (ft_strcmp(item->key, key) == 0)
 			{
@@ -93,8 +93,6 @@ void 	ht_delete(t_hash_table *ht, char *key)
 				ht->items[index] = ht->deleted;
 			}
 		}
-		index = ht_get_hash(key, ht->size, i);
-		item = ht->items[index];
 		i++;
 	}
 	ht->count--;
