@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/01 11:14:05 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:34:03 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,34 @@ static t_types	get_type(char *token)
 	return (COMMAND);
 }
 
+static t_tokens *handle_redirs(t_tokens **tokens)
+{
+	t_tokens	*tmp;
+
+	tmp = *tokens;
+	if (tmp->type == HERE_DOC)
+	{
+		tmp = tmp->next;
+		tmp->type = get_type(tmp->token);
+		while (is_redir_pipe(tmp->type))
+		{
+		 	tmp = tmp->next;
+			tmp->type = get_type(tmp->token);
+		}
+		tmp->type = LIMITER;
+		return (tmp);
+	}
+	tmp = tmp->next;
+	tmp->type = get_type(tmp->token);
+	while (is_redir_pipe(tmp->type))
+	{
+		tmp = tmp->next;
+		tmp->type = get_type(tmp->token);
+	}
+	tmp->type = FILE_NAME;
+	return (tmp);
+}
+
 static t_tokens	*handle_redir_pipe(t_tokens **tokens)
 {
 	t_tokens	*tmp;
@@ -58,22 +86,11 @@ static t_tokens	*handle_redir_pipe(t_tokens **tokens)
 	if (tmp->type == PIPE)
 	{
 		tmp = tmp->next;
-		tmp->type = COMMAND;
+		tmp->type = get_type(tmp->token);
 	}
 	else
-	{
-		if (tmp->type == HERE_DOC)
-		{
-			tmp = tmp->next;
-			tmp->type = ARGUMENT;
-		}
-		else
-		{
-			tmp = tmp->next;
-			tmp->type = FILE_NAME;
-		}
-		tmp = tmp->next;
-	}
+		tmp = handle_redirs(&tmp);
+	tmp = tmp->next;
 	return (tmp);
 }
 
@@ -88,7 +105,8 @@ void	assign_types(t_tokens **tokens)
 		if (tmp->type == BUILTIN || tmp->type == COMMAND)
 		{
 			tmp = tmp->next;
-			tmp->type = get_type(tmp->token);
+			if (tmp)
+				tmp->type = get_type(tmp->token);
 			while (tmp && !is_redir_pipe(tmp->type))
 			{
 				tmp->type = ARGUMENT;

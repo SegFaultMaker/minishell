@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/30 18:00:06 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:32:19 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ typedef enum e_types
 	OUTPUT,
 	HERE_DOC,
 	APPEND,
-	FILE_NAME
+	FILE_NAME,
+	LIMITER
 }	t_types;
 
 typedef struct s_tokens
@@ -49,7 +50,6 @@ void		init_signals(void);
 // Parser
 t_tokens	*parser(char *str);
 t_tokens	*new_token(char *content);
-t_tokens	*handle_redir_pipe(t_tokens **tokens);
 void		assign_types(t_tokens **tokens);
 void		free_tokens(t_tokens **tokens);
 int			ft_isquote(char c);
