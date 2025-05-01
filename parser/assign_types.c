@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/01 12:34:03 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:43:51 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_types	get_type(char *token)
 	return (COMMAND);
 }
 
-static t_tokens *handle_redirs(t_tokens **tokens)
+static t_tokens	*handle_redirs(t_tokens **tokens)
 {
 	t_tokens	*tmp;
 
@@ -59,11 +59,11 @@ static t_tokens *handle_redirs(t_tokens **tokens)
 		tmp->type = get_type(tmp->token);
 		while (is_redir_pipe(tmp->type))
 		{
-		 	tmp = tmp->next;
+			tmp = tmp->next;
 			tmp->type = get_type(tmp->token);
 		}
 		tmp->type = LIMITER;
-		return (tmp);
+		return (tmp->next);
 	}
 	tmp = tmp->next;
 	tmp->type = get_type(tmp->token);
@@ -73,7 +73,7 @@ static t_tokens *handle_redirs(t_tokens **tokens)
 		tmp->type = get_type(tmp->token);
 	}
 	tmp->type = FILE_NAME;
-	return (tmp);
+	return (tmp->next);
 }
 
 static t_tokens	*handle_redir_pipe(t_tokens **tokens)
@@ -90,7 +90,7 @@ static t_tokens	*handle_redir_pipe(t_tokens **tokens)
 	}
 	else
 		tmp = handle_redirs(&tmp);
-	tmp = tmp->next;
+//	tmp = tmp->next;
 	return (tmp);
 }
 

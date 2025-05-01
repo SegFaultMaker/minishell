@@ -54,13 +54,15 @@ static t_tokens	*get_token(char **str)
 	int		len;
 
 	len = 0;
+	while (ft_isspace(**str))
+		(*str)++;
 	if (**str == '\'')
 		len = single_quotes(str, &start);
 /*	else if (**str == '\"')										TODO
 		len = double_quotes(&str, &start);*/
 	else
 		len = regular(str, &start);
-	while (ft_isspace(**str) || ft_isquote(**str))
+	while (ft_isquote(**str))
 		(*str)++;
 	if (len == 0)
 		return (NULL);
@@ -95,11 +97,13 @@ t_tokens	*parser(char *str)
 int	main()
 {
 	char	*line;
+	t_tokens	*tokens;
+	t_tokens	*tmp;
+	int	i = 1;
 
 	line = readline("$ ");
-	t_tokens	*tokens = parser(line);
-	t_tokens	*tmp = tokens;
-	int	i = 1;
+	tokens = parser(line);
+	tmp = tokens;
 	while (tmp)
 	{
 		ft_printf("Tokem %d: %s ", i, tmp->token);
