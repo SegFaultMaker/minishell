@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 16:01:07 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 00:14:36 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int	ht_insert(t_hash_table *ht, char *key, char *value)
 {
 	int			i;
 	int			index;
-	int			fount_slot;
 	t_ht_item	*item;
 	t_ht_item	*cur_item;
 
 	index = 0;
-	fount_slot = 0;
 	item = ht_new_item(key, value);
 	if (!item)
 		return (0);
@@ -31,10 +29,7 @@ int	ht_insert(t_hash_table *ht, char *key, char *value)
 		index = ht_get_hash(item->key, ht->size, i);
 		cur_item = ht->items[index];
 		if (cur_item == NULL || cur_item == ht->deleted)
-		{
-			fount_slot = 1;
 			break ;
-		}
 		if (ft_strcmp(cur_item->key, key) == 0)
 		{
 			free(cur_item->value);
@@ -44,13 +39,9 @@ int	ht_insert(t_hash_table *ht, char *key, char *value)
 		}
 		i++;
 	}
-	if (fount_slot)
-	{
-		ht->items[index] = item;
-		ht->count++;
-		return (1);
-	}
-	return (3);
+	ht->items[index] = item;
+	ht->count++;
+	return (1);
 }
 
 char	*ht_search(t_hash_table *ht, char *key)

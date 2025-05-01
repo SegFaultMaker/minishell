@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:21:37 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 13:06:50 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 00:13:53 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_hash_table	*ht_new(char *env[])
 	ht = malloc(sizeof(t_hash_table));
 	if (!ht)
 		return (NULL);
-	ht->size = env_len(env);
+	ht->size = env_len(env) * 2;
 	ht->count = 0;
 	ht->deleted = ht_deleted();
 	if (!ht->deleted)

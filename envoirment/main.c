@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 16:06:46 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 00:13:37 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int main(int argc, char *argv[], char *env[])
 		return (printf("Creation error\n"), 1);
 	while (env[i])
 	{
-		char *key = get_key(env[i]);
+		key = get_key(env[i]);
 		if (!key || !get_value(env[i]))
 			break ;
 		if (!ht_insert(ht, key, get_value(env[i])))
@@ -80,8 +80,6 @@ int main(int argc, char *argv[], char *env[])
 		printf("Added new key \"%s\" with value \"%s\"\n\n", argv[1], "DOUBLE NIGGER");
 	else if (ins_res == 2)
 		printf("Value of \"%s\" updated to: %s\n\n", argv[1], "DOUBLE NIGGER");
-	else if (ins_res == 3)
-		return (printf("Need to resize\n"), 0);
 	res = ht_search(ht, argv[1]);
 	if (res)
 		printf("Found value \"%s\" with key \"%s\"\n", res, argv[1]);
