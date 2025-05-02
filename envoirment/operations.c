@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 00:14:36 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:03:14 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 int	ht_insert(t_hash_table *ht, char *key, char *value)
 {
 	int			i;
+	int			load;
 	int			index;
 	t_ht_item	*item;
 	t_ht_item	*cur_item;
 
-	index = 0;
+	load = ht->count * 100 / ht->size;
+	if (load > 70)
+		ht_resize_up(ht);
 	item = ht_new_item(key, value);
 	if (!item)
 		return (0);
@@ -68,9 +71,13 @@ char	*ht_search(t_hash_table *ht, char *key)
 void	ht_delete(t_hash_table *ht, char *key)
 {
 	int			i;
+	int			load;
 	int			index;
 	t_ht_item	*item;
 
+	load = ht->count * 100 / ht->size;
+	if (load < 10)
+		ht_resize_down(ht);
 	i = 0;
 	while (i < ht->size)
 	{
@@ -88,5 +95,3 @@ void	ht_delete(t_hash_table *ht, char *key)
 	}
 	ht->count--;
 }
-
-

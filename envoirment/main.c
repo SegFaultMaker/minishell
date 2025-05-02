@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 00:13:37 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:01:01 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[], char *env[])
 	int				ins_res;
 
 	i = 0;
-	ht = ht_new(env);
+	ht = ht_new(HT_DEFAULT_BASE_SIZE);
 	if (!ht)
 		return (printf("Creation error\n"), 1);
 	while (env[i])
@@ -65,12 +65,12 @@ int main(int argc, char *argv[], char *env[])
 		i++;
 	}
 	if (argc != 2)
-		return (0);
+		return (del_hash_table(ht), 0);
 	res = ht_search(ht, argv[1]);
 	if (res)
 		printf("Found value \"%s\" with key \"%s\"\n\n", res, argv[1]);
 	else
-		return (printf("Nothing found\n"), 0);
+		return (printf("Nothing found\n"), del_hash_table(ht), 0);
 	ht_delete(ht, argv[1]);
 	printf("Deleted \"%s\"\n\n", argv[1]);
 	ins_res = ht_insert(ht, argv[1], "DOUBLE NIGGER");

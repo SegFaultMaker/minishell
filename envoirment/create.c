@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:21:37 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 00:13:53 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 13:25:09 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,15 @@ static t_ht_item	*ht_deleted(void)
 	return (deleted);
 }
 
-static void	set_nulls(t_hash_table	*ht)
-{
-	int	i;
-
-	i = 0;
-	while (i < ht->size)
-	{
-		ht->items[i] = NULL;
-		i++;
-	}
-}
-
-static int env_len(char *env[])
-{
-	int	len;
-
-	len = 0;
-	while (env[len])
-		len++;
-	return (len);
-}
-
-t_hash_table	*ht_new(char *env[])
+t_hash_table	*ht_new(int base_size)
 {
 	t_hash_table	*ht;
 	
 	ht = malloc(sizeof(t_hash_table));
 	if (!ht)
 		return (NULL);
-	ht->size = env_len(env) * 2;
+	ht->base_size = base_size;
+	ht->size = next_prime(ht->base_size);
 	ht->count = 0;
 	ht->deleted = ht_deleted();
 	if (!ht->deleted)

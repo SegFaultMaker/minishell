@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:34:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 15:58:21 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/02 13:50:44 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define HT_PRIME_1 151
 # define HT_PRIME_2 163
 
+# define HT_DEFAULT_BASE_SIZE 50
+
 typedef struct s_ht_item {
 	char	*key;
 	char	*value;
@@ -26,6 +28,7 @@ typedef struct s_ht_item {
 
 typedef struct s_hash_table {
 	int			size;
+	int			base_size;
 	int			count;
 	t_ht_item	*deleted;
 	t_ht_item	**items;
@@ -33,7 +36,7 @@ typedef struct s_hash_table {
 
 //					create
 t_ht_item		*ht_new_item(char *k, char *v);
-t_hash_table	*ht_new(char *env[]);
+t_hash_table	*ht_new(int base_size);
 
 //					delete
 void			ht_del_item(t_ht_item *item);
@@ -42,9 +45,17 @@ void			del_hash_table(t_hash_table *ht);
 //					hashing
 int				ht_get_hash(char *s, int size, int attempt);
 
-//					hash table operations
+//					operations
 int 			ht_insert(t_hash_table *ht, char *key, char *value);
 char			*ht_search(t_hash_table *ht, char *key);
 void 			ht_delete(t_hash_table *ht, char *key);
+
+//					resizing
+void			ht_resize_up(t_hash_table *ht);
+void			ht_resize_down(t_hash_table *ht);
+
+//					utils
+int				next_prime(int nb);
+void			set_nulls(t_hash_table	*ht);
 
 #endif
