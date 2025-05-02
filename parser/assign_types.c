@@ -6,20 +6,11 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/01 12:43:51 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:06:43 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	is_redir_pipe(t_types type)
-{
-	if (type == INPUT || type == OUTPUT
-		|| type == HERE_DOC || type == APPEND
-		|| type == PIPE)
-		return (1);
-	return (0);
-}
 
 static t_types	get_type(char *token)
 {
@@ -46,6 +37,31 @@ static t_types	get_type(char *token)
 			return (PIPE);
 	}
 	return (COMMAND);
+}
+
+static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
+{
+	t_tokens	*tmp;
+
+	tmp = *tokens;
+	if (!tmp)
+		return (tmp);
+	if (stat == 1)
+		tmp->type = ARGUMENT;
+	if (tmp->next)
+		tmp = tmp->next;
+	else
+		return (tmp);
+	if (tmp)
+		tmp->type = get_type(tmp->token);
+	while (tmp && !is_redir_pipe(tmp->type))
+	{
+		tmp->type = ARGUMENT;
+		tmp = tmp->next;
+		if (tmp)
+			tmp->type = get_type(tmp->token);
+	}
+	return (tmp);
 }
 
 static t_tokens	*handle_redirs(t_tokens **tokens)
@@ -90,7 +106,6 @@ static t_tokens	*handle_redir_pipe(t_tokens **tokens)
 	}
 	else
 		tmp = handle_redirs(&tmp);
-//	tmp = tmp->next;
 	return (tmp);
 }
 
@@ -103,21 +118,13 @@ void	assign_types(t_tokens **tokens)
 	{
 		tmp->type = get_type(tmp->token);
 		if (tmp->type == BUILTIN || tmp->type == COMMAND)
-		{
-			tmp = tmp->next;
-			if (tmp)
-				tmp->type = get_type(tmp->token);
-			while (tmp && !is_redir_pipe(tmp->type))
-			{
-				tmp->type = ARGUMENT;
-				tmp = tmp->next;
-				if (tmp)
-					tmp->type = get_type(tmp->token);
-			}
-		}
+			tmp = assign_as_arg(&tmp, 0);
 		if (!tmp)
 			return ;
 		else
+		{
 			tmp = handle_redir_pipe(&tmp);
+			tmp = assign_as_arg(&tmp, 1);
+		}
 	}
 }

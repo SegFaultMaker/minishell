@@ -6,15 +6,44 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/30 15:26:29 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:17:07 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	quit_with_error(int code, char *msg)
+{
+	ft_putstr_fd(msg, 2);
+	exit(code);
+}
+
+int	is_redir_pipe(t_types type)
+{
+	if (type == INPUT || type == OUTPUT
+		|| type == HERE_DOC || type == APPEND
+		|| type == PIPE)
+		return (1);
+	return (0);
+}
+
 int	ft_isquote(char c)
 {
 	return (c == '\'' || c == '\"');
+}
+
+int	check_redir_pipe(char *token)
+{
+	if (!ft_strncmp(token, "||", 2))
+		return (0);
+	if (!ft_strncmp(token, "<<", 2)
+		|| !ft_strncmp(token, ">>", 2))
+		return (2);
+	else if (!ft_strncmp(token, "<", 1)
+		|| !ft_strncmp(token, ">", 1)
+		|| !ft_strncmp(token, "|", 1))
+		return (1);
+	return (0);
 }
 
 void	free_tokens(t_tokens **tokens)

@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/01 12:32:19 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:06:33 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./libft/libft.h"
+
+// Error MSGs
+# define SYNTAX_ERR "minishell: syntax error near unexpected token "
+
+// Error Codes For Minishell Itself
+# define SYNTAX_ERR_CODE 2
 
 typedef enum e_types
 {
@@ -52,11 +58,17 @@ t_tokens	*parser(char *str);
 t_tokens	*new_token(char *content);
 void		assign_types(t_tokens **tokens);
 void		free_tokens(t_tokens **tokens);
+int			syntax_check(t_tokens *tmp);
 int			ft_isquote(char c);
+int			check_redir_pipe(char *token);
+int			is_redir_pipe(t_types type);
 
 // Builtins
 int			echo(int argc, char	**argv);
 int			cd(char *path);
 int			pwd(void);
+
+// Utils
+void		quit_with_error(int code, char *msg);
 
 #endif

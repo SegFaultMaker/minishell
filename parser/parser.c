@@ -37,8 +37,13 @@ static int	regular(char **str, char **start)
 {
 	int	len;
 
-	len = 0;
+	len = check_redir_pipe(*str);
 	*start = *str;
+	if (len != 0)
+	{
+		(*str) += len;
+		return (len);
+	}
 	while (**str && !ft_isspace(**str) && !ft_isquote(**str))
 	{
 		len++;
@@ -91,10 +96,15 @@ t_tokens	*parser(char *str)
 		current = new;
 	}
 	assign_types(&head);
+	if (!syntax_check(head))
+	{
+		free_tokens(&head);
+		return (NULL);
+	}
 	return (head);
 }
 
-int	main()
+/*int	main()
 {
 	char	*line;
 	t_tokens	*tokens;
@@ -103,10 +113,15 @@ int	main()
 
 	line = readline("$ ");
 	tokens = parser(line);
+	if (!tokens)
+	{
+		free(line);
+		quit_with_error(SYNTAX_ERR_CODE, SYNTAX_ERR "\'|\'\n");
+	}
 	tmp = tokens;
 	while (tmp)
 	{
-		ft_printf("Tokem %d: %s ", i, tmp->token);
+		ft_printf("Token %d: %s ", i, tmp->token);
 		if (tmp->type == BUILTIN)
 			ft_printf("BUILTIN\n");
 		else if (tmp->type == COMMAND)
@@ -132,4 +147,4 @@ int	main()
 	}
 	free(line);
 	free_tokens(&tokens);
-}
+}*/
