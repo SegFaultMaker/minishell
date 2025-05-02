@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 17:34:48 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:09:30 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static t_types	get_type(char *token)
 			return (APPEND);
 		else if (!ft_strcmp(token, "|"))
 			return (PIPE);
+		else if (!ft_strcmp(token, "&&") || !ft_strcmp(token, "||"))
+			return (OPERATOR);
 	}
 	return (COMMAND);
 }
@@ -54,7 +56,7 @@ static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
 		return (tmp);
 	if (tmp)
 		tmp->type = get_type(tmp->token);
-	while (tmp && !is_redir_pipe(tmp->type))
+	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != OPERATOR)
 	{
 		tmp->type = ARGUMENT;
 		tmp = tmp->next;
@@ -103,9 +105,14 @@ static t_tokens	*handle_redir_pipe(t_tokens **tokens)
 	{
 		tmp = tmp->next;
 		tmp->type = get_type(tmp->token);
+		tmp = tmp->next;
+		tmp = assign_as_arg(&tmp, 1);
 	}
 	else
+	{
 		tmp = handle_redirs(&tmp);
+		tmp = assign_as_arg(&tmp, 1);
+	}
 	return (tmp);
 }
 
@@ -123,11 +130,13 @@ void	assign_types(t_tokens **tokens)
 			tmp = assign_as_arg(&tmp, 0);
 		if (!tmp)
 			return ;
+		if (tmp->type == OPERATOR)
+			tmp = tmp->next;
 		else
 		{
 			tmp = handle_redir_pipe(&tmp);
-			tmp = assign_as_arg(&tmp, 1);
-			tmp = tmp->next;
+			if (tmp)
+				tmp = tmp->next;
 		}
 	}
 }

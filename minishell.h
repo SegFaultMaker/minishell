@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 15:06:33 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:01:06 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ typedef enum e_types
 	HERE_DOC,
 	APPEND,
 	FILE_NAME,
-	LIMITER
+	LIMITER,
+	OPERATOR
 }	t_types;
 
 typedef struct s_tokens
@@ -49,6 +50,13 @@ typedef struct s_tokens
 	t_types			type;			
 	struct s_tokens	*next;
 }	t_tokens;
+
+typedef struct s_comands
+{
+	t_tokens			*first;
+	t_tokens			*second;
+	struct s_commands	*next;
+}	t_commands;
 
 // Init
 void		init_signals(void);
@@ -60,7 +68,7 @@ void		assign_types(t_tokens **tokens);
 void		free_tokens(t_tokens **tokens);
 int			syntax_check(t_tokens *tmp);
 int			ft_isquote(char c);
-int			check_redir_pipe(char *token);
+int			check_redir_pipe_operator(char *token);
 int			is_redir_pipe(t_types type);
 
 // Builtins

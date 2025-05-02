@@ -37,7 +37,7 @@ static int	regular(char **str, char **start)
 {
 	int	len;
 
-	len = check_redir_pipe(*str);
+	len = check_redir_pipe_operator(*str);
 	*start = *str;
 	if (len != 0)
 	{
@@ -140,8 +140,10 @@ int	main()
 			ft_printf("APPPEND\n");
 		else if (tmp->type == FILE_NAME)
 			ft_printf("FILE_NAME\n");
-		else
+		else if (tmp->type == LIMITER)
 			ft_printf("LIMITER\n");
+		else if (tmp->type == OPERATOR)
+			ft_printf("OPERATOR\n");
 		i++;
 		tmp = tmp->next;
 	}

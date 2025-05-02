@@ -6,7 +6,7 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 17:17:07 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:03:07 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	ft_isquote(char c)
 	return (c == '\'' || c == '\"');
 }
 
-int	check_redir_pipe(char *token)
+int	check_redir_pipe_operator(char *token)
 {
-	if (!ft_strncmp(token, "||", 2))
-		return (0);
 	if (!ft_strncmp(token, "<<", 2)
-		|| !ft_strncmp(token, ">>", 2))
+		|| !ft_strncmp(token, ">>", 2)
+		|| !ft_strncmp(token, "||", 2)
+		|| !ft_strncmp(token, "&&", 2))
 		return (2);
 	else if (!ft_strncmp(token, "<", 1)
 		|| !ft_strncmp(token, ">", 1)
