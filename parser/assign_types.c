@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 17:06:43 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:34:48 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void	assign_types(t_tokens **tokens)
 	tmp = *tokens;
 	while (tmp)
 	{
+		if (!tmp)
+			break ;
 		tmp->type = get_type(tmp->token);
 		if (tmp->type == BUILTIN || tmp->type == COMMAND)
 			tmp = assign_as_arg(&tmp, 0);
@@ -125,6 +127,7 @@ void	assign_types(t_tokens **tokens)
 		{
 			tmp = handle_redir_pipe(&tmp);
 			tmp = assign_as_arg(&tmp, 1);
+			tmp = tmp->next;
 		}
 	}
 }

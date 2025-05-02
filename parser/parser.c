@@ -104,7 +104,7 @@ t_tokens	*parser(char *str)
 	return (head);
 }
 
-/*int	main()
+int	main()
 {
 	char	*line;
 	t_tokens	*tokens;
@@ -147,4 +147,4 @@ t_tokens	*parser(char *str)
 	}
 	free(line);
 	free_tokens(&tokens);
-}*/
+}
