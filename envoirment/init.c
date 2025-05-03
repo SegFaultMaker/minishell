@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:41:45 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 18:05:20 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:18:47 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_table.h"
+#include "envoirment.h"
 
 static char	*get_value(char *env_var)
 {

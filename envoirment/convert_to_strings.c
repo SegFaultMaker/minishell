@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:23:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 19:15:23 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:18:15 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_table.h"
+#include "envoirment.h"
 
 void	free_result(char **array)
 {
@@ -48,7 +48,7 @@ char	**ht_to_strings(t_hash_table *ht)
 	int		j;
 	char	**result;
 
-	result = malloc(sizeof(char *) * (ht->count) + 1);
+	result = malloc(sizeof(char *) * (ht->count + 1));
 	if (!result)
 		return (NULL);
 	i = 0;

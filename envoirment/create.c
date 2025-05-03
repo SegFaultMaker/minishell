@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:21:37 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 16:30:09 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:18:17 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_table.h"
+#include "envoirment.h"
 
 t_ht_item	*ht_new_item(char *k, char *v)
 {

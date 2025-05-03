@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:20:01 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 16:30:31 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:18:56 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_table.h"
+#include "envoirment.h"
 
 static int	is_prime(int nb)
 {

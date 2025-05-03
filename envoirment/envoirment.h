@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hash_table.h                                       :+:      :+:    :+:   */
+/*   envoirment.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:34:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 22:29:42 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:18:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HASH_TABLE_H
-# define HASH_TABLE_H
+#ifndef ENVOIRMENT_H
+# define ENVOIRMENT_H
 
 # include "../libft/libft.h"
 # include <stdio.h>
@@ -20,6 +20,10 @@
 # define HT_PRIME_2 47
 
 # define HT_DEFAULT_BASE_SIZE 50
+
+# define INSERT_FAILURE 0
+# define INSERT_SUCCESS 1
+# define UPDATE_SUCCESS 2
 
 typedef struct s_ht_item
 {

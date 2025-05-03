@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 19:00:50 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:19:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_table.h"
+#include "envoirment.h"
 
 int	main(int argc, char *argv[], char *env[])
 {

@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:23:23 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 17:50:51 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:18:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_table.h"
+#include "envoirment.h"
 
 static double	hash_pow(double num, int power)
 {
@@ -56,5 +56,6 @@ int	ht_get_hash(char *s, int size, int attempt)
 
 	hash_a = do_hash(s, HT_PRIME_1, size);
 	hash_b = do_hash(s, HT_PRIME_2, size);
-	return ((hash_a + (attempt * (hash_b + 1))) % size);
+	hash_b = (hash_b % (size - 1)) + 1;
+	return ((hash_a + attempt * hash_b) % size);
 }
