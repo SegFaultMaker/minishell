@@ -6,17 +6,11 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 18:03:07 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:28:23 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	quit_with_error(int code, char *msg)
-{
-	ft_putstr_fd(msg, 2);
-	exit(code);
-}
 
 int	is_redir_pipe(t_types type)
 {

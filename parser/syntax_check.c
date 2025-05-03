@@ -6,35 +6,42 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:13:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 17:01:27 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:57:26 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	get_type_num(t_types type)
+static void	generate_error(t_tokens *tmp)
 {
-	if (type == PIPE)
-		return (3);
-	else if (type == INPUT)
-		return (4);
-	else if (type == OUTPUT)
-		return (5);
-	return (0);
+	ft_putstr_fd(SYNTAX_ERR, 2);
+	ft_putchar_fd('\'', 2);
+	ft_putstr_fd(tmp->token, 2);
+	ft_putstr_fd("\'\n", 2);
 }
 
 int	syntax_check(t_tokens *tmp)
 {
-	if (tmp->type == PIPE)
+	if (tmp->type == PIPE
+		|| tmp->type == OPERATOR)
+	{
+		generate_error(tmp);
 		return (0);
+	}
 	while (tmp)
 	{
-		if (is_redir_pipe(tmp->type))
+		if (is_redir_pipe(tmp->type) || tmp->type == OPERATOR)
 		{
 			if (!tmp->next)
+			{
+				generate_error(tmp);
 				return (0);
+			}
 			if (tmp->type == tmp->next->type)
-				return (get_type_num(tmp->type));
+			{
+				generate_error(tmp);
+				return (0);
+			}
 		}
 		tmp = tmp->next;
 	}

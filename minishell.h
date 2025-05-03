@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 18:01:06 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:01:15 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@
 
 // Error MSGs
 # define SYNTAX_ERR "minishell: syntax error near unexpected token "
-
-// Error Codes For Minishell Itself
-# define SYNTAX_ERR_CODE 2
 
 typedef enum e_types
 {
@@ -51,7 +48,7 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
-typedef struct s_comands
+typedef struct s_commands
 {
 	t_tokens			*first;
 	t_tokens			*second;
@@ -62,6 +59,8 @@ typedef struct s_comands
 void		init_signals(void);
 
 // Parser
+t_commands	*get_commands(char *str);
+void		clean_commands(t_commands **commands);
 t_tokens	*parser(char *str);
 t_tokens	*new_token(char *content);
 void		assign_types(t_tokens **tokens);
