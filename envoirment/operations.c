@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 14:03:14 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:10:49 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,36 +15,30 @@
 int	ht_insert(t_hash_table *ht, char *key, char *value)
 {
 	int			i;
-	int			load;
 	int			index;
 	t_ht_item	*item;
 	t_ht_item	*cur_item;
 
-	load = ht->count * 100 / ht->size;
-	if (load > 70)
+	if (ht_load(ht) > 70)
 		ht_resize_up(ht);
 	item = ht_new_item(key, value);
 	if (!item)
-		return (0);
-	i = 0;
-	while (i < ht->size)
+		return (ht_del_item(item), 0);
+	i = -1;
+	while (++i < ht->size)
 	{
 		index = ht_get_hash(item->key, ht->size, i);
 		cur_item = ht->items[index];
 		if (cur_item == NULL || cur_item == ht->deleted)
-			break ;
+			return (ht->items[index] = item, ht->count++, 1);
 		if (ft_strcmp(cur_item->key, key) == 0)
 		{
 			free(cur_item->value);
 			cur_item->value = ft_strdup(value);
-			ht_del_item(item);
-			return (2);
+			return (ht_del_item(item), 2);
 		}
-		i++;
 	}
-	ht->items[index] = item;
-	ht->count++;
-	return (1);
+	return (ht_del_item(item), 3);
 }
 
 char	*ht_search(t_hash_table *ht, char *key)
@@ -71,12 +65,10 @@ char	*ht_search(t_hash_table *ht, char *key)
 void	ht_delete(t_hash_table *ht, char *key)
 {
 	int			i;
-	int			load;
 	int			index;
 	t_ht_item	*item;
 
-	load = ht->count * 100 / ht->size;
-	if (load < 10)
+	if (ht_load(ht) < 10)
 		ht_resize_down(ht);
 	i = 0;
 	while (i < ht->size)

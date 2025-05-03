@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:23:23 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/01 12:23:43 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 17:50:51 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	do_hash(char *s, int a, int m)
 	i = 0;
 	hash = 0;
 	s_len = ft_strlen(s);
-	while (s[i])
+	while (i < s_len)
 	{
 		hash += (long)hash_pow(a, s_len - (i + 1)) * s[i];
 		hash = hash % m;

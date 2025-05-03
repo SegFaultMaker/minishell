@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:34:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 13:50:44 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:59:38 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@
 
 # define HT_DEFAULT_BASE_SIZE 50
 
-typedef struct s_ht_item {
+typedef struct s_ht_item
+{
 	char	*key;
 	char	*value;
 }	t_ht_item;
 
-typedef struct s_hash_table {
+typedef struct s_hash_table
+{
 	int			size;
 	int			base_size;
 	int			count;
@@ -46,9 +48,9 @@ void			del_hash_table(t_hash_table *ht);
 int				ht_get_hash(char *s, int size, int attempt);
 
 //					operations
-int 			ht_insert(t_hash_table *ht, char *key, char *value);
+int				ht_insert(t_hash_table *ht, char *key, char *value);
 char			*ht_search(t_hash_table *ht, char *key);
-void 			ht_delete(t_hash_table *ht, char *key);
+void			ht_delete(t_hash_table *ht, char *key);
 
 //					resizing
 void			ht_resize_up(t_hash_table *ht);
@@ -56,6 +58,13 @@ void			ht_resize_down(t_hash_table *ht);
 
 //					utils
 int				next_prime(int nb);
-void			set_nulls(t_hash_table	*ht);
+int				ht_load(t_hash_table *ht);
+
+//					init
+t_hash_table	*init_envoirment(char *env[]);
+
+//					to strings
+char			**ht_to_strings(t_hash_table *ht);
+void			free_result(char **array);
 
 #endif

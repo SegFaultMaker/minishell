@@ -6,19 +6,30 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:26:17 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 13:42:26 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:20:20 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hash_table.h"
 
+static void	swap_attributes(t_hash_table *ht, t_hash_table *new_ht)
+{
+	int				tmp_size;
+	t_ht_item		**tmp_items;
+
+	tmp_size = ht->size;
+	ht->size = new_ht->size;
+	new_ht->size = tmp_size;
+	tmp_items = ht->items;
+	ht->items = new_ht->items;
+	new_ht->items = tmp_items;
+}
+
 static void	ht_resize(t_hash_table *ht, int base_size)
 {
 	int				i;
-	int				tmp_size;
 	t_ht_item		*item;
 	t_hash_table	*new_ht;
-	t_ht_item		**tmp_items;
 
 	if (base_size < HT_DEFAULT_BASE_SIZE)
 		return ;
@@ -33,20 +44,14 @@ static void	ht_resize(t_hash_table *ht, int base_size)
 	}
 	ht->base_size = new_ht->base_size;
 	ht->count = new_ht->count;
-	// swapping attributes (move to separate function)
-	tmp_size = ht->size;
-	ht->size = new_ht->size;
-	new_ht->size = tmp_size;
-	tmp_items = ht->items;
-	ht->items = new_ht->items;
-	new_ht->items = tmp_items;
+	swap_attributes(ht, new_ht);
 	del_hash_table(new_ht);
 }
 
 void	ht_resize_up(t_hash_table *ht)
 {
 	int	new_size;
-	
+
 	new_size = ht->base_size * 2;
 	ht_resize(ht, new_size);
 }
@@ -54,7 +59,7 @@ void	ht_resize_up(t_hash_table *ht)
 void	ht_resize_down(t_hash_table *ht)
 {
 	int	new_size;
-	
+
 	new_size = ht->base_size / 2;
 	ht_resize(ht, new_size);
 }

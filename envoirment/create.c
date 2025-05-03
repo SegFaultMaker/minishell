@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:21:37 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 13:25:09 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:30:09 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,28 @@
 
 t_ht_item	*ht_new_item(char *k, char *v)
 {
-	t_ht_item *item = malloc(sizeof(t_ht_item));
+	t_ht_item	*item;
+
+	item = malloc(sizeof(t_ht_item));
+	if (!item)
+		return (NULL);
 	item->key = ft_strdup(k);
 	item->value = ft_strdup(v);
 	if (!item->key || !item->value)
+	{
+		free(item->key);
+		free(item->value);
+		free(item);
 		return (NULL);
+	}
 	return (item);
 }
 
 static t_ht_item	*ht_deleted(void)
 {
-	t_ht_item *deleted = malloc(sizeof(t_ht_item));
+	t_ht_item	*deleted;
+
+	deleted = malloc(sizeof(t_ht_item));
 	if (!deleted)
 		return (NULL);
 	deleted->key = NULL;
@@ -32,10 +43,22 @@ static t_ht_item	*ht_deleted(void)
 	return (deleted);
 }
 
+static void	set_nulls(t_hash_table	*ht)
+{
+	int	i;
+
+	i = 0;
+	while (i < ht->size)
+	{
+		ht->items[i] = NULL;
+		i++;
+	}
+}
+
 t_hash_table	*ht_new(int base_size)
 {
 	t_hash_table	*ht;
-	
+
 	ht = malloc(sizeof(t_hash_table));
 	if (!ht)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:22:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/04/30 18:43:45 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:00:38 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	del_hash_table(t_hash_table *ht)
 {
 	int			i;
 	t_ht_item	*item;
-	
+
 	i = 0;
 	while (i < ht->size)
 	{

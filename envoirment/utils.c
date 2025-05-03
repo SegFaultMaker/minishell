@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:20:01 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/02 13:57:37 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:30:31 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,7 @@ int	next_prime(int nb)
 	}
 }
 
-void	set_nulls(t_hash_table	*ht)
+int	ht_load(t_hash_table *ht)
 {
-	int	i;
-
-	i = 0;
-	while (i < ht->size)
-	{
-		ht->items[i] = NULL;
-		i++;
-	}
+	return (ht->count * 100 / ht->size);
 }
