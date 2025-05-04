@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/02 19:01:15 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/04 13:53:58 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ typedef struct s_commands
 
 // Init
 void		init_signals(void);
+
+// Shell
+void		start_shell(void);
 
 // Parser
 t_commands	*get_commands(char *str);

@@ -6,67 +6,44 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/30 14:15:00 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/04 13:52:56 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_tokens(t_tokens *tokens)   //FOR DEBUG ONLY
+void	start_shell(void)
 {
-	int	i = 1;
-	t_tokens	*tmp = tokens;
-	if (!tmp)
-		printf("No Tokens\n");
-	else
+	t_commands	*cmds;
+	char		*input;
+
+	cmds = NULL;
+	input = NULL;
+	while (!input || !*input)
 	{
-		while (tmp)
-		{
-			printf("Token %d: %s\n", i, tmp->token);
-			i++;
-			tmp = tmp->next;
-		}
-		free_tokens(&tokens);
-	}
-}
-
-static int handle_input(char *str)
-{
-	t_tokens	*tokens;
-
-	tokens = parser(str);
-	if (!tokens)
-		return (0);
-	print_tokens(tokens);		// REMOVE AFTER DEBUG
-	if (!syntax_check(tokens))
-		return (0);
-	if (!execute(tokens))
-		return (0);
-	return (1);
-}
-
-static void	start_shell(void)
-{
-	char	*input;
-
-	input = readline(PROMPT);
-	while (input)
-	{
-		add_history(input);
-		if (!handle_input(input))
+		input = readline("minishell $ ");
+		if (!input)
+			break ;
+		else if (!*input)
 		{
 			free(input);
-			break ;
+			input = NULL;
+			continue ;
 		}
+		cmds = get_commands(input);
+	/*	if (cmds)
+			execute(cmds); */
 		free(input);
+		clean_commands(&cmds);
+		input = NULL;
 	}
-	rl_clear_history();
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
+	(void)envp;
 	init_signals();
 	start_shell();
 }
