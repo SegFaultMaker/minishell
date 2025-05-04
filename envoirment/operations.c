@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:52 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:46:41 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "environment.h"
 
 static int	update(t_hash_table *ht, t_ht_item *c_item, char *key, char *value)
 {
@@ -78,8 +78,6 @@ void	ht_delete(t_hash_table *ht, char *key)
 	int			index;
 	t_ht_item	*item;
 
-	if (ht_load(ht) < 10)
-		ht_resize_down(ht);
 	i = 0;
 	while (i < ht->size)
 	{
@@ -91,9 +89,11 @@ void	ht_delete(t_hash_table *ht, char *key)
 			{
 				ht_del_item(item);
 				ht->items[index] = ht->deleted;
+				ht->count--;
 			}
 		}
 		i++;
 	}
-	ht->count--;
+	if (ht_load(ht) < 10)
+		ht_resize_down(ht);
 }

@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:22:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:21 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:36:19 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "environment.h"
 
 void	ht_del_item(t_ht_item *item)
 {

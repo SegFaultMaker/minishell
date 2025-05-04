@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:23:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:15 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:01:09 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "environment.h"
 
 void	free_result(char **array)
 {

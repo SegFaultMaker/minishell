@@ -1,47 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:20:01 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 14:37:26 by armarake         ###   ########.fr       */
+/*   Created: 2025/05/04 18:54:23 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/04 20:07:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment.h"
+#include "builtins.h"
 
-static int	is_prime(int nb)
+int	env(t_hash_table *ht)
 {
-	int	i;
-
-	if (nb <= 1)
-		return (0);
-	i = 2;
-	while (i < nb)
-	{
-		if (nb % i == 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	next_prime(int nb)
-{
-	int	i;
+	int		i;
+	char	**result;
 
 	i = 0;
-	while (1)
+	result = ht_to_strings(ht);
+	if (!result)
+		return (1);
+	while (result[i])
 	{
-		if (is_prime(nb + i) == 1)
-			return (nb + i);
+		printf("%s\n", result[i]);
 		i++;
 	}
-}
-
-int	ht_load(t_hash_table *ht)
-{
-	return (ht->count * 100 / ht->size);
+	free_result(result);
+	return (0);
 }

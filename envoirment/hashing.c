@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:23:23 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:43 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:36:32 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "environment.h"
 
 static double	hash_pow(double num, int power)
 {

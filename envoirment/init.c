@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 14:41:45 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:47 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:36:53 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "environment.h"
 
 static char	*get_value(char *env_var)
 {
@@ -35,14 +35,14 @@ static char	*get_key(char *env_var)
 	return (key);
 }
 
-t_hash_table	*init_envoirment(char *env[])
+t_hash_table	*init_environment(char *env[])
 {
 	int				i;
 	char			*key;
-	t_hash_table	*envoirment_ht;
+	t_hash_table	*environment_ht;
 
-	envoirment_ht = ht_new(HT_DEFAULT_BASE_SIZE);
-	if (!envoirment_ht)
+	environment_ht = ht_new(HT_DEFAULT_BASE_SIZE);
+	if (!environment_ht)
 		return (printf("Creation error\n"), NULL);
 	i = -1;
 	while (env[++i])
@@ -51,15 +51,15 @@ t_hash_table	*init_envoirment(char *env[])
 		if (!key)
 		{
 			printf("Envoirment variable parsing error\n");
-			return (del_hash_table(envoirment_ht), free(key), NULL);
+			return (del_hash_table(environment_ht), free(key), NULL);
 		}
-		if (!ht_insert(envoirment_ht, key, get_value(env[i])))
+		if (!ht_insert(environment_ht, key, get_value(env[i])))
 		{
 			printf("Item insertation error\n");
-			return (del_hash_table(envoirment_ht), free(key), NULL);
+			return (del_hash_table(environment_ht), free(key), NULL);
 		}
 		free(key);
 		key = NULL;
 	}
-	return (envoirment_ht);
+	return (environment_ht);
 }

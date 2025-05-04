@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envoirment.h                                       :+:      :+:    :+:   */
+/*   environment.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 13:34:21 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:35 by armarake         ###   ########.fr       */
+/*   Created: 2025/05/04 14:30:06 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/04 19:01:45 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENVOIRMENT_H
-# define ENVOIRMENT_H
+#ifndef ENVIRONMENT_H
+# define ENVIRONMENT_H
 
 # include "../libft/libft.h"
 # include <stdio.h>
@@ -65,7 +65,7 @@ int				next_prime(int nb);
 int				ht_load(t_hash_table *ht);
 
 //					init
-t_hash_table	*init_envoirment(char *env[]);
+t_hash_table	*init_environment(char *env[]);
 
 //					to strings
 char			**ht_to_strings(t_hash_table *ht);

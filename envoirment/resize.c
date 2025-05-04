@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:26:17 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:18:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 14:37:22 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "environment.h"
 
 static void	swap_attributes(t_hash_table *ht, t_hash_table *new_ht)
 {

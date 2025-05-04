@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   test_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/03 23:19:43 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:07:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envoirment.h"
+#include "builtins.h"
 
-int	main(int argc, char *argv[], char *env[])
+int	main(int argc, char *argv[], char *envp[])
 {
-	int				i;
-	char			**result;
 	t_hash_table	*ht;
 
-	(void)argc;
-	(void)argv;
-	ht = init_envoirment(env);
+	ht = init_environment(envp);
 	if (!ht)
 		return (1);
-	result = ht_to_strings(ht);
-	i = 0;
-	while (result[i])
-	{
-		printf("%s\n", result[i]);
-		i++;
-	}
-	free_result(result);
+	if (export(argc, argv, ht))
+		printf("Export error\n");
+	env(ht);
 	del_hash_table(ht);
 	return (0);
 }

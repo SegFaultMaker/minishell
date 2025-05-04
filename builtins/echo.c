@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:05:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/04/29 13:33:01 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:50:00 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	echo(int argc, char	**argv)
+int	echo(int argc, char **argv)
 {
 	if (argc == 1)
 		ft_putchar_fd('\n', 1);

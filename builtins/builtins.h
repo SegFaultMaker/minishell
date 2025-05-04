@@ -1,47 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 13:20:01 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 14:37:26 by armarake         ###   ########.fr       */
+/*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/04 19:10:41 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-static int	is_prime(int nb)
-{
-	int	i;
+# include "../libft/libft.h"
+# include "../envoirment/environment.h"
 
-	if (nb <= 1)
-		return (0);
-	i = 2;
-	while (i < nb)
-	{
-		if (nb % i == 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
+//			enviroment
+int	export(int argc, char *argv[], t_hash_table *ht);
+int	env(t_hash_table *ht);
 
-int	next_prime(int nb)
-{
-	int	i;
+//			other
+int	cd(char *path);
+int	echo(int argc, char	**argv);
+int	pwd(void);
 
-	i = 0;
-	while (1)
-	{
-		if (is_prime(nb + i) == 1)
-			return (nb + i);
-		i++;
-	}
-}
-
-int	ht_load(t_hash_table *ht)
-{
-	return (ht->count * 100 / ht->size);
-}
+#endif
