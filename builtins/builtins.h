@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 19:10:41 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:31:56 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 //			enviroment
 int	export(int argc, char *argv[], t_hash_table *ht);
 int	env(t_hash_table *ht);
+int	unset(int argc, char *argv[], t_hash_table *ht);
 
 //			other
 int	cd(char *path);

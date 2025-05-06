@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_main.c                                        :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 17:11:35 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 20:07:39 by armarake         ###   ########.fr       */
+/*   Created: 2025/05/06 17:16:46 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/06 18:55:40 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	unset(int argc, char *argv[], t_hash_table *ht)
 {
-	t_hash_table	*ht;
+	int	i;
 
-	ht = init_environment(envp);
-	if (!ht)
-		return (1);
-	if (export(argc, argv, ht))
-		printf("Export error\n");
-	env(ht);
-	del_hash_table(ht);
+	if (argc == 1)
+		return (0);
+	i = 1;
+	while (argv[i])
+	{
+		ht_delete(ht, argv[i]);
+		i++;
+	}
 	return (0);
 }

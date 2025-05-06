@@ -6,11 +6,18 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 20:07:03 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:29:32 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+static void	invalid_identifier(char *arg)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("\': not a valid identifier\n", 2);
+}
 
 static char	*get_key(char *arg, char *equal_sign)
 {
@@ -19,6 +26,8 @@ static char	*get_key(char *arg, char *equal_sign)
 	char	*key;
 
 	len = equal_sign - arg;
+	if (len == 0)
+		return (NULL);
 	i = -1;
 	while (i++ < len)
 		if (arg[i] == ' ')
@@ -29,26 +38,44 @@ static char	*get_key(char *arg, char *equal_sign)
 	return (key);
 }
 
-static int	process_argument(char *arg, t_hash_table *ht)
+static void	process_argument(char *arg, t_hash_table *ht)
 {
 	char	*key;
 	char	*equal_sign;
 
+	if (!*arg)
+	{
+		invalid_identifier(arg);
+		return ;
+	}
 	equal_sign = ft_strchr(arg, '=');
 	if (!equal_sign)
-		return (1);
+	{
+		invalid_identifier(arg);
+		return ;
+	}
 	key = get_key(arg, equal_sign);
 	if (!key)
 	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd("`: not a valid identifier\n", 2);
-		return (0);
+		invalid_identifier(arg);
+		return ;
 	}
 	if (!ht_insert(ht, key, equal_sign + 1))
-		printf("Item insertation error\n");
+		ft_putstr_fd("Item insertation error\n", 2);
 	free(key);
 	key = NULL;
+}
+
+static int	arg_isalnum(char *arg)
+{
+	if (!*arg)
+		return (0);
+	while (*arg)
+	{
+		if (!ft_isalnum(*arg))
+			return (0);
+		arg++;
+	}
 	return (1);
 }
 
@@ -61,6 +88,11 @@ int	export(int argc, char *argv[], t_hash_table *ht)
 	i = 1;
 	while (argv[i])
 	{
+		if (arg_isalnum(argv[i]))
+		{
+			i++;
+			continue ;
+		}
 		process_argument(argv[i], ht);
 		i++;
 	}
