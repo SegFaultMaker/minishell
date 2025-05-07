@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 14:46:41 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:28:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,15 @@ char	*ht_search(t_hash_table *ht, char *key)
 	int			index;
 	t_ht_item	*item;
 
-	i = 0;
-	while (i < ht->size)
+	index = ht_get_hash(key, ht->size, 0);
+	item = ht->items[index];
+	i = 1;
+	while (item != NULL)
 	{
-		index = ht_get_hash(key, ht->size, i);
+		if (item != ht->deleted && ft_strcmp(item->key, key) == 0)
+			return (item->value);
+		index = ht_get_hash(key, ht->size, i++);
 		item = ht->items[index];
-		if (item != NULL && item != ht->deleted)
-		{
-			if (ft_strcmp(item->key, key) == 0)
-				return (item->value);
-		}
-		i++;
 	}
 	return (NULL);
 }
@@ -78,21 +76,20 @@ void	ht_delete(t_hash_table *ht, char *key)
 	int			index;
 	t_ht_item	*item;
 
-	i = 0;
-	while (i < ht->size)
+	index = ht_get_hash(key, ht->size, 0);
+	item = ht->items[index];
+	i = 1;
+	while (item != NULL)
 	{
-		index = ht_get_hash(key, ht->size, i);
-		item = ht->items[index];
-		if (item != NULL && item != ht->deleted)
+		if (item != ht->deleted && ft_strcmp(item->key, key) == 0)
 		{
-			if (ft_strcmp(item->key, key) == 0)
-			{
-				ht_del_item(item);
-				ht->items[index] = ht->deleted;
-				ht->count--;
-			}
+			ht_del_item(item);
+			ht->items[index] = ht->deleted;
+			ht->count--;
+			break ;
 		}
-		i++;
+		index = ht_get_hash(key, ht->size, i++);
+		item = ht->items[index];
 	}
 	if (ht_load(ht) < 10)
 		ht_resize_down(ht);
