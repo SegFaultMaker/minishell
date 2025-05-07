@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/04 13:53:58 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:41:19 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void		init_signals(void);
 void		start_shell(void);
 
 // Parser
-t_commands	*get_commands(char *str);
 void		clean_commands(t_commands **commands);
 t_tokens	*parser(char *str);
 t_tokens	*new_token(char *content);
@@ -70,7 +69,7 @@ void		assign_types(t_tokens **tokens);
 void		free_tokens(t_tokens **tokens);
 int			syntax_check(t_tokens *tmp);
 int			ft_isquote(char c);
-int			check_redir_pipe_operator(char *token);
+int			check_redir_pipe_operator(char *token, int regime);
 int			is_redir_pipe(t_types type);
 
 // Builtins

@@ -17,19 +17,32 @@ static int	single_quotes(char **str, char **start)
 	int	len;
 
 	len = 0;
-	if (**str == '\'')
-	{
-		if (*(*str + 1) == '\'')
-			return (0);
-		(*str)++;
-	}
 	*start = *str;
+	(*str)++;
 	while (*str && **str != '\'')
 	{
 		len++;
 		(*str)++;
 	}
+	len += 2;
 	(*str)++;
+	return (len);
+}
+
+static int	double_quotes(char **str, char **start)
+{
+	int	len;
+
+	len = 0;
+	if (**str == '\"')
+		(*str)++;
+	*start = *str;
+	while (**str && !ft_isquote(**str))
+	{
+		if (**str != '\"')
+			len++;
+		(*str)++;
+	}
 	return (len);
 }
 
@@ -37,15 +50,20 @@ static int	regular(char **str, char **start)
 {
 	int	len;
 
-	len = check_redir_pipe_operator(*str);
+	len = check_redir_pipe_operator(*str, 2);
 	*start = *str;
-	if (len != 0)
+	if (len > 0)
 	{
 		(*str) += len;
 		return (len);
 	}
 	while (**str && !ft_isspace(**str) && !ft_isquote(**str))
 	{
+		if (check_redir_pipe_operator(*str, 1))
+		{
+			len++;
+			break ;
+		}
 		len++;
 		(*str)++;
 	}
@@ -63,8 +81,8 @@ static t_tokens	*get_token(char **str)
 		(*str)++;
 	if (**str == '\'')
 		len = single_quotes(str, &start);
-/*	else if (**str == '\"')										TODO
-		len = double_quotes(&str, &start);*/
+	else if (**str == '\"')
+		len = double_quotes(str, &start);
 	else
 		len = regular(str, &start);
 	while (ft_isquote(**str))
@@ -102,4 +120,48 @@ t_tokens	*parser(char *str)
 		return (NULL);
 	}
 	return (head);
+}
+
+int	main()
+{
+	char		*line;
+	int	i = 1;
+	t_tokens	*tokens;
+	t_tokens	*tmp;
+
+	line = readline("$ ");
+	tokens = parser(line);
+	tmp = tokens;
+	ft_printf("==== Commands ====\n");
+	i = 1;
+	while (tmp)
+	{
+		ft_printf("Token %d: %s ", i, tmp->token);
+		if (tmp->type == BUILTIN)
+			ft_printf("BUILTIN\n");
+		else if (tmp->type == COMMAND)
+			ft_printf("COMMAND\n");
+		else if (tmp->type == ARGUMENT)
+			ft_printf("ARGUMENT\n");
+		else if (tmp->type == PIPE)
+			ft_printf("PIPE\n");
+		else if (tmp->type == INPUT)
+			ft_printf("INPUT\n");
+		else if (tmp->type == OUTPUT)
+			ft_printf("OUTPUT\n");
+		else if (tmp->type == HERE_DOC)
+			ft_printf("HERE_DOC\n");
+		else if (tmp->type == APPEND)
+			ft_printf("APPPEND\n");
+		else if (tmp->type == FILE_NAME)
+			ft_printf("FILE_NAME\n");
+		else if (tmp->type == LIMITER)
+			ft_printf("LIMITER\n");
+		else if (tmp->type == OPERATOR)
+			ft_printf("OPERATOR\n");
+		i++;
+		tmp = tmp->next;
+	}
+	free(line);
+	free_tokens(&tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/04 13:52:56 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:42:53 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	start_shell(void)
 {
-	t_commands	*cmds;
+	t_tokens	*cmd;
 	char		*input;
 
-	cmds = NULL;
+	cmd = NULL;
 	input = NULL;
 	while (!input || !*input)
 	{
@@ -30,11 +30,11 @@ void	start_shell(void)
 			input = NULL;
 			continue ;
 		}
-		cmds = get_commands(input);
+		cmd = parser(input);
 	/*	if (cmds)
 			execute(cmds); */
 		free(input);
-		clean_commands(&cmds);
+		free_tokens(&cmd);
 		input = NULL;
 	}
 }
