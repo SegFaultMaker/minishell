@@ -16,7 +16,7 @@ static int	single_quotes(char **str, char **start)
 {
 	int	len;
 
-	len = 0;
+	len = 1;
 	*start = *str;
 	(*str)++;
 	while (*str && **str != '\'')
@@ -24,7 +24,7 @@ static int	single_quotes(char **str, char **start)
 		len++;
 		(*str)++;
 	}
-	len += 2;
+	len++;
 	(*str)++;
 	return (len);
 }
@@ -33,16 +33,16 @@ static int	double_quotes(char **str, char **start)
 {
 	int	len;
 
-	len = 0;
-	if (**str == '\"')
-		(*str)++;
+	len = 1;
 	*start = *str;
-	while (**str && !ft_isquote(**str))
+	(*str)++;
+	while (**str && **str != '\"')
 	{
-		if (**str != '\"')
-			len++;
+		len++;
 		(*str)++;
 	}
+	len++;
+	(*str)++;
 	return (len);
 }
 
@@ -57,7 +57,7 @@ static int	regular(char **str, char **start)
 		(*str) += len;
 		return (len);
 	}
-	while (**str && !ft_isspace(**str) && !ft_isquote(**str))
+	while (**str && !ft_isspace(**str))
 	{
 		if (check_redir_pipe_operator(*str, 1))
 		{
@@ -84,9 +84,7 @@ static t_tokens	*get_token(char **str)
 	else if (**str == '\"')
 		len = double_quotes(str, &start);
 	else
-		len = regular(str, &start);
-	while (ft_isquote(**str))
-		(*str)++;
+	len = regular(str, &start);
 	if (len == 0)
 		return (NULL);
 	token = ft_substr(start, 0, len);
@@ -113,16 +111,18 @@ t_tokens	*parser(char *str)
 			current->next = new;
 		current = new;
 	}
+	current->next = new_token(ft_strdup("\n"));
+	current->next->type = NEWL;
 	assign_types(&head);
-	if (!syntax_check(head))
+/*	if (!syntax_check(head))
 	{
 		free_tokens(&head);
 		return (NULL);
-	}
+	}*/
 	return (head);
 }
 
-/*int	main()
+int	main()
 {
 	char		*line;
 	int	i = 1;
@@ -167,11 +167,13 @@ t_tokens	*parser(char *str)
 			ft_printf("LIMITER\n");
 		else if (tmp->type == OPERATOR)
 			ft_printf("OPERATOR\n");
-		else
+		else if (tmp->type == NONE)
 			ft_printf("NONE\n");
+		else
+			ft_printf("NEWL");
 		i++;
 		tmp = tmp->next;
 	}
 	free(line);
 	free_tokens(&tokens);
-}*/
+}

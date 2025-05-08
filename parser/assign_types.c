@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 11:54:34 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:59:46 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 t_types	get_type(char *token)
 {
-	if (!ft_strcmp(token, "echo")
-		|| !ft_strcmp(token, "cd")
+	if (!ft_strcmp(token, "echo") || !ft_strcmp(token, "cd")
 		|| !ft_strcmp(token, "pwd")
 		|| !ft_strcmp(token, "export")
 		|| !ft_strcmp(token, "unset")
 		|| !ft_strcmp(token, "env")
 		|| !ft_strcmp(token, "exit"))
 		return (BUILTIN);
-	else if ((ft_strlen(token) == 1
-			|| ft_strlen(token) == 2))
+	else if ((ft_strlen(token) == 1 || ft_strlen(token) == 2))
 	{
+		if (!ft_strcmp(token, "\n"))
+			return (NEWL);
 		if (!ft_strcmp(token, "<"))
 			return (INPUT);
 		else if (!ft_strcmp(token, ">"))
@@ -54,7 +54,8 @@ static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
 		tmp = tmp->next;
 	if (tmp)
 		tmp->type = get_type(tmp->token);
-	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != OPERATOR)
+	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != OPERATOR
+		&& tmp->type != NEWL)
 	{
 		tmp->type = ARGUMENT;
 		tmp = tmp->next;

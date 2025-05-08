@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 12:20:58 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:25:31 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ typedef enum e_types
 	APPEND,
 	FILE_NAME,
 	LIMITER,
-	OPERATOR
+	OPERATOR,
+	NEWL
 }	t_types;
 
 typedef struct s_tokens
