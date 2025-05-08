@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 11:45:50 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:20:58 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_types		get_type(char *token);
 t_tokens	*handle_first(t_tokens **tokens);
 
 // Builtins
-int			echo(int argc, char	**argv);
+int			echo(t_tokens *tokens);
 int			cd(char *path);
 int			pwd(void);
 
