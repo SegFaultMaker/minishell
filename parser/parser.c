@@ -122,7 +122,7 @@ t_tokens	*parser(char *str)
 	return (head);
 }
 
-int	main()
+/*int	main()
 {
 	char		*line;
 	int	i = 1;
@@ -176,4 +176,4 @@ int	main()
 	}
 	free(line);
 	free_tokens(&tokens);
-}
+}*/

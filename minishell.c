@@ -6,14 +6,15 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/07 13:42:53 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:38:48 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	start_shell(void)
+void	start_shell(t_hash_table *environment)
 {
+	(void)environment;
 	t_tokens	*cmd;
 	char		*input;
 
@@ -21,7 +22,7 @@ void	start_shell(void)
 	input = NULL;
 	while (!input || !*input)
 	{
-		input = readline("minishell $ ");
+		input = readline(BLUE "→  " RESET);
 		if (!input)
 			break ;
 		else if (!*input)
@@ -32,18 +33,22 @@ void	start_shell(void)
 		}
 		cmd = parser(input);
 	/*	if (cmds)
-			execute(cmds); */
+			execute(cmds, &environment); */
 		free(input);
 		free_tokens(&cmd);
 		input = NULL;
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char *argv[], char *envp[])
 {
+	t_hash_table	*environment;
+
+	init_signals();
+	environment = init_environment(envp);
+	start_shell(environment);
+	del_hash_table(environment);
+	rl_clear_history();
 	(void)argc;
 	(void)argv;
-	(void)envp;
-	init_signals();
-	start_shell();
 }

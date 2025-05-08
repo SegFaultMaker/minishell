@@ -4,21 +4,29 @@ SOURCES = ./minishell.c \
 					./parser/assign_types.c ./parser/assign_utils.c \
 					./parser/syntax_check.c \
 					./builtins/echo.c ./builtins/cd.c ./builtins/pwd.c \
-					./init/init.c
+					./init/init_signals.c \
+					./envoirment/convert_to_strings.c ./envoirment/create.c \
+					./envoirment/delete.c ./envoirment/hashing.c \
+					./envoirment/init.c ./envoirment/operations.c \
+					./envoirment/resize.c ./envoirment/utils.c
 
 OBJECTS = ./objects/minishell.o \
 					./objects/parser.o ./objects/parser_utils.o \
 					./objects/assign_types.o ./objects/assign_utils.o \
 					./objects/syntax_check.o \
 					./objects/echo.o ./objects/cd.o ./objects/pwd.o \
-					./objects/init.o
+					./objects/init_signals.o \
+					./objects/convert_to_strings.o ./objects/create.o \
+					./objects/delete.o ./objects/hashing.o \
+					./objects/init.o ./objects/operations.o \
+					./objects/resize.o ./objects/utils.o
 
 LIBFT = ./objects/libft.a
 
 OBJDIR = ./objects
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3
 LDFLAGS = -lreadline
 
 all: $(NAME)
