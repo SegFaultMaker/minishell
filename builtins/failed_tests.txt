@@ -1,0 +1,17 @@
+export $?
+export TE-ST=100
+export TEST-=100
+export 1TEST=
+export TE+S=T=""
+export TES.T=123
+export TES+T=123
+export TES}T=123
+export TE*ST=123
+export TES#T=123
+export TES@T=123
+export TES$?T=123
+export +++++++=123
+export TES^T=123
+export TEST+=100
+export HELLO-=123
+export 123

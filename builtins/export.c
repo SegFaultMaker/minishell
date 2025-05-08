@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/06 18:29:32 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:32:21 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	invalid_identifier(char *arg)
 {
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("\': not a valid identifier\n", 2);
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd("\': not a valid identifier\n", STDERR_FILENO);
 }
 
 static char	*get_key(char *arg, char *equal_sign)
@@ -61,7 +61,8 @@ static void	process_argument(char *arg, t_hash_table *ht)
 		return ;
 	}
 	if (!ht_insert(ht, key, equal_sign + 1))
-		ft_putstr_fd("Item insertation error\n", 2);
+		ft_putendl_fd("minishell: hash table: item insertation error",
+			STDERR_FILENO);
 	free(key);
 	key = NULL;
 }
@@ -84,7 +85,7 @@ int	export(int argc, char *argv[], t_hash_table *ht)
 	int	i;
 
 	if (argc == 1)
-		return (env(ht), 1);
+		return (env(ht, 1), 0);
 	i = 1;
 	while (argv[i])
 	{

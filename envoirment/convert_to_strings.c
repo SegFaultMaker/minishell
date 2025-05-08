@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:23:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 19:01:09 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:11:49 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,35 @@ void	free_result(char **array)
 	free(array);
 }
 
-static char	*create_string(t_ht_item *item)
+static char	*create_string(t_ht_item *item, int mode)
 {
 	int		len;
 	char	*str;
 
 	len = ft_strlen(item->key) + ft_strlen(item->value) + 1;
+	if (mode)
+		len += 2;
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
 	ft_memmove(str, item->key, ft_strlen(item->key));
 	ft_memmove(str + ft_strlen(item->key), "=", 1);
-	ft_memmove(str + ft_strlen(item->key) + 1, item->value,
-		ft_strlen(item->value));
+	if (mode)
+	{
+		ft_memmove(str + ft_strlen(item->key) + 1, "\"", 1);
+		ft_memmove(str + ft_strlen(item->key) + 2, item->value,
+			ft_strlen(item->value));
+		ft_memmove(str + ft_strlen(item->key) + 2 + ft_strlen(item->value),
+			"\"", 1);
+	}
+	else
+		ft_memmove(str + ft_strlen(item->key) + 1, item->value,
+			ft_strlen(item->value));
 	str[len] = '\0';
 	return (str);
 }
 
-char	**ht_to_strings(t_hash_table *ht)
+char	**ht_to_strings(t_hash_table *ht, int mode)
 {
 	int		i;
 	int		j;
@@ -57,7 +68,7 @@ char	**ht_to_strings(t_hash_table *ht)
 	{
 		if (ht->items[i] != NULL && ht->items[i] != ht->deleted)
 		{
-			result[j] = create_string(ht->items[i]);
+			result[j] = create_string(ht->items[i], mode);
 			if (!result[j])
 				return (free_result(result), NULL);
 			j++;

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:05:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 14:47:08 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:25:24 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ int	echo(t_tokens *tokens)
 {
 	if (!tokens || tokens->type != ARGUMENT)
 	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putchar_fd('\n', 1);
 		return (0);
 	}
 	if (check_arg(tokens))
 	{
 		while (tokens && !is_redir_pipe(tokens->type))
 		{
-			ft_putstr_fd(tokens->token, STDOUT_FILENO);
-			ft_putchar_fd(' ', STDOUT_FILENO);
+			ft_putstr_fd(tokens->token, 1);
+			ft_putchar_fd(' ', 1);
 			tokens = tokens->next;
 		}
 	}
@@ -43,11 +43,11 @@ int	echo(t_tokens *tokens)
 	{
 		while (tokens && !is_redir_pipe(tokens->type))
 		{
-			ft_putstr_fd(tokens->token, STDOUT_FILENO);
-			ft_putchar_fd(' ', STDOUT_FILENO);
+			ft_putstr_fd(tokens->token, 1);
+			ft_putchar_fd(' ', 1);
 			tokens = tokens->next;
 		}
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putchar_fd('\n', 1);
 	}
 	return (0);
 }
