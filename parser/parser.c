@@ -122,16 +122,24 @@ t_tokens	*parser(char *str)
 	return (head);
 }
 
-int	main()
+/*int	main()
 {
 	char		*line;
 	int	i = 1;
 	t_tokens	*tokens;
 	t_tokens	*tmp;
 
+	line = NULL;
 	line = readline("$ ");
+	if (!line)
+		return (0);
 	tokens = parser(line);
 	tmp = tokens;
+	if (!tmp)
+	{
+		free(line);
+		return (0);
+	}
 	ft_printf("==== Commands ====\n");
 	i = 1;
 	while (tmp)
@@ -159,9 +167,11 @@ int	main()
 			ft_printf("LIMITER\n");
 		else if (tmp->type == OPERATOR)
 			ft_printf("OPERATOR\n");
+		else
+			ft_printf("NONE\n");
 		i++;
 		tmp = tmp->next;
 	}
 	free(line);
 	free_tokens(&tokens);
-}
+}*/

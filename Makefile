@@ -1,13 +1,15 @@
 NAME = minishell
 SOURCES = ./minishell.c \
 					./parser/parser.c ./parser/parser_utils.c \
-					./parser/assign_types.c ./parser/syntax_check.c \
+					./parser/assign_types.c ./parser/assign_utils.c \
+					./parser/syntax_check.c \
 					./builtins/echo.c ./builtins/cd.c ./builtins/pwd.c \
 					./init/init.c
 
 OBJECTS = ./objects/minishell.o \
 					./objects/parser.o ./objects/parser_utils.o \
-					./objects/assign_types.o ./objects/syntax_check.o \
+					./objects/assign_types.o ./objects/assign_utils.o \
+					./objects/syntax_check.o \
 					./objects/echo.o ./objects/cd.o ./objects/pwd.o \
 					./objects/init.o
 

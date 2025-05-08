@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/07 13:41:19 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:45:50 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 typedef enum e_types
 {
+	NONE,
 	BUILTIN,
 	COMMAND,
 	ARGUMENT,
@@ -71,6 +72,8 @@ int			syntax_check(t_tokens *tmp);
 int			ft_isquote(char c);
 int			check_redir_pipe_operator(char *token, int regime);
 int			is_redir_pipe(t_types type);
+t_types		get_type(char *token);
+t_tokens	*handle_first(t_tokens **tokens);
 
 // Builtins
 int			echo(int argc, char	**argv);

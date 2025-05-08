@@ -6,13 +6,13 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/07 14:00:26 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:54:34 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static t_types	get_type(char *token)
+t_types	get_type(char *token)
 {
 	if (!ft_strcmp(token, "echo")
 		|| !ft_strcmp(token, "cd")
@@ -50,10 +50,8 @@ static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
 		return (tmp);
 	if (stat == 1)
 		tmp->type = ARGUMENT;
-	if (tmp->next)
+	if (tmp->next && stat == 0)
 		tmp = tmp->next;
-	else
-		return (tmp);
 	if (tmp)
 		tmp->type = get_type(tmp->token);
 	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != OPERATOR)
@@ -106,7 +104,7 @@ static t_tokens	*handle_redir_pipe(t_tokens **tokens)
 		tmp = tmp->next;
 		tmp->type = get_type(tmp->token);
 		tmp = tmp->next;
-		tmp = assign_as_arg(&tmp, 1);
+		tmp = assign_as_arg(&tmp, 2);
 	}
 	else
 	{
@@ -121,6 +119,7 @@ void	assign_types(t_tokens **tokens)
 	t_tokens	*tmp;
 
 	tmp = *tokens;
+	tmp = handle_first(&tmp);
 	while (tmp)
 	{
 		if (!tmp)
