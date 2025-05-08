@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/07 14:28:16 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:18:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	ht_insert(t_hash_table *ht, char *key, char *value)
 		return (ht_del_item(item), INSERT_FAILURE);
 	index = ht_get_hash(item->key, ht->size, 0);
 	cur_item = ht->items[index];
+	if (update(ht, cur_item, key, value))
+		return (ht_del_item(item), UPDATE_SUCCESS);
 	i = 1;
 	while (cur_item != NULL && cur_item != ht->deleted)
 	{
