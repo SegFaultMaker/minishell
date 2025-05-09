@@ -114,11 +114,11 @@ t_tokens	*parser(char *str)
 	current->next = new_token(ft_strdup("\n"));
 	current->next->type = NEWL;
 	assign_types(&head);
-/*	if (!syntax_check(head))
+	if (!syntax_check(head))
 	{
 		free_tokens(&head);
 		return (NULL);
-	}*/
+	}
 	return (head);
 }
 

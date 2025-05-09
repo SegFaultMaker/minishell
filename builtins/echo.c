@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 13:05:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 12:25:24 by nasargsy         ###   ########.fr       */
+/*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
+/*   Updated: 2025/05/09 12:31:49 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,49 @@
 
 static int	check_arg(t_tokens *tokens)
 {
-	while (tokens && !is_redir_pipe(tokens->type))
-	{
-		if (!ft_strcmp(tokens->token, "-n"))
-			return (1);
-		tokens = tokens->next;
-	}
-	return (0);
+	char	*tmp;
+
+	tmp = tokens->token;
+	tmp++;
+	while (*tmp && *tmp == 'n')
+		tmp++;
+	if (!tmp)
+		return (0);
+	return (1);
 }
 
 int	echo(t_tokens *tokens)
 {
+	int	nl;
+
+	nl = 1;
 	if (!tokens || tokens->type != ARGUMENT)
 	{
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		return (0);
 	}
-	if (check_arg(tokens))
+	while (tokens && !is_redir_pipe(tokens->type) && tokens->type != NEWL)
 	{
-		while (tokens && !is_redir_pipe(tokens->type))
+		if (*(tokens->token) == '-' && check_arg(tokens))
+			nl = 0;
+		else
 		{
-			ft_putstr_fd(tokens->token, 1);
-			ft_putchar_fd(' ', 1);
-			tokens = tokens->next;
+			ft_putstr_fd(tokens->token, STDOUT_FILENO);
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		}
+		tokens = tokens->next;
 	}
-	else
-	{
-		while (tokens && !is_redir_pipe(tokens->type))
-		{
-			ft_putstr_fd(tokens->token, 1);
-			ft_putchar_fd(' ', 1);
-			tokens = tokens->next;
-		}
-		ft_putchar_fd('\n', 1);
-	}
+	if (nl == 1)
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
+}
+
+int	main()
+{
+	char	*line;
+	line = readline("$ ");
+	t_tokens	*tokens = parser(line);
+	echo(tokens->next);
+	free(line);
+	free_tokens(&tokens);
 }

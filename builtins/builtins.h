@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/08 14:22:45 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:55:09 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	unset(char *argv[], t_hash_table *ht);
 
 //			other
 int	cd(char *path);
-int	echo(int argc, char	**argv);
+int	echo(t_tokens *tokens);
 int	pwd(void);
 
 #endif
