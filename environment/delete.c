@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   delete.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 14:13:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/09 16:25:28 by armarake         ###   ########.fr       */
+/*   Created: 2025/04/30 14:22:21 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/04 14:36:19 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "environment.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	ht_del_item(t_ht_item *item)
 {
-	t_hash_table	*ht;
+	free(item->key);
+	free(item->value);
+	free(item);
+}
 
-	ht = init_environment(envp);
-	if (export(argc, argv, ht))
-		printf("Export error\n");
-	printf("\n\n");
-	env(ht, 0);
-	del_hash_table(ht);
-	return (0);
+void	del_hash_table(t_hash_table *ht)
+{
+	int			i;
+	t_ht_item	*item;
+
+	i = 0;
+	while (i < ht->size)
+	{
+		item = ht->items[i];
+		if (item != NULL && item != ht->deleted)
+			ht_del_item(item);
+		i++;
+	}
+	free(ht->deleted);
+	free(ht->items);
+	free(ht);
 }

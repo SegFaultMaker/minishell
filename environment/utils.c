@@ -1,26 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 14:13:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/09 16:25:28 by armarake         ###   ########.fr       */
+/*   Created: 2025/05/02 13:20:01 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/04 14:37:26 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "environment.h"
 
-int	main(int argc, char *argv[], char *envp[])
+static int	is_prime(int nb)
 {
-	t_hash_table	*ht;
+	int	i;
 
-	ht = init_environment(envp);
-	if (export(argc, argv, ht))
-		printf("Export error\n");
-	printf("\n\n");
-	env(ht, 0);
-	del_hash_table(ht);
-	return (0);
+	if (nb <= 1)
+		return (0);
+	i = 2;
+	while (i < nb)
+	{
+		if (nb % i == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	next_prime(int nb)
+{
+	int	i;
+
+	i = 0;
+	while (1)
+	{
+		if (is_prime(nb + i) == 1)
+			return (nb + i);
+		i++;
+	}
+}
+
+int	ht_load(t_hash_table *ht)
+{
+	return (ht->count * 100 / ht->size);
 }

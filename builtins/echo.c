@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/09 12:31:49 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:15:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ int	echo(t_tokens *tokens)
 	return (0);
 }
 
-int	main()
-{
-	char	*line;
-	line = readline("$ ");
-	t_tokens	*tokens = parser(line);
-	echo(tokens->next);
-	free(line);
-	free_tokens(&tokens);
-}
+// int	main()
+// {
+// 	char	*line;
+// 	line = readline("$ ");
+// 	t_tokens	*tokens = parser(line);
+// 	echo(tokens->next);
+// 	free(line);
+// 	free_tokens(&tokens);
+// }
