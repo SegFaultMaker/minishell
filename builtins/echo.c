@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/09 16:15:35 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/10 13:07:24 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	check_arg(t_tokens *tokens)
 	tmp++;
 	while (*tmp && *tmp == 'n')
 		tmp++;
-	if (!tmp)
+	if (tmp)
 		return (0);
 	return (1);
 }
@@ -35,15 +35,15 @@ int	echo(t_tokens *tokens)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		return (0);
 	}
+	if (*(tokens->token) == '-' && check_arg(tokens))
+	{
+		nl = 0;
+		tokens = tokens->next;
+	}
 	while (tokens && !is_redir_pipe(tokens->type) && tokens->type != NEWL)
 	{
-		if (*(tokens->token) == '-' && check_arg(tokens))
-			nl = 0;
-		else
-		{
-			ft_putstr_fd(tokens->token, STDOUT_FILENO);
-			ft_putchar_fd(' ', STDOUT_FILENO);
-		}
+		ft_putstr_fd(tokens->token, STDOUT_FILENO);
+		ft_putchar_fd(' ', STDOUT_FILENO);
 		tokens = tokens->next;
 	}
 	if (nl == 1)
@@ -51,12 +51,12 @@ int	echo(t_tokens *tokens)
 	return (0);
 }
 
-// int	main()
-// {
-// 	char	*line;
-// 	line = readline("$ ");
-// 	t_tokens	*tokens = parser(line);
-// 	echo(tokens->next);
-// 	free(line);
-// 	free_tokens(&tokens);
-// }
+/*int	main()
+ {
+ 	char	*line;
+ 	line = readline("$ ");
+ 	t_tokens	*tokens = parser(line);
+ 	echo(tokens->next);
+ 	free(line);
+ 	free_tokens(&tokens);
+ }*/
