@@ -61,17 +61,20 @@ static int	double_quotes(char **str, char **start)
 static int	regular(char **str, char **start)
 {
 	int	len;
+	int	in_quote;
 
 	len = check_redir_pipe_operator(*str, 2);
+	in_quote = 0;
 	*start = *str;
 	if (len > 0)
+		return ((*str) += len, len);
+	while (**str)
 	{
-		(*str) += len;
-		return (len);
-	}
-	while (**str && !ft_isspace(**str))
-	{
-		if (check_redir_pipe_operator(*str, 1))
+		if ((ft_isquote(**str) && !in_quote)
+			|| (ft_isquote(**str) && in_quote))
+			in_quote = !in_quote;
+		if (check_redir_pipe_operator(*str, 1)
+			|| (ft_isspace(**str) && !in_quote))
 		{
 			len++;
 			break ;
