@@ -15,34 +15,46 @@
 static int	single_quotes(char **str, char **start)
 {
 	int	len;
+	int	in_quote;
 
 	len = 1;
+	in_quote = 1;
 	*start = *str;
 	(*str)++;
-	while (*str && **str != '\'')
+	while (**str)
 	{
+		if (ft_isspace(**str) && !in_quote)
+			break ;
+		if (**str == '\'' && in_quote)
+			in_quote = 0;
+		else if (**str == '\'' && !in_quote)
+			in_quote = 1;
 		len++;
 		(*str)++;
 	}
-	len++;
-	(*str)++;
 	return (len);
 }
 
 static int	double_quotes(char **str, char **start)
 {
 	int	len;
+	int	in_quote;
 
 	len = 1;
+	in_quote = 1;
 	*start = *str;
 	(*str)++;
-	while (**str && **str != '\"')
+	while (**str)
 	{
+		if (ft_isspace(**str) && !in_quote)
+			break ;
+		if (**str == '\"' && in_quote)
+			in_quote = 0;
+		else if (**str == '\"' && !in_quote)
+			in_quote = 1;
 		len++;
 		(*str)++;
 	}
-	len++;
-	(*str)++;
 	return (len);
 }
 
@@ -84,7 +96,7 @@ static t_tokens	*get_token(char **str)
 	else if (**str == '\"')
 		len = double_quotes(str, &start);
 	else
-	len = regular(str, &start);
+		len = regular(str, &start);
 	if (len == 0)
 		return (NULL);
 	token = ft_substr(start, 0, len);
