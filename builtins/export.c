@@ -6,11 +6,49 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/09 16:35:34 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/10 17:03:42 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+static int	actual_len(char *arg)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (arg[i])
+	{
+		if (arg[i] != '\'' && arg[i] != '\"')
+			len++;
+		i++;
+	}
+	return (len);
+}
+
+static void	invalid_identifier(char *arg)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*without_quots;
+
+	i = -1;
+	j = 0;
+	len = actual_len(arg);
+	without_quots = malloc(len + 1);
+	while (arg[++i])
+		if (arg[i] != '\'' && arg[i] != '\"')
+			without_quots[j++] = arg[i];
+	without_quots[j] = '\0';
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(without_quots, STDERR_FILENO);
+	ft_putstr_fd("\': not a valid identifier\n", STDERR_FILENO);
+	free(without_quots);
+	without_quots = NULL;
+}
 
 static int	process_argument(char *arg, t_hash_table *ht, int mode)
 {
@@ -63,20 +101,18 @@ static int	check_argument(char *arg)
 	return (ADD_MODE);
 }
 
-int	export(int argc, char *argv[], t_hash_table *ht)
+int	export(t_tokens *tokens, t_hash_table *ht)
 {
-	int	i;
 	int	mode;
 
-	if (argc == 1)
+	if (!tokens)
 		return (env(ht, 1), 0);
-	i = 1;
-	while (argv[i])
+	while (tokens && !is_redir_pipe(tokens->type) && tokens->type != NEWL)
 	{
-		mode = check_argument(argv[i]);
+		mode = check_argument(tokens->token);
 		if (mode)
-			process_argument(argv[i], ht, mode);
-		i++;
+			process_argument(tokens->token, ht, mode);
+		tokens = tokens->next;
 	}
 	return (0);
 }

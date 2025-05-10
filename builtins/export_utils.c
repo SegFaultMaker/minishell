@@ -6,18 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:49:08 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/09 16:17:07 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:04:53 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-void	invalid_identifier(char *arg)
-{
-	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-	ft_putstr_fd(arg, STDERR_FILENO);
-	ft_putstr_fd("\': not a valid identifier\n", STDERR_FILENO);
-}
 
 char	*no_free_strjoin(char *s1, char *s2)
 {
