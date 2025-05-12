@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/09 14:14:46 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:30:28 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void		init_signals(void);
 
 // Shell
 void		start_shell(t_hash_table *environment);
+
+// Execution
 
 // Parser
 void		clean_commands(t_commands **commands);

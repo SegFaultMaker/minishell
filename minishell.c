@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/12 15:15:01 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:22:14 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ void	start_shell(t_hash_table *environment)
 {
 	t_tokens	*cmd;
 	char		*input;
+	int			stat;
 
-	(void)environment;
 	cmd = NULL;
 	input = NULL;
+	stat = 0;
 	while (!input || !*input)
 	{
 		input = readline(BLUE "→  " RESET);
@@ -32,8 +33,8 @@ void	start_shell(t_hash_table *environment)
 			continue ;
 		}
 		cmd = parser(input);
-	/*	if (cmds)
-			stat = execute(cmds, &environment, stat); */
+		if (cmds)
+			stat = execute(cmds, environment, stat);
 		free(input);
 		free_tokens(&cmd);
 		input = NULL;
