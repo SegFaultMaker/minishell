@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 15:38:48 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:18:33 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	start_shell(t_hash_table *environment)
 {
-	(void)environment;
 	t_tokens	*cmd;
 	char		*input;
 
+	(void)environment;
 	cmd = NULL;
 	input = NULL;
 	while (!input || !*input)

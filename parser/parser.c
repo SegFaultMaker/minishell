@@ -67,7 +67,10 @@ static int	regular(char **str, char **start)
 	in_quote = 0;
 	*start = *str;
 	if (len > 0)
-		return ((*str) += len, len);
+	{
+		(*str) += len;
+		return (len);
+	}
 	while (**str)
 	{
 		if ((ft_isquote(**str) && !in_quote)
@@ -75,10 +78,7 @@ static int	regular(char **str, char **start)
 			in_quote = !in_quote;
 		if (check_redir_pipe_operator(*str, 1)
 			|| (ft_isspace(**str) && !in_quote))
-		{
-			len++;
 			break ;
-		}
 		len++;
 		(*str)++;
 	}
