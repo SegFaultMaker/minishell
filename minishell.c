@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/12 13:18:33 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:15:01 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	start_shell(t_hash_table *environment)
 		}
 		cmd = parser(input);
 	/*	if (cmds)
-			execute(cmds, &environment); */
+			stat = execute(cmds, &environment, stat); */
 		free(input);
 		free_tokens(&cmd);
 		input = NULL;
