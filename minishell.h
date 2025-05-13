@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/12 15:30:28 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:06:45 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		init_signals(void);
 void		start_shell(t_hash_table *environment);
 
 // Execution
+int	execute(t_tokens *tokens, t_hash_table *env, int stat);
 
 // Parser
 void		clean_commands(t_commands **commands);
@@ -84,13 +85,5 @@ int			check_redir_pipe_operator(char *token, int regime);
 int			is_redir_pipe(t_types type);
 t_types		get_type(char *token);
 t_tokens	*handle_first(t_tokens **tokens);
-
-// Builtins
-int			echo(t_tokens *tokens);
-int			cd(char *path);
-int			pwd(void);
-
-// Utils
-void		quit_with_error(int code, char *msg);
 
 #endif

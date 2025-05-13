@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/12 15:22:14 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:24:31 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	start_shell(t_hash_table *environment)
 			continue ;
 		}
 		cmd = parser(input);
-		if (cmds)
-			stat = execute(cmds, environment, stat);
+		if (cmd)
+			stat = execute(cmd, environment, stat);
 		free(input);
 		free_tokens(&cmd);
 		input = NULL;

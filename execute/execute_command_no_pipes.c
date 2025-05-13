@@ -3,22 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command_no_pipes.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/12 17:28:34 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:09:24 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static int	handle_builtin(t_tokens *cmd, t_hash_table *env)
-{
+#include "execute.h"
 
+// < input echo "hello world" > output
+
+static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
+{
+	int			stat;
+	int			saved_fd;
+	t_tokens	*tmp;
+	t_tokens	*tmp2;
+
+	tmp = tokens;
+	tmp2 = tokens;
+	stat = do_redirs(tmp, &saved_fd);
+	if (stat)
+		return (stat);
+	while (tokens->type != BUILTIN)
+		tokens = tokens->next;
+	if (!ft_strcmp(tokens->token, "cd"))
+		stat = cd(tokens->next->token);
+	else if (!ft_strcmp(tokens->token, "pwd"))
+		stat = pwd();
+	else if (!ft_strcmp(tokens->token, "echo"))
+		stat = echo(tokens->next);
+	else if (!ft_strcmp(tokens->token, "env"))
+		stat = env(envp, 0);
+	else if (!ft_strcmp(tokens->token, "export"))
+		stat = export(tokens->next, envp);
+	else if (!ft_strcmp(tokens->token, "unset"))
+		stat = unset(tokens->next, envp);
+	undo_redirs(tmp2, saved_fd);
+	return (stat);
 }
 
-static int	handle_binary(t_tokens *cmd, t_hash_table *env)
+/*static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 {
-	char	*argv[];
-	char	*envp[];
+	char	**argv;
+	char	**envp;
 	char	*full_path;
 	pid_t	pid;
 
@@ -43,16 +72,17 @@ static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 	else
 		wait(&stat);
 
-}
+}*/
 
-int	execute_command_no_pipes(t_tokens *cmd, t_hash_table *env)
+int	execute_command_no_pipes(t_tokens *tokens, t_hash_table *env)
 {
 	int		stat;
 
-	if (cmd->type == BUILTIN)
-		stat = handle_builtin(cmd, env);
-	else
-		stat = handle_binary(cmd, env);
+	stat = 0;
+	if (define_type(tokens) == BUILTIN)
+		return (handle_builtin(tokens, env));
+	/*else
+		stat = handle_binary(cmd, env);*/
 	return (stat);
 }
 
