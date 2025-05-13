@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/13 16:09:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:47:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 
 	tmp = tokens;
 	tmp2 = tokens;
-	stat = do_redirs(tmp, &saved_fd);
 	if (stat)
 		return (stat);
 	while (tokens->type != BUILTIN)
@@ -40,7 +39,6 @@ static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 		stat = export(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "unset"))
 		stat = unset(tokens->next, envp);
-	undo_redirs(tmp2, saved_fd);
 	return (stat);
 }
 
