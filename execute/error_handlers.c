@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:43:34 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:48:09 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:24:05 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	handle_access(char *cmd)
 		quit_with_error("access: Not a directory", errno);
 	else if (errno == EPERM)
 		quit_with_error("access: Not super-user", errno);
-	else if (errno = EROFS)
+	else if (errno == EROFS)
 		quit_with_error("access: Read only file system", errno);
 	else if (errno == ETXTBSY)
 		quit_with_error("access: Text file busy", errno);
