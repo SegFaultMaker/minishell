@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 19:24:30 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:10:07 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,15 @@ static int	safe_execve(char *full_path, char **argv, char **envp)
 static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 {
 	int			stat;
-	int			saved_fd;
+	int			saved_in;
+	int			saved_out;
+	t_tokens	*temp;
 
-	saved_fd = INT_MIN;
-	if (do_redir(tokens, &saved_fd))
-		return (-1);
+	saved_in = INT_MIN;
+	saved_out = INT_MIN;
+	temp = tokens;
+	if (do_redir(temp, &saved_in, &saved_out) != 0)
+		return (errno);
 	while (tokens->type != BUILTIN)
 		tokens = tokens->next;
 	if (!ft_strcmp(tokens->token, "cd"))
@@ -55,11 +59,7 @@ static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 		stat = export(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "unset"))
 		stat = unset(tokens->next, envp);
-	if (saved_fd != INT_MIN)
-	{
-		dup2(saved_fd, STDOUT_FILENO);
-		close(saved_fd);
-	}
+	undo_redir(saved_in, saved_out);
 	return (stat);
 }
 
