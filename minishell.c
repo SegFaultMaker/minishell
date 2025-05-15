@@ -6,24 +6,50 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/13 14:24:31 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:54:07 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*get_prompt(t_hash_table *environment)
+{
+	char	*dir;
+	char	*login;
+	char	*result;
+
+	dir = ht_search(environment, "PWD");
+	login = ht_search(environment, "LOGNAME");
+	if (!dir || ! login)
+		return (NULL);
+	result = ft_strdup("");
+	result = ft_strjoin(result, PURPLE);
+	result = ft_strjoin(result, "→ ");
+	result = ft_strjoin(result, RESET);
+	result = ft_strjoin(result, login);
+	result = ft_strjoin(result, " ");
+	result = ft_strjoin(result, BLUE);
+	result = ft_strjoin(result, dir);
+	result = ft_strjoin(result, RESET);
+	result = ft_strjoin(result, " $ ");
+	return (result);
+}
+
 void	start_shell(t_hash_table *environment)
 {
 	t_tokens	*cmd;
-	char		*input;
 	int			stat;
+	char		*input;
+	char		*prompt;
 
 	cmd = NULL;
 	input = NULL;
 	stat = 0;
 	while (!input || !*input)
 	{
-		input = readline(BLUE "→  " RESET);
+		prompt = get_prompt(environment);
+		input = readline(prompt);
+		add_history(input);
 		if (!input)
 			break ;
 		else if (!*input)
@@ -38,6 +64,7 @@ void	start_shell(t_hash_table *environment)
 		free(input);
 		free_tokens(&cmd);
 		input = NULL;
+		free(prompt);
 	}
 }
 
