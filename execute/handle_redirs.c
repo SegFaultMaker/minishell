@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:14:24 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:17:50 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	open_outfile(char *filename, int mode)
 	return (open(filename, O_WRONLY | O_TRUNC));
 }
 
-static int	do_redir(t_tokens *tokens, int *saved_fd)
+int	do_redir(t_tokens *tokens, int *saved_fd)
 {
 	int	outfile;
 

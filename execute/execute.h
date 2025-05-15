@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/15 17:16:37 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:18:03 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 int		execute_command_no_pipes(t_tokens *cmd, t_hash_table *env);
 
 //			handle redirs
+int		do_redir(t_tokens *tokens, int *saved_fd);
 
 //			utils
 char	**tokens_to_strings(t_tokens *cmd);
