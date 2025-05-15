@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/13 14:45:57 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:16:04 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,22 @@ int	quit_with_error(char *msg, int stat)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putendl_fd(msg, STDERR_FILENO);
 	return (stat);
+}
+
+void	free_matrix(char ***matrix)
+{
+	int		i;
+	char	**s;
+
+	if (matrix == NULL || *matrix == NULL)
+		return ;
+	s = *matrix;
+	i = 0;
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
+	*matrix = NULL;
 }

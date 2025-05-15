@@ -6,42 +6,31 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 16:17:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:14:55 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	open_outfile(char *filename, int mode)
+static int	safe_execve(char *full_path, char **argv, char **envp)
 {
-	if (access(filename, F_OK) != 0)
-		return (open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644));
-	if (access(filename, W_OK) != 0)
-		return (quit_with_error("permission denied", -1));
-	if (!access(filename, F_OK) && mode == APPEND)
-		return (open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644));
-	return (open(filename, O_WRONLY | O_TRUNC));
-}
+	pid_t	pid;
+	int		res;
 
-static int	do_redir(t_tokens *tokens, int *saved_fd)
-{
-	int	outfile;
-
-	while (tokens)
+	res = 0;
+	pid = fork();
+	if (pid == -1)
+		return (handle_fork(), errno);
+	if (pid == 0)
 	{
-		if (tokens->type == OUTPUT || tokens->type == APPEND)
+		if (execve(full_path, argv, envp) == -1)
 		{
-			outfile = open_outfile(tokens->next->token, tokens->type);
-			if (outfile == -1)
-				return (outfile);
-			*saved_fd = dup(STDOUT_FILENO);
-			dup2(outfile, STDOUT_FILENO);
-			close(outfile);
-			break ;
+			handle_execve(full_path);
+			exit(errno);
 		}
-		tokens = tokens->next;
 	}
-	return (0);
+	wait(&res);
+	return (res);
 }
 
 static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
@@ -74,35 +63,26 @@ static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 	return (stat);
 }
 
-/*static int	handle_binary(t_tokens *cmd, t_hash_table *env)
+static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 {
 	char	**argv;
 	char	**envp;
 	char	*full_path;
-	pid_t	pid;
+	int		res;
 
 	argv = tokens_to_strings(cmd);
 	envp = ht_to_strings(env, 0);
-	if (!argv)
-		return (-1);
-	pid = fork();
-	if (pid == -1)
-	{
-		ft_putstr_fd("minishell: fork: Cannot allocate memory\n", STDERR_FILENO);
-		return (-1);
-	}
-	if (pid == 0)
-	{
-		if ()
-		if (execve(argv[0], argv, envp))
-		{
-			
-		}
-	}
-	else
-		wait(&stat);
-
-}*/
+	full_path = find_cmd(argv[0], envp);
+	if (!argv || !envp)
+		return (1);
+	if (!full_path)
+		return (errno);
+	res = safe_execve(full_path, argv, envp);
+	free(full_path);
+	//free_matrix(&argv);
+	free_matrix(&envp);
+	return (res);
+}
 
 int	execute_command_no_pipes(t_tokens *tokens, t_hash_table *env)
 {
@@ -111,8 +91,8 @@ int	execute_command_no_pipes(t_tokens *tokens, t_hash_table *env)
 	stat = 0;
 	if (define_type(tokens) == BUILTIN)
 		return (handle_builtin(tokens, env));
-	/*else
-		stat = handle_binary(cmd, env);*/
+	else
+		stat = handle_binary(cmd, env);
 	return (stat);
 }
 
