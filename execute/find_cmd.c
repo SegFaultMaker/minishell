@@ -3,32 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 13:04:39 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:51:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static int	check_access(char *cmd, int regime)
+static int	check_access(char *cmd)
 {
-	if (regime == 1)
-	{
-		if (access(cmd, F_OK) < 0)
-			return (quit_with_error(" command not found", -1));
-		else if (access(cmd, X_OK) < 0)
-			return (handle_access(cmd), errno);
-	}
-	else
-	{
-		if (access(cmd, F_OK) < 0)
-			return (handle_access(cmd), errno);
-		else if (access(cmd, X_OK) < 0)
-			return (handle_access(cmd), errno);
-	}
-	return (1);
+	if (access(cmd, F_OK))
+		return (quit_with_error(0, cmd, errno));
+	else if (access(cmd, X_OK))
+		return (quit_with_error(0, cmd, errno));
+	return (0);
 }
 
 static char	*get_fullpath(char *cmd, char **paths)
@@ -62,7 +52,7 @@ char	*find_cmd(char *cmd, char **envp)
 
 	if ((cmd[0] == '.' && cmd[1] == '/') || cmd[0] == '/')
 	{
-		if (check_access(cmd, 1) < 0)
+		if (check_access(cmd))
 			return (NULL);
 		else
 			return (cmd);
@@ -79,7 +69,7 @@ char	*find_cmd(char *cmd, char **envp)
 		return (NULL);
 	fullpath = get_fullpath(cmd, paths);
 //	free_matrix(&paths);
-	if (check_access(fullpath, 0) != 0)
+	if (check_access(fullpath))
 		return (NULL);
 	return (fullpath);
 }

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 23:06:14 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:43:20 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	open_infile(char *filename)
 {
-	if (access(filename, F_OK | R_OK) != 0)
-		return (quit_with_error(strerror(errno), errno));
+	if (access(filename, F_OK) != 0)
+		return (quit_with_error(1, filename, errno));
+	if (access(filename, R_OK) != 0)
+		return (quit_with_error(1, filename, errno));
 	return (open(filename, O_RDONLY));
 }
 
@@ -24,11 +26,11 @@ int	open_outfile(char *filename, int mode)
 	if (access(filename, F_OK) != 0)
 		return (open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	if (access(filename, W_OK) != 0)
-		return (quit_with_error(strerror(errno), errno));
+		return quit_with_error(1, filename, errno);
 	if (!access(filename, F_OK) && mode == OUTPUT)
 	{
-		errno = 1;
-		return (quit_with_error("cannot overwrite existing file", errno));
+		errno = EPERM;
+		return (quit_with_error(1, filename, errno));
 	}
 	if (!access(filename, F_OK) && mode == APPEND)
 		return (open(filename, O_WRONLY | O_APPEND, 0644));

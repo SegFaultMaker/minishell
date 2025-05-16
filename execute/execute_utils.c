@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/15 17:16:04 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:41:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,16 @@ int	define_type(t_tokens *tokens)
 	return (NONE);
 }
 
-int	quit_with_error(char *msg, int stat)
+int	quit_with_error(int flag, char *target, int stat)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putendl_fd(msg, STDERR_FILENO);
+	if (flag)
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+	if (target)
+	{
+		ft_putstr_fd(target, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
+	ft_putendl_fd(strerror(stat), STDERR_FILENO);
 	return (stat);
 }
 

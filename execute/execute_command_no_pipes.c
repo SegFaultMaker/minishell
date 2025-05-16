@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 12:53:52 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:42:45 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static int	safe_execve(char *full_path, char **argv, char **envp)
 	res = 0;
 	pid = fork();
 	if (pid == -1)
-		return (handle_fork(), errno);
+		return (quit_with_error(0, "fork", errno));
 	if (pid == 0)
 	{
 		if (execve(full_path, argv, envp) == -1)
 		{
-			handle_execve(full_path);
+			quit_with_error(0, NULL, errno);
 			exit(errno);
 		}
 	}
