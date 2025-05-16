@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 16:43:48 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:38:22 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**tokens_to_strings(t_tokens *cmd)
 	i = 0;
 	while (cmd->type != NEWL)
 	{
-		res[i++] = cmd->token;
+		res[i++] = ft_strdup(cmd->token);
 		cmd = cmd->next;
 	}
 	return (res);
