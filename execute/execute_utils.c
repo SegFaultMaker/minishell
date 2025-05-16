@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 17:38:22 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 21:59:46 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	free_matrix(char **matrix)
 	while (matrix[i])
 	{
 		free(matrix[i]);
+		matrix[i] = NULL;
 		i++;
 	}
 	free(matrix);

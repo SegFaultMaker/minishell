@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 13:43:20 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 21:47:25 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	open_outfile(char *filename, int mode)
 	if (access(filename, F_OK) != 0)
 		return (open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	if (access(filename, W_OK) != 0)
-		return quit_with_error(1, filename, errno);
+		return (quit_with_error(1, filename, errno));
 	if (!access(filename, F_OK) && mode == OUTPUT)
 	{
 		errno = EPERM;
