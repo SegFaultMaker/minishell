@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:52:52 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:05:50 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ static int	safe_execve(char *full_path, char **argv, char **envp)
 	if (pid == 0)
 	{
 		if (execve(full_path, argv, envp) == -1)
-		{
 			quit_with_error(0, NULL, errno);
-			exit(errno);
-		}
 	}
 	wait(&res);
 	return (res);

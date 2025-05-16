@@ -126,7 +126,7 @@ t_tokens	*parser(char *str)
 			current->next = new;
 		current = new;
 	}
-	current->next = new_token("\n\0");
+	current->next = new_token(ft_strdup("\n"));
 	current->next->type = NEWL;
 	assign_types(&head);
 	if (!syntax_check(head))
