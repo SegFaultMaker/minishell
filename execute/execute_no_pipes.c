@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_command_no_pipes.c                         :+:      :+:    :+:   */
+/*   execute_no_pipes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 22:03:36 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:27:31 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 	return (res);
 }
 
-int	execute_command_no_pipes(t_tokens *tokens, t_hash_table *env)
+int	execute_no_pipes(t_tokens *tokens, t_hash_table *env)
 {
 	if (define_type(tokens) == BUILTIN)
 		return (handle_builtin(tokens, env));

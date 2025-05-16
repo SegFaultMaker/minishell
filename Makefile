@@ -1,55 +1,87 @@
 NAME = minishell
-SOURCES = ./minishell.c \
-					./parser/parser.c ./parser/parser_utils.c \
-					./parser/assign_types.c ./parser/assign_utils.c \
-					./parser/syntax_check.c \
-					./builtins/echo.c ./builtins/cd.c ./builtins/pwd.c \
-					./init/init_signals.c \
-					./envoirment/convert_to_strings.c ./envoirment/create.c \
-					./envoirment/delete.c ./envoirment/hashing.c \
-					./envoirment/init.c ./envoirment/operations.c \
-					./envoirment/resize.c ./envoirment/utils.c
 
-OBJECTS = ./objects/minishell.o \
-					./objects/parser.o ./objects/parser_utils.o \
-					./objects/assign_types.o ./objects/assign_utils.o \
-					./objects/syntax_check.o \
-					./objects/echo.o ./objects/cd.o ./objects/pwd.o \
-					./objects/init_signals.o \
-					./objects/convert_to_strings.o ./objects/create.o \
-					./objects/delete.o ./objects/hashing.o \
-					./objects/init.o ./objects/operations.o \
-					./objects/resize.o ./objects/utils.o
-
-LIBFT = ./objects/libft.a
-
-OBJDIR = ./objects
+YELLOW = \033[1;33m
+PURPLE = \033[1;35m
+WHITE = \033[0m
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lreadline
+INCLUDES = -I. -Ilibft
+
+OBJECTS_DIR = objs/
+
+BUILTINS_DIR = builtins/
+ENVIRONMENT_DIR = environment/
+EXECUTE_DIR = execute/
+INIT_DIR = init/
+PARSER_DIR = parser/
+
+MAIN_FILENAME = minishell
+BUILTIN_FILENAMES = $(addprefix $(BUILTINS_DIR), cd echo env export_utils export pwd unset)
+ENVIRONMENT_FILENAMES = $(addprefix $(ENVIRONMENT_DIR), convert_to_strings create delete hashing init operations resize utils)
+EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs)
+INIT_FILNAMES = $(addprefix $(INIT_DIR), init_signals)
+PARSER_FILNAMES = $(addprefix $(PARSER_DIR), assign_types assign_utils parser_utils parser syntax_check)
+
+FILENAMES = $(MAIN_FILENAME) $(BUILTIN_FILENAMES) $(ENVIRONMENT_FILENAMES) $(EXECUTE_FILENAMES) $(INIT_FILNAMES) $(PARSER_FILNAMES)
+SOURCES = $(addsuffix .c, $(FILENAMES))
+OBJECTS = $(addprefix $(OBJECTS_DIR), $(addsuffix .o, $(notdir $(FILENAMES))))
+
+LIBFT = libft/libft.a
 
 all: $(NAME)
 
-$(NAME): $(OBJDIR) $(LIBFT) $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(LDFLAGS) -o $@ 
-$(OBJDIR):
-	mkdir -p objects
+$(NAME): $(LIBFT) $(OBJECTS)
+	@echo "$(YELLOW)"
+	@echo "███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
+	@echo "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
+	@echo "██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     "
+	@echo "██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     "
+	@echo "██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗"
+	@echo "╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
+	@echo -n "$(PURPLE)"
+	@echo "▌                            ▌               ▌   "
+	@echo "▛▌▌▌  ▛▌▀▌▛▘▀▌▛▘▛▌▛▘▌▌  ▀▌▛▌▛▌  ▀▌▛▘▛▛▌▀▌▛▘▀▌▙▘█▌"
+	@echo "▙▌▙▌  ▌▌█▌▄▌█▌▌ ▙▌▄▌▙▌  █▌▌▌▙▌  █▌▌ ▌▌▌█▌▌ █▌▛▖▙▖"
+	@echo "  ▄▌            ▄▌  ▄▌                           "
+	@echo "$(WHITE)"
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME) $(LIBFT) $(LDFLAGS)
 
 $(LIBFT):
-	make -C ./libft 
-	cp ./libft/libft.a ./objects/
+	@make -sC libft
 
-$(OBJECTS): $(SOURCES)
-	$(CC) -c $^ $(CFLAGS)
-	mv *.o ./objects/
+$(OBJECTS_DIR)%.o: %.c
+	@mkdir -p $(OBJECTS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJECTS_DIR)%.o: $(BUILTINS_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJECTS_DIR)%.o: $(ENVIRONMENT_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJECTS_DIR)%.o: $(EXECUTE_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJECTS_DIR)%.o: $(INIT_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJECTS_DIR)%.o: $(PARSER_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	make -C ./libft clean
-	rm -rf ./objects
+	@rm -rf $(OBJECTS_DIR)
+	@make -sC libft clean
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -f $(NAME)
+	@make -sC libft fclean
 
 re: fclean all
 

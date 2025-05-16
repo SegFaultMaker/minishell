@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 16:42:19 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:27:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "../environment/environment.h"
 
 //			no pipes
-int		execute_command_no_pipes(t_tokens *cmd, t_hash_table *env);
+int		execute_no_pipes(t_tokens *cmd, t_hash_table *env);
 
 //			handle redirs
 int		do_redir(t_tokens *tokens, int *saved_in, int *saved_out);
