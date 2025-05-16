@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:01:08 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:44:52 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char	*get_fullpath(char *cmd, char **paths)
 		if (!temp)
 			return (NULL);
 		temp_cmd = ft_strjoin(temp, cmd);
+		free(temp);
 		if (access(temp_cmd, F_OK) == 0)
 		{
 			fullpath = temp_cmd;
@@ -55,6 +56,7 @@ static char	*get_fullpath(char *cmd, char **paths)
 	}
 	if (!fullpath)
 		return (cmd);
+	free_matrix(paths);
 	return (fullpath);
 }
 
@@ -83,7 +85,6 @@ char	*find_cmd(char *cmd, char **envp)
 	if (!paths)
 		return (NULL);
 	fullpath = get_fullpath(cmd, paths);
-	free(paths);
 	if (check_access(fullpath))
 		return (NULL);
 	return (fullpath);

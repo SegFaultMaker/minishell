@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:11:49 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:42:05 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 {
-	int			pipes;
+	int	pipes;
 
 	pipes = check_pipes(tokens);
 	if (pipes)

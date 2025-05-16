@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 14:52:33 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:43:48 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**tokens_to_strings(t_tokens *cmd)
 	return (res);
 }
 
-int check_pipes(t_tokens *tokens)
+int	check_pipes(t_tokens *tokens)
 {
 	int	pipe_count;
 

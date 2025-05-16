@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 14:53:18 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:42:19 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	undo_redir(int saved_in, int saved_out);
 
 //			utils
 char	**tokens_to_strings(t_tokens *cmd);
-int 	check_pipes(t_tokens *tokens);
+int		check_pipes(t_tokens *tokens);
 int		quit_with_error(int flag, char *target, int stat);
 int		define_type(t_tokens *tokens);
 void	free_matrix(char **matrix);

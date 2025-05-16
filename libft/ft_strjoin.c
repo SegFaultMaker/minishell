@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:47:37 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/03/21 14:05:36 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:35:41 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 
-	if (!s1)
-	{
-		s1 = malloc(1);
-		s1[0] = '\0';
-	}
 	if (!s1 || !s2)
 		return (NULL);
 	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
@@ -35,6 +30,5 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j] != '\0')
 		str[i++] = s2[j++];
 	str[i] = '\0';
-	free(s1);
 	return (str);
 }

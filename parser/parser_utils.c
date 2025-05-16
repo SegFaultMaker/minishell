@@ -6,7 +6,7 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 13:38:47 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:39:40 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_tokens(t_tokens **tokens)
 	{
 		next = temp->next;
 		free(temp->token);
-		free(temp);
+		free(temp);	
 		temp = next;
 	}
 	*tokens = NULL;

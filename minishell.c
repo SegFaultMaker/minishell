@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:01:42 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:50:37 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	start_shell(t_hash_table *environment)
 		if (cmd)
 			stat = execute(cmd, environment, stat);
 		free(input);
-	//	free_tokens(&cmd);
-		free(cmd);
+		free_tokens(&cmd);
 		input = NULL;
 	}
 }
