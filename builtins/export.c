@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 14:15:51 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:12:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	process_argument(char *arg, t_hash_table *ht, int mode)
 	{
 		existing = ht_search(ht, key);
 		if (existing)
-			value = no_free_strjoin(existing, key_end + 2);
+			value = ft_strjoin(existing, key_end + 2);
 		else
 			value = key_end + 2;
 	}
