@@ -6,7 +6,7 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 16:55:37 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:04:39 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*find_cmd(char *cmd, char **envp)
 		return (NULL);
 	fullpath = get_fullpath(cmd, paths);
 //	free_matrix(&paths);
-	if (check_access(fullpath, 0) < 0)
+	if (check_access(fullpath, 0) != 0)
 		return (NULL);
 	return (fullpath);
 }

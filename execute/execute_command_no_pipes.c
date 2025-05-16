@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 22:10:07 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:53:52 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 	if (!full_path)
 		return (errno);
 	res = safe_execve(full_path, argv, envp);
-	free(full_path);
+	if (full_path)
+		free(full_path);
 	//free_matrix(&argv);
 	free_matrix(&envp);
 	return (res);
