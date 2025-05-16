@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/10 17:08:44 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:16:33 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		env(t_hash_table *ht, int mode);
 int		unset(t_tokens *tokens, t_hash_table *ht);
 
 //			other
-int		cd(char *path);
+int		cd(t_tokens *tokens, t_hash_table *ht);
 int		echo(t_tokens *tokens);
 int		pwd(void);
 

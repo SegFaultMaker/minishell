@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/10 17:03:42 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:15:51 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int	process_argument(char *arg, t_hash_table *ht, int mode)
 	char	*existing;
 
 	key_end = get_key_end(arg, mode);
+	existing = NULL;
 	if (!key_end)
 		return (0);
 	key = get_key(arg, key_end);
@@ -75,8 +76,7 @@ static int	process_argument(char *arg, t_hash_table *ht, int mode)
 		value = key_end + 1;
 	if (!ht_insert(ht, key, value))
 		ft_putendl_fd("minishell: hash table: insert error", STDERR_FILENO);
-	free_key_value(key, value, existing, mode);
-	return (1);
+	return (free_key_value(key, value, existing, mode), 1);
 }
 
 static int	check_argument(char *arg)

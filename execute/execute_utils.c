@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 13:41:16 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:52:33 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,18 @@ int	quit_with_error(int flag, char *target, int stat)
 	return (stat);
 }
 
-void	free_matrix(char ***matrix)
+void	free_matrix(char **matrix)
 {
 	int		i;
-	char	**s;
 
 	if (matrix == NULL || *matrix == NULL)
 		return ;
-	s = *matrix;
 	i = 0;
-	while (s[i])
+	while (matrix[i])
 	{
-		free(s[i]);
+		free(matrix[i]);
 		i++;
 	}
-	free(s);
-	*matrix = NULL;
+	free(matrix);
+	matrix = NULL;
 }

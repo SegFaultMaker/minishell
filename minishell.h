@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/15 22:49:52 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:47:47 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@
 # define SYNTAX_ERR "minishell: syntax error near unexpected token "
 
 // Colors
-# define BLUE "\001\e[1;34m\002"
-# define PURPLE "\001\e[1;35m\002"
+# define BLUE "\001\e[1;36m\002"
 # define RESET "\001\e[0m\002"
 # define BOLD "\001\e[1m\002"
 

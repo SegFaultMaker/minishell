@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 13:42:45 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:52:52 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,14 @@ static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 
 	saved_in = INT_MIN;
 	saved_out = INT_MIN;
+	stat = 0;
 	temp = tokens;
 	if (do_redir(temp, &saved_in, &saved_out) != 0)
 		return (errno);
 	while (tokens->type != BUILTIN)
 		tokens = tokens->next;
 	if (!ft_strcmp(tokens->token, "cd"))
-		stat = cd(tokens->next->token);
+		stat = cd(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "pwd"))
 		stat = pwd();
 	else if (!ft_strcmp(tokens->token, "echo"))
@@ -80,8 +81,8 @@ static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 	res = safe_execve(full_path, argv, envp);
 	if (full_path)
 		free(full_path);
-	//free_matrix(&argv);
-	free_matrix(&envp);
+	free_matrix(argv);
+	free_matrix(envp);
 	return (res);
 }
 
