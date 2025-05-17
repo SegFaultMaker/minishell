@@ -1,6 +1,8 @@
 NAME = minishell
 
+GREEN = \033[1;32m
 YELLOW = \033[1;33m
+BLUE = \033[0;34m
 PURPLE = \033[1;35m
 WHITE = \033[0m
 
@@ -33,6 +35,10 @@ LIBFT = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJECTS)
+	@echo "$(BLUE)Compiling $@...$(WHITE)"
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME) $(LIBFT) $(LDFLAGS)
+	@echo "$(GREEN)Done!$(WHITE)"
+	@clear
 	@echo "$(YELLOW)"
 	@echo "███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
 	@echo "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
@@ -46,42 +52,57 @@ $(NAME): $(LIBFT) $(OBJECTS)
 	@echo "▙▌▙▌  ▌▌█▌▄▌█▌▌ ▙▌▄▌▙▌  █▌▌▌▙▌  █▌▌ ▌▌▌█▌▌ █▌▛▖▙▖"
 	@echo "  ▄▌            ▄▌  ▄▌                           "
 	@echo "$(WHITE)"
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME) $(LIBFT) $(LDFLAGS)
 
 $(LIBFT):
+	@echo "$(BLUE)Compiling $@...$(WHITE)"
 	@make -sC libft
+	@echo "$(GREEN)Done!$(WHITE)"
 
 $(OBJECTS_DIR)%.o: %.c
 	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(BUILTINS_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(ENVIRONMENT_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(EXECUTE_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(INIT_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(PARSER_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
+	@echo "$(BLUE)Cleaning minishell object files...$(WHITE)"
 	@rm -rf $(OBJECTS_DIR)
+	@echo "$(GREEN)Done!$(WHITE)"
+	@echo "$(BLUE)Cleaning libft object files...$(WHITE)"
 	@make -sC libft clean
+	@echo "$(GREEN)Done!$(WHITE)"
 
 fclean: clean
-	@rm -f $(NAME)
+	@echo "$(BLUE)Deleting $(LIBFT)...$(WHITE)"
 	@make -sC libft fclean
+	@echo "$(GREEN)Done!$(WHITE)"
+	@echo "$(BLUE)Deleting $(NAME)...$(WHITE)"
+	@rm -f $(NAME)
+	@echo "$(GREEN)Done!$(WHITE)"
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 22:27:31 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:04:53 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ static int	safe_execve(char *full_path, char **argv, char **envp)
 	return (res);
 }
 
+static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat)
+{
+	if (!ft_strcmp(tokens->token, "cd"))
+		*stat = cd(tokens->next, envp);
+	else if (!ft_strcmp(tokens->token, "pwd"))
+		*stat = pwd();
+	else if (!ft_strcmp(tokens->token, "echo"))
+		*stat = echo(tokens->next);
+	else if (!ft_strcmp(tokens->token, "env"))
+		*stat = env(envp, 0);
+	else if (!ft_strcmp(tokens->token, "export"))
+		*stat = export(tokens->next, envp);
+	else if (!ft_strcmp(tokens->token, "unset"))
+		*stat = unset(tokens->next, envp);
+}
+
 static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 {
 	int			stat;
@@ -45,18 +61,7 @@ static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 		return (errno);
 	while (tokens->type != BUILTIN)
 		tokens = tokens->next;
-	if (!ft_strcmp(tokens->token, "cd"))
-		stat = cd(tokens->next, envp);
-	else if (!ft_strcmp(tokens->token, "pwd"))
-		stat = pwd();
-	else if (!ft_strcmp(tokens->token, "echo"))
-		stat = echo(tokens->next);
-	else if (!ft_strcmp(tokens->token, "env"))
-		stat = env(envp, 0);
-	else if (!ft_strcmp(tokens->token, "export"))
-		stat = export(tokens->next, envp);
-	else if (!ft_strcmp(tokens->token, "unset"))
-		stat = unset(tokens->next, envp);
+	execute_functions(tokens, envp, &stat);
 	undo_redir(saved_in, saved_out);
 	return (stat);
 }

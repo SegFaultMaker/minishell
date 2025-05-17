@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 21:47:25 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:11:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,27 @@ void	undo_redir(int saved_in, int saved_out)
 
 int	do_redir(t_tokens *tokens, int *saved_in, int *saved_out)
 {
-	int	infile;
-	int	outfile;
+	int	fd;
 
 	while (tokens)
 	{
 		if (tokens->type == INPUT)
 		{
-			infile = open_infile(tokens->next->token);
-			if (infile == errno)
+			fd = open_infile(tokens->next->token);
+			if (fd == errno)
 				return (errno);
 			*saved_in = dup(STDIN_FILENO);
-			dup2(infile, STDIN_FILENO);
-			close(infile);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
 		}
 		if (tokens->type == OUTPUT || tokens->type == APPEND)
 		{
-			outfile = open_outfile(tokens->next->token, tokens->type);
-			if (outfile == errno)
+			fd = open_outfile(tokens->next->token, tokens->type);
+			if (fd == errno)
 				return (errno);
 			*saved_out = dup(STDOUT_FILENO);
-			dup2(outfile, STDOUT_FILENO);
-			close(outfile);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
 		}
 		tokens = tokens->next;
 	}
