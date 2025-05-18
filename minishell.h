@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:47:47 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:08:27 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		init_signals(void);
 void		start_shell(t_hash_table *environment);
 
 // Execution
-int	execute(t_tokens *tokens, t_hash_table *env, int stat);
+int			execute(t_tokens *tokens, t_hash_table *env, int stat);
 
 // Parser
 void		clean_commands(t_commands **commands);

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:47:26 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:08:07 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,24 @@ static char	*get_fullpath(char *cmd, char **paths)
 	return (fullpath);
 }
 
+static char	*find_env_variable(char **envp)
+{
+	int	i;
+
+	i = -1;
+	while (envp[++i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i]);
+	}
+	return (NULL);
+}
+
 char	*find_cmd(char *cmd, char **envp)
 {
 	char	**paths;
 	char	*fullpath;
 	char	*env_variable;
-	int		i;
 
 	fullpath = NULL;
 	env_variable = NULL;
@@ -75,12 +87,7 @@ char	*find_cmd(char *cmd, char **envp)
 			return (NULL);
 		return (ft_strdup(cmd));
 	}
-	i = -1;
-	while (envp[++i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			env_variable = envp[i];
-	}
+	env_variable = find_env_variable(envp);
 	if (!env_variable)
 		return (quit_with_error(1, cmd, NULL, 2), NULL);
 	env_variable = ft_strchr(env_variable, '/');

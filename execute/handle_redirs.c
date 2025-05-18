@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:46:38 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:02:38 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	open_outfile(char *filename, int mode)
 	{
 		errno = 1;
 		return (quit_with_error(1, filename,
-			"cannot overwrite existing file", errno));
+				"cannot overwrite existing file", errno));
 	}
 	if (!access(filename, F_OK) && mode == APPEND)
 		return (open(filename, O_WRONLY | O_APPEND, 0644));
