@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 22:12:27 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:31:04 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/libft.h"
 # include "../minishell.h"
+# include "../execute/execute.h"
 # include "../environment/environment.h"
 
 # define ADD_MODE 1

@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 12:58:16 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:32:58 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "builtins.h"
 
 static int	check_arg(t_tokens *tokens)
 {

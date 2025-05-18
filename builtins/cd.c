@@ -3,37 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:12:16 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/12 15:17:54 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:46:51 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "builtins.h"
 
 int	cd(t_tokens *tmp, t_hash_table *env)
 {
-	char	*path;
+	char	*new;
+	char	*current;
 
-	path = tmp->token;
-	if (!path || !*path)
+	new = tmp->token;
+	if (!new || !*new)
 		return (0);
-	if (!ft_strcmp(path, "-"))
+	current = ht_search(env, "PWD");
+	if (!current)
 	{
-		path = ht_search(env, "OLDPWD");
-		if (!path)
+		ft_putstr_fd("minishell: cd: PWD not set\n", STDERR_FILENO);
+		return (1);
+	}
+	if (!ft_strcmp(new, "-"))
+	{
+		new = ht_search(env, "OLDPWD");
+		if (!new)
 		{
 			ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDERR_FILENO);
 			return (1);
 		}
-		if (chdir(path) == -1)
-			return (1);
 	}
-	else
-	{
-		if (chdir(path) == -1)
-			return (1);
-	}
+	if (chdir(new) == -1)
+		return (quit_with_error(1, "cd", NULL, errno));
+	ht_insert(env, "OLDPWD", current);
+	ht_insert(env, "PWD", new);
 	return (0);
 }
