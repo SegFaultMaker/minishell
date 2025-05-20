@@ -6,11 +6,20 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/16 17:33:51 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:28:16 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*read_input(void)
+{
+	char	*input;
+
+	input = readline(BLUE "→  " RESET);
+	add_history(input);
+	return (input);
+}
 
 void	start_shell(t_hash_table *environment)
 {
@@ -18,13 +27,10 @@ void	start_shell(t_hash_table *environment)
 	int			stat;
 	char		*input;
 
-	cmd = NULL;
 	input = NULL;
-	stat = 0;
 	while (!input || !*input)
 	{
-		input = readline(BLUE "→  " RESET);
-		add_history(input);
+		input = read_input();
 		if (!input)
 			break ;
 		else if (!*input)
@@ -36,6 +42,8 @@ void	start_shell(t_hash_table *environment)
 		cmd = parser(input);
 		if (cmd)
 			stat = execute(cmd, environment, stat);
+		else
+			stat = errno;
 		free(input);
 		free_tokens(&cmd);
 		input = NULL;

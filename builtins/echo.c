@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:32:58 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:59:41 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	check_arg(t_tokens *tokens)
 	while (*tmp && *tmp == 'n')
 		tmp++;
 	if (tmp)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 int	echo(t_tokens *tokens)

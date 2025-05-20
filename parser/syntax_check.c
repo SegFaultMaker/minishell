@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:13:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 13:59:26 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:23:49 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	generate_error(t_tokens *tmp)
 	else
 		ft_putstr_fd(tmp->next->token, 2);
 	ft_putstr_fd("\'\n", 2);
+	errno = 2;
 }
 
 int	syntax_check(t_tokens *tmp)
