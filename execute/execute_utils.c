@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/18 15:45:05 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:41:40 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,19 @@ char	**tokens_to_strings(t_tokens *cmd)
 	tmp = cmd;
 	while (tmp->type != NEWL)
 	{
-		i++;
+		if (cmd->type == ARGUMENT || cmd->type == COMMAND)
+			i++;
 		tmp = tmp->next;
 	}
 	res = malloc(sizeof(char *) * (i + 1));
 	if (!res)
-	{
-		ft_putstr_fd("minishell: execution: malloc error\n", STDERR_FILENO);
 		return (NULL);
-	}
 	res[i] = NULL;
 	i = 0;
 	while (cmd->type != NEWL)
 	{
-		res[i++] = ft_strdup(cmd->token);
+		if (cmd->type == ARGUMENT || cmd->type == COMMAND)
+			res[i++] = ft_strdup(cmd->token);
 		cmd = cmd->next;
 	}
 	return (res);
@@ -96,7 +95,8 @@ void	free_matrix(char **matrix)
 	i = 0;
 	while (matrix[i])
 	{
-		free(matrix[i]);
+		if (matrix[i])
+			free(matrix[i]);
 		matrix[i] = NULL;
 		i++;
 	}
