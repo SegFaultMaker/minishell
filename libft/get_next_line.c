@@ -3,87 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 13:57:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/20 15:42:29 by nasargsy         ###   ########.fr       */
+/*   Created: 2025/01/29 13:36:26 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/20 15:50:05 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "get_next_line.h"
 
-static char	*read_from_file(int fd, char *res)
+static char	*ft_fill_storage(int fd, char *storage, char *buffer)
 {
-	char	*buf;
-	int		rb;
+	ssize_t	bytes;
+	char	*temp;
 
-	buf = malloc(BUFFER_SIZE + 1);
-	if (!buf)
-		return (NULL);
-	rb = 1;
-	while (!ft_strchr(res, '\n') && rb > 0)
+	bytes = 1;
+	while (bytes > 0)
 	{
-		rb = read(fd, buf, BUFFER_SIZE);
-		if (rb < 0)
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes == -1)
+			return (NULL);
+		else if (bytes == 0)
+			break ;
+		buffer[bytes] = '\0';
+		temp = storage;
+		storage = gnl_strjoin(temp, buffer);
+		if (!storage)
 		{
-			free(buf);
-			free(res);
+			free(temp);
+			temp = NULL;
 			return (NULL);
 		}
-		buf[rb] = '\0';
-		res = ft_strjoin(res, buf);
+		if (gnl_strchr(buffer, '\n'))
+			break ;
 	}
-	free(buf);
-	return (res);
+	return (storage);
 }
 
-static char	*extract_line(char *buffer)
+static char	*ft_update_storage(char *final_line)
 {
-	char	*line;
-	int		i;
+	char	*updated;
+	ssize_t	i;
 
-	if (!buffer || !*buffer)
+	if (!final_line)
 		return (NULL);
 	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
+	while (final_line[i] && final_line[i] != '\n' && final_line[i] != '\0')
 		i++;
-	line = ft_substr(buffer, 0, i + 1);
-	return (line);
-}
-
-static char	*update_buffer(char	*buffer)
-{
-	char	*res;
-	int		i;
-
-	if (!buffer)
+	if (final_line[i] == '\0' || final_line[i + 1] == '\0')
 		return (NULL);
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!buffer[i])
-	{
-		free(buffer);
+	updated = gnl_substr(final_line, i + 1, gnl_strlen(final_line) - i);
+	if (!updated)
 		return (NULL);
-	}
-	res = ft_substr(buffer, i + 1, ft_strlen(buffer) - i);
-	free(buffer);
-	return (res);
+	final_line[i + 1] = '\0';
+	if (*updated == '\0')
+		updated = NULL;
+	return (updated);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[65535];
-	char		*line;
+	static char	*storage;
+	char		*final_line;
+	char		*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
 	{
-		free(buffer[fd]);
-		buffer[fd] = NULL;
+		free(buffer);
+		free(storage);
+		buffer = NULL;
+		storage = NULL;
 		return (NULL);
 	}
-	buffer[fd] = read_from_file(fd, buffer[fd]);
-	line = extract_line(buffer[fd]);
-	buffer[fd] = update_buffer(buffer[fd]);
-	return (line);
+	final_line = ft_fill_storage(fd, storage, buffer);
+	free(buffer);
+	buffer = NULL;
+	if (!final_line || *final_line == '\0')
+	{
+		free(final_line);
+		return (NULL);
+	}
+	storage = ft_update_storage(final_line);
+	return (final_line);
 }
