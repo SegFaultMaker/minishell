@@ -6,37 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:02:38 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:36:12 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-
-int	open_infile(char *filename)
-{
-	if (access(filename, F_OK) != 0)
-		return (quit_with_error(1, filename, NULL, errno));
-	if (access(filename, R_OK) != 0)
-		return (quit_with_error(1, filename, NULL, errno));
-	return (open(filename, O_RDONLY));
-}
-
-int	open_outfile(char *filename, int mode)
-{
-	if (access(filename, F_OK) != 0)
-		return (open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644));
-	if (access(filename, W_OK) != 0)
-		return (quit_with_error(1, filename, NULL, errno));
-	if (!access(filename, F_OK) && mode == OUTPUT)
-	{
-		errno = 1;
-		return (quit_with_error(1, filename,
-				"cannot overwrite existing file", errno));
-	}
-	if (!access(filename, F_OK) && mode == APPEND)
-		return (open(filename, O_WRONLY | O_APPEND, 0644));
-	return (open(filename, O_WRONLY | O_TRUNC));
-}
 
 void	undo_redir(int saved_in, int saved_out)
 {
@@ -52,30 +26,66 @@ void	undo_redir(int saved_in, int saved_out)
 	}
 }
 
-int	do_redir(t_tokens *tokens, int *saved_in, int *saved_out)
+int	except_here_doc(t_tokens *tokens, int *saved_in, int *saved_out)
 {
 	int	fd;
 
+	if (tokens->type == INPUT)
+	{
+		fd = open_infile(tokens->next->token);
+		if (fd == errno)
+			return (errno);
+		*saved_in = dup(STDIN_FILENO);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	if (tokens->type == OUTPUT || tokens->type == APPEND)
+	{
+		fd = open_outfile(tokens->next->token, tokens->type);
+		if (fd == errno)
+			return (errno);
+		*saved_out = dup(STDOUT_FILENO);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	return (0);
+}
+
+void	here_doc(t_tokens *tokens)
+{
+	char	*input;
+	char	*temp;
+	char	*res;
+
+	res = NULL;
+	ft_putstr_fd("> ", STDIN_FILENO);
+	input = get_next_line(STDIN_FILENO);
+	while (input && ft_strcmp(input + 2, tokens->next->token))
+	{
+		temp = ft_strdup(res);
+		free(res);
+		res = ft_strjoin(temp, input);
+		free(temp);
+		free(input);
+		ft_putstr_fd("> ", STDIN_FILENO);
+		input = get_next_line(STDIN_FILENO);
+	}
+	ft_putstr_fd(res, STDIN_FILENO);
+}
+
+int	do_redir(t_tokens *tokens, int *saved_in, int *saved_out)
+{
 	while (tokens)
 	{
-		if (tokens->type == INPUT)
+		if (tokens->type == OUTPUT || tokens->type == APPEND
+			|| tokens->type == INPUT)
 		{
-			fd = open_infile(tokens->next->token);
-			if (fd == errno)
+			errno = except_here_doc(tokens, saved_in, saved_out);
+			if (errno)
 				return (errno);
-			*saved_in = dup(STDIN_FILENO);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
 		}
-		if (tokens->type == OUTPUT || tokens->type == APPEND)
-		{
-			fd = open_outfile(tokens->next->token, tokens->type);
-			if (fd == errno)
-				return (errno);
-			*saved_out = dup(STDOUT_FILENO);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+		if (tokens->type == HERE_DOC)
+			here_doc(tokens);
 		tokens = tokens->next;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/18 15:46:04 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:25:09 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ int		execute_no_pipes(t_tokens *cmd, t_hash_table *env);
 //			handle redirs
 int		do_redir(t_tokens *tokens, int *saved_in, int *saved_out);
 void	undo_redir(int saved_in, int saved_out);
+int		except_here_doc(t_tokens *tokens, int *saved_in, int *saved_out);
+int		open_infile(char *filename);
+int		open_outfile(char *filename, int mode);
+void	here_doc(t_tokens *tokens);
 
 //			utils
 char	**tokens_to_strings(t_tokens *cmd);
