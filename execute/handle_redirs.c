@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/20 15:36:12 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:30:55 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,22 @@ void	here_doc(t_tokens *tokens)
 	char	*temp;
 	char	*res;
 
-	res = NULL;
-	ft_putstr_fd("> ", STDIN_FILENO);
-	input = get_next_line(STDIN_FILENO);
-	while (input && ft_strcmp(input + 2, tokens->next->token))
+	input = NULL;
+	res = ft_strdup("");
+	while (1)
 	{
-		temp = ft_strdup(res);
-		free(res);
-		res = ft_strjoin(temp, input);
-		free(temp);
-		free(input);
-		ft_putstr_fd("> ", STDIN_FILENO);
+		ft_putstr_fd("> ", STDOUT_FILENO);
 		input = get_next_line(STDIN_FILENO);
+		if (!input || !ft_strncmp(input, tokens->next->token, ft_strlen(tokens->next->token)))
+			break ;
+		temp = res;
+		res = ft_strjoin(res, input);
+		free(temp);
+		temp = NULL;
 	}
 	ft_putstr_fd(res, STDIN_FILENO);
+	get_next_line(-1);
+	free(res);
 }
 
 int	do_redir(t_tokens *tokens, int *saved_in, int *saved_out)
