@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/20 13:41:40 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:12:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**tokens_to_strings(t_tokens *cmd)
 	tmp = cmd;
 	while (tmp->type != NEWL)
 	{
-		if (cmd->type == ARGUMENT || cmd->type == COMMAND)
+		if (tmp->type == ARGUMENT || tmp->type == COMMAND)
 			i++;
 		tmp = tmp->next;
 	}
