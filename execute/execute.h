@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/21 16:19:28 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:13:10 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int		quit_with_error(int flag, char *target, char *description, int stat);
 int		define_type(t_tokens *tokens);
 void	free_matrix(char **matrix);
 char	*find_cmd(char *cmd, char **envp);
-void	env_vars(t_tokens *tmp, t_hash_table *env);
+void	env_vars(t_tokens **tokens, t_hash_table *env);
 
 #endif
