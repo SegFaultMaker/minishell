@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:08:27 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:58:14 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,16 @@
 # include "./libft/libft.h"
 # include "./environment/environment.h"
 
-// Error MSGs
+//			Error MSGs
 # define SYNTAX_ERR "minishell: syntax error near unexpected token "
 
-// Colors
+//			Colors
 # define BLUE "\001\e[1;36m\002"
 # define RESET "\001\e[0m\002"
 # define BOLD "\001\e[1m\002"
+
+# define BREAK_LOOP 1
+# define CONTINUE_LOOP 2
 
 typedef enum e_types
 {
@@ -63,17 +66,16 @@ typedef struct s_commands
 	struct s_commands	*next;
 }	t_commands;
 
-// Init
+//				Init
 void		init_signals(void);
 
-// Shell
+//				Shell
 void		start_shell(t_hash_table *environment);
 
-// Execution
+//				Execution
 int			execute(t_tokens *tokens, t_hash_table *env, int stat);
 
-// Parser
-void		clean_commands(t_commands **commands);
+//				Parser
 t_tokens	*parser(char *str);
 t_tokens	*new_token(char *content);
 void		assign_types(t_tokens **tokens);

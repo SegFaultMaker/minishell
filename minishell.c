@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/20 21:28:16 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:43:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,34 @@ static char	*read_input(void)
 	char	*input;
 
 	input = readline(BLUE "→  " RESET);
+	if (input && *input)
+		add_history(input);
 	add_history(input);
 	return (input);
+}
+
+static int	only_spaces(char *input)
+{
+	int	i;
+
+	i = -1;
+	while (input[++i])
+		if (input[i] != ' ')
+			return (0);
+	return (1);
+}
+
+static int	check_input(char **input)
+{
+	if (!*input)
+		return (BREAK_LOOP);
+	else if (!**input || only_spaces(*input))
+	{
+		free(*input);
+		*input = NULL;
+		return (CONTINUE_LOOP);
+	}
+	return (0);
 }
 
 void	start_shell(t_hash_table *environment)
@@ -26,19 +52,17 @@ void	start_shell(t_hash_table *environment)
 	t_tokens	*cmd;
 	int			stat;
 	char		*input;
+	int			check_status;
 
 	input = NULL;
-	while (!input || !*input)
+	while (1)
 	{
 		input = read_input();
-		if (!input)
+		check_status = check_input(&input);
+		if (check_status == BREAK_LOOP)
 			break ;
-		else if (!*input)
-		{
-			free(input);
-			input = NULL;
+		else if (check_status == CONTINUE_LOOP)
 			continue ;
-		}
 		cmd = parser(input);
 		if (cmd)
 			stat = execute(cmd, environment, stat);
@@ -48,6 +72,8 @@ void	start_shell(t_hash_table *environment)
 		free_tokens(&cmd);
 		input = NULL;
 	}
+	if (input)
+		free(input);
 }
 
 int	main(int argc, char *argv[], char *envp[])

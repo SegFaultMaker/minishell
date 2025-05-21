@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/20 17:45:17 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:48:59 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	here_doc(t_tokens *tokens)
 	}
 	if (input)
 		free(input);
-	ft_putstr_fd(res, STDIN_FILENO);
 	get_next_line(-1);
 	free(res);
 }
