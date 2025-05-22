@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/22 15:24:22 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:00:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,6 @@ static int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 	return (len);
 }
 
-int	find_quote_after_env(char *old_token, int doll_pos)
-{
-	int	i;
-
-	i = doll_pos;
-	while (old_token[i])
-	{
-		if (old_token[i] == '\'' || old_token[i] == '\"')
-			return (i);
-		i++;
-	}
-	return (0);
-}
-
 static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
 {
 	int		i;
@@ -105,7 +91,7 @@ static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
 		new_token[i] = (*tokens)->token[i];
 	ft_memmove(new_token + i, env_var, ft_strlen(env_var));
 	if (flag)
-		ft_memmove(new_token + i + ft_strlen(env_var), (*tokens)->token + find_quote_after_env((*tokens)->token, doll_pos), ft_strlen((*tokens)->token) - find_quote_after_env((*tokens)->token, doll_pos));
+		add_the_rest(tokens, doll_pos, &new_token, i + ft_strlen(env_var));
 	new_token[len] = '\0';
 	free((*tokens)->token);
 	(*tokens)->token = new_token;
