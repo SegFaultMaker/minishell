@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/22 18:00:35 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:14:40 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ static char	*find_var(char *str, t_hash_table *env)
 	char	*res;
 
 	i = 0;
-	while (str[i] && str[i] != '\"' && str[i] != '\'')
+	while (str[i] && str[i] != '\"' && str[i] != '\''
+		&& str[i] != '+' && str[i] != '=')
 		i++;
 	var = malloc(sizeof(char) * (i + 1));
 	if (!var)
 		return (NULL);
 	var[i] = '\0';
 	i = 0;
-	while (str[i] && str[i] != '\"' && str[i] != '\'')
+	while (str[i] && str[i] != '\"' && str[i] != '\''
+		&& str[i] != '+' && str[i] != '=')
 	{
 		var[i] = str[i];
 		i++;
@@ -55,9 +57,11 @@ static int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 	i = 0;
 	*flag = 0;
 	len = doll_pos + ft_strlen(env_var);
-	while (old[i] && old[i] != '\"' && old[i] != '\'')
+	while (old[i] && old[i] != '\"' && old[i] != '\''
+		&& old[i] != '+' && old[i] != '=')
 		i++;
-	if (old[i] == '\0' || (old[i] != '\"' && old[i] != '\''))
+	if (old[i] == '\0' || (old[i] != '\"' && old[i] != '\''
+			&& old[i] != '+' && old[i] != '='))
 		return (len);
 	*flag = 1;
 	while (old[i])
