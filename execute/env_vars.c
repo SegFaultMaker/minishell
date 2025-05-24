@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/23 15:14:40 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/24 20:07:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*find_var(char *str, t_hash_table *env)
 
 	i = 0;
 	while (str[i] && str[i] != '\"' && str[i] != '\''
-		&& str[i] != '+' && str[i] != '=')
+		&& str[i] != '+' && str[i] != '=' && str[i] != '$')
 		i++;
 	var = malloc(sizeof(char) * (i + 1));
 	if (!var)
@@ -39,7 +39,7 @@ static char	*find_var(char *str, t_hash_table *env)
 	var[i] = '\0';
 	i = 0;
 	while (str[i] && str[i] != '\"' && str[i] != '\''
-		&& str[i] != '+' && str[i] != '=')
+		&& str[i] != '+' && str[i] != '=' && str[i] != '$')
 	{
 		var[i] = str[i];
 		i++;
@@ -56,7 +56,7 @@ static int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 
 	i = 0;
 	*flag = 0;
-	len = doll_pos + ft_strlen(env_var);
+	len = doll_pos + safe_strlen(env_var);
 	while (old[i] && old[i] != '\"' && old[i] != '\''
 		&& old[i] != '+' && old[i] != '=')
 		i++;
@@ -81,21 +81,14 @@ static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
 	char	*new_token;
 
 	env_var = find_var((*tokens)->token + doll_pos + 1, env);
-	if (!env_var)
-	{
-		new_token = ft_substr((*tokens)->token, 0, doll_pos);
-		free((*tokens)->token);
-		(*tokens)->token = new_token;
-		return ;
-	}
 	len = calculate_len((*tokens)->token, doll_pos, env_var, &flag);
 	new_token = malloc(len + 1);
 	i = -1;
 	while (++i < doll_pos)
 		new_token[i] = (*tokens)->token[i];
-	ft_memmove(new_token + i, env_var, ft_strlen(env_var));
+	ft_memmove(new_token + i, env_var, safe_strlen(env_var));
 	if (flag)
-		add_the_rest(tokens, doll_pos, &new_token, i + ft_strlen(env_var));
+		add_the_rest(tokens, doll_pos, &new_token, i + safe_strlen(env_var));
 	new_token[len] = '\0';
 	free((*tokens)->token);
 	(*tokens)->token = new_token;
