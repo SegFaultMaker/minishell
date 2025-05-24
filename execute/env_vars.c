@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/24 22:14:56 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/24 22:23:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,15 @@ void	env_vars(t_tokens **tokens, t_hash_table *env)
 	tmp = *tokens;
 	while (tmp->type != NEWL)
 	{
-		dollar_position = find_dollar(tmp->token);
-		if (dollar_position != INT_MIN)
-			replace_to_var(&tmp, env, dollar_position);
+		while (1)
+		{
+			dollar_position = find_dollar(tmp->token);
+			if (dollar_position != INT_MIN)
+				replace_to_var(&tmp, env, dollar_position);
+			else
+				break ;
+		}
+		
 		tmp = tmp->next;
 	}
 }
