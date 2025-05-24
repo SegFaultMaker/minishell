@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:23:10 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/24 21:53:45 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/24 22:15:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ void	add_the_rest(t_tokens **tokens, int doll_pos, char **new, int start)
 	int		start_index;
 
 	start_index = find_start_index((*tokens)->token, doll_pos);
-	len = the_rest_len((*tokens)->token, start_index);
 	if (start_index != INT_MIN)
+	{
+		len = the_rest_len((*tokens)->token, start_index);
 		ft_memmove(*new + start, (*tokens)->token + start_index, len);
+	}
 }
 
 int	safe_strlen(char *str)

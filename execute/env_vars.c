@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/24 21:55:29 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/24 22:14:56 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,16 @@ static int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 	int	i;
 	int	len;
 
-	i = doll_pos;
+	i = doll_pos + 1;
 	*flag = 0;
 	len = doll_pos + safe_strlen(env_var);
 	while (old[i] && old[i] != '\"' && old[i] != '\''
-		&& old[i] != '+' && old[i] != '=' /*&& old[i] != '$'*/)
+		&& old[i] != '+' && old[i] != '=' && old[i] != '$')
 		i++;
-	if (old[i] == '\0' || (old[i] != '\"' && old[i] != '\''
-			&& old[i] != '+' && old[i] != '=' /*&& old[i] != '$'*/))
+	if (!old[i])
+		return (len);
+	if (old[i] != '\"' && old[i] != '\'' && old[i] != '+'
+			&& old[i] != '=' && old[i] != '$')
 		return (len);
 	*flag = 1;
 	while (old[i])

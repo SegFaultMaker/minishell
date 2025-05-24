@@ -7,7 +7,7 @@ PURPLE = \033[1;35m
 WHITE = \033[0m
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 LDFLAGS = -lreadline
 INCLUDES = -I. -Ilibft
 
