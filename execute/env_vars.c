@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/24 20:07:48 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/24 21:55:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ static int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 	int	i;
 	int	len;
 
-	i = 0;
+	i = doll_pos;
 	*flag = 0;
 	len = doll_pos + safe_strlen(env_var);
 	while (old[i] && old[i] != '\"' && old[i] != '\''
-		&& old[i] != '+' && old[i] != '=')
+		&& old[i] != '+' && old[i] != '=' /*&& old[i] != '$'*/)
 		i++;
 	if (old[i] == '\0' || (old[i] != '\"' && old[i] != '\''
-			&& old[i] != '+' && old[i] != '='))
+			&& old[i] != '+' && old[i] != '=' /*&& old[i] != '$'*/))
 		return (len);
 	*flag = 1;
 	while (old[i])
@@ -83,9 +83,12 @@ static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
 	env_var = find_var((*tokens)->token + doll_pos + 1, env);
 	len = calculate_len((*tokens)->token, doll_pos, env_var, &flag);
 	new_token = malloc(len + 1);
-	i = -1;
-	while (++i < doll_pos)
+	i = 0;
+	while (i < doll_pos)
+	{
 		new_token[i] = (*tokens)->token[i];
+		i++;
+	}
 	ft_memmove(new_token + i, env_var, safe_strlen(env_var));
 	if (flag)
 		add_the_rest(tokens, doll_pos, &new_token, i + safe_strlen(env_var));
