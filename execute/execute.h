@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/24 19:47:45 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:01:15 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ char	*find_cmd(char *cmd, char **envp);
 void	env_vars(t_tokens **tokens, t_hash_table *env);
 void	add_the_rest(t_tokens **tokens, int doll_pos, char **new, int start);
 int		safe_strlen(char *str);
+int		calculate_len(char *old, int doll_pos, char *env_var, int *flag);
+int		the_rest_len(char *old_token, int start);
 
 #endif

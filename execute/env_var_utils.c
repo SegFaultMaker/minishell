@@ -6,11 +6,36 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:23:10 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/24 22:15:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:56:19 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
+{
+	int	i;
+	int	len;
+
+	i = doll_pos + 1;
+	*flag = 0;
+	len = doll_pos + safe_strlen(env_var);
+	while (old[i] && old[i] != '\"' && old[i] != '\''
+		&& old[i] != '+' && old[i] != '=' && old[i] != '$')
+		i++;
+	if (!old[i])
+		return (len);
+	if (old[i] != '\"' && old[i] != '\'' && old[i] != '+'
+		&& old[i] != '=' && old[i] != '$')
+		return (len);
+	*flag = 1;
+	while (old[i])
+	{
+		i++;
+		len++;
+	}
+	return (len);
+}
 
 static int	find_start_index(char *old_token, int doll_pos)
 {
@@ -28,7 +53,7 @@ static int	find_start_index(char *old_token, int doll_pos)
 	return (INT_MIN);
 }
 
-static int	the_rest_len(char *old_token, int start)
+int	the_rest_len(char *old_token, int start)
 {
 	int	i;
 	int	len;
