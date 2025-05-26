@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/25 22:00:45 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:15:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*find_var(char *str, t_hash_table *env)
 	return (res);
 }
 
-static void	dollar_question_mark(t_tokens **tokens, int doll_pos)
+static void	dollar_question_mark(t_tokens **tokens, int doll_pos, int stat)
 {
 	int		i;
 	int		j;
@@ -57,7 +57,7 @@ static void	dollar_question_mark(t_tokens **tokens, int doll_pos)
 	char	*status_code;
 	char	*new_token;
 
-	status_code = ft_itoa(errno);
+	status_code = ft_itoa(stat);
 	len = safe_strlen((*tokens)->token) - 2 + safe_strlen(status_code);
 	new_token = malloc(len + 1);
 	i = -1;
@@ -74,7 +74,7 @@ static void	dollar_question_mark(t_tokens **tokens, int doll_pos)
 	(*tokens)->token = new_token;
 }
 
-static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
+static void	replace(t_tokens **tokens, t_hash_table *env, int doll_pos, int s)
 {
 	int		i;
 	int		len;
@@ -84,7 +84,7 @@ static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
 
 	if ((*tokens)->token[doll_pos + 1] == '?')
 	{
-		dollar_question_mark(tokens, doll_pos);
+		dollar_question_mark(tokens, doll_pos, s);
 		return ;
 	}
 	env_var = find_var((*tokens)->token + doll_pos + 1, env);
@@ -101,7 +101,7 @@ static void	replace_to_var(t_tokens **tokens, t_hash_table *env, int doll_pos)
 	(*tokens)->token = new_token;
 }
 
-void	env_vars(t_tokens **tokens, t_hash_table *env)
+void	env_vars(t_tokens **tokens, t_hash_table *env, int stat)
 {
 	int			dollar_position;
 	t_tokens	*tmp;
@@ -113,7 +113,7 @@ void	env_vars(t_tokens **tokens, t_hash_table *env)
 		{
 			dollar_position = find_dollar(tmp->token);
 			if (dollar_position != INT_MIN)
-				replace_to_var(&tmp, env, dollar_position);
+				replace(&tmp, env, dollar_position, stat);
 			else
 				break ;
 		}

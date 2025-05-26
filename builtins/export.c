@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/20 14:49:10 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:43:31 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	process_argument(char *arg, t_hash_table *ht, int mode)
 		return (0);
 	key = get_key(arg, key_end);
 	if (!key)
-		return (invalid_identifier(arg), 0);
+		return (invalid_identifier(arg), 1);
 	if (mode == JOIN_MODE)
 	{
 		existing = ht_search(ht, key);
@@ -45,7 +45,7 @@ static int	process_argument(char *arg, t_hash_table *ht, int mode)
 		value = key_end + 1;
 	if (!ht_insert(ht, key, value))
 		ft_putendl_fd("minishell: hash table: insert error", STDERR_FILENO);
-	return (free_key_value(key, value, existing, mode), 1);
+	return (free_key_value(key, value, existing, mode), 0);
 }
 
 static int	check_argument(char *arg)
@@ -53,16 +53,16 @@ static int	check_argument(char *arg)
 	int		i;
 
 	if (!*arg)
-		return (invalid_identifier(arg), 0);
+		return (invalid_identifier(arg), 1);
 	if (ft_isdigit(*arg))
-		return (invalid_identifier(arg), 0);
+		return (invalid_identifier(arg), 1);
 	i = 0;
 	while (arg[i])
 	{
 		if ((arg[i] == '+' && arg[i + 1] && arg[i + 1] == '=') || arg[i] == '=')
 			break ;
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (invalid_identifier(arg), 0);
+			return (invalid_identifier(arg), 1);
 		i++;
 	}
 	if (arg[i] == '+' && arg[i + 1] && arg[i + 1] == '=')
@@ -72,16 +72,25 @@ static int	check_argument(char *arg)
 
 int	export(t_tokens *tokens, t_hash_table *ht)
 {
+	int	stat;
 	int	mode;
+	int process;
 
+	stat = 0;
 	if (!tokens)
-		return (env(ht, 1), 0);
+		return (env(ht, 1), stat);
 	while (tokens && !is_redir_pipe(tokens->type) && tokens->type != NEWL)
 	{
 		mode = check_argument(tokens->token);
-		if (mode)
-			process_argument(tokens->token, ht, mode);
+		if (mode == ADD_MODE || mode == JOIN_MODE)
+		{
+			process = process_argument(tokens->token, ht, mode);
+			if (process)
+				stat = process;
+		}
+		else
+			stat = mode;
 		tokens = tokens->next;
 	}
-	return (0);
+	return (stat);
 }

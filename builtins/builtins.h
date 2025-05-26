@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/18 15:31:04 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:31:59 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "../execute/execute.h"
 # include "../environment/environment.h"
 
-# define ADD_MODE 1
-# define JOIN_MODE 2
+# define ADD_MODE INT_MAX
+# define JOIN_MODE INT_MIN
 
 //			enviroment
 int		export(t_tokens *tokens, t_hash_table *ht);

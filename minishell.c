@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/21 15:43:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:16:34 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	start_shell(t_hash_table *environment)
 	char		*input;
 	int			check_status;
 
+	stat = 0;
 	input = NULL;
 	while (1)
 	{
