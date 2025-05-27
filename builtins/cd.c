@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:12:16 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/26 16:26:12 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:45:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,9 @@ int	cd(t_tokens *tmp, t_hash_table *env)
 		return (0);
 	current = ht_search(env, "PWD");
 	if (!current)
-		return (errno = 1, quit_with_error(1, "cd", "PWD not set", errno));
-	if (!ft_strcmp(new, "-"))
-	{
-		new = ht_search(env, "OLDPWD");
-		if (!new)
-			return (errno = 1,
-				quit_with_error(1, "cd", "OLDPWD not set", errno));
-	}
+		return (quit_with_error(1, "cd", "PWD not set", errno));
 	if (chdir(new) == -1)
-		return (errno = 1, quit_with_error(1, "cd", NULL, errno));
+		return (quit_with_error(1, "cd", NULL, errno));
 	ht_insert(env, "OLDPWD", current);
 	ht_insert(env, "PWD", new);
 	return (0);

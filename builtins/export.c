@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/26 16:43:31 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:49:24 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	export(t_tokens *tokens, t_hash_table *ht)
 {
 	int	stat;
 	int	mode;
-	int process;
+	int	process;
 
 	stat = 0;
 	if (!tokens)

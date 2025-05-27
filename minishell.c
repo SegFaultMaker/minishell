@@ -6,46 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/26 16:16:34 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:39:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*read_input(void)
-{
-	char	*input;
-
-	input = readline(BLUE "→  " RESET);
-	if (input && *input)
-		add_history(input);
-	add_history(input);
-	return (input);
-}
-
-static int	only_spaces(char *input)
-{
-	int	i;
-
-	i = -1;
-	while (input[++i])
-		if (input[i] != ' ')
-			return (0);
-	return (1);
-}
-
-static int	check_input(char **input)
-{
-	if (!*input)
-		return (BREAK_LOOP);
-	else if (!**input || only_spaces(*input))
-	{
-		free(*input);
-		*input = NULL;
-		return (CONTINUE_LOOP);
-	}
-	return (0);
-}
 
 void	start_shell(t_hash_table *environment)
 {
@@ -65,16 +30,10 @@ void	start_shell(t_hash_table *environment)
 		else if (check_status == CONTINUE_LOOP)
 			continue ;
 		cmd = parser(input);
-		if (cmd)
-			stat = execute(cmd, environment, stat);
-		else
-			stat = errno;
-		free(input);
-		free_tokens(&cmd);
-		input = NULL;
+		stat = handle_input(&cmd, environment, &input, stat);
+		if (stat == INT_MIN)
+			return ;
 	}
-	if (input)
-		free(input);
 }
 
 int	main(int argc, char *argv[], char *envp[])

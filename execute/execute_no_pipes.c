@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/20 20:52:32 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:51:05 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat)
 		*stat = export(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "unset"))
 		*stat = unset(tokens->next, envp);
+	else if (!ft_strcmp(tokens->token, "exit"))
+		*stat = -1;
 }
 
 static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/21 14:58:14 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:49:33 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,9 @@ int			is_redir_pipe(t_types type);
 t_types		get_type(char *token);
 t_tokens	*handle_first(t_tokens **tokens);
 
+//				Utils
+char		*read_input(void);
+int			check_input(char **input);
+int			handle_input(t_tokens **cmd, t_hash_table *envp,
+				char **input, int stat);
 #endif
