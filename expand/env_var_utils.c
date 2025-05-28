@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:23:10 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/28 15:19:36 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:45:38 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 	i = doll_pos + 1;
 	*flag = 0;
 	len = doll_pos + safe_strlen(env_var);
-	while (old[i] && old[i] != '\"' && old[i] != '\''
+	while (old[i] && old[i] != ' ' && old[i] != '\"' && old[i] != '\''
 		&& old[i] != '+' && old[i] != '=' && old[i] != '$')
 		i++;
 	if (!old[i])
 		return (len);
-	if (old[i] != '\"' && old[i] != '\'' && old[i] != '+'
+	if (old[i] != ' ' && old[i] != '\"' && old[i] != '\'' && old[i] != '+'
 		&& old[i] != '=' && old[i] != '$')
 		return (len);
 	*flag = 1;
@@ -46,7 +46,7 @@ static int	find_start_index(char *old_token, int doll_pos)
 	{
 		if (old_token[i] == '\'' || old_token[i] == '\"'
 			|| old_token[i] == '+' || old_token[i] == '='
-			|| old_token[i] == '$')
+			|| old_token[i] == '$' || old_token[i] == ' ')
 			return (i);
 		i++;
 	}

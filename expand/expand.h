@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/28 15:45:41 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:48:49 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
 
+# define DONT_EXPAND 0
+# define EXPAND_DOUBLE 1
+# define EXPAND_DOUBLE_SINGLE 2
 
 //			Env vars
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat);

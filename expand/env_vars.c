@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:43:39 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:58:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	find_dollar(char *str, int *doll_pos, int *var_end)
 		{
 			*doll_pos = i;
 			i++;
-			while (str[i] && str[i] != '\"' && str[i] != '\''
+			while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\''
 				&& str[i] != '+' && str[i] != '=' && str[i] != '$')
 				i++;
 			*var_end = i;
@@ -37,7 +37,7 @@ static char	*find_var(char *str, t_hash_table *env)
 	char	*res;
 
 	i = 0;
-	while (str[i] && str[i] != '\"' && str[i] != '\''
+	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\''
 		&& str[i] != '+' && str[i] != '=' && str[i] != '$')
 		i++;
 	var = malloc(sizeof(char) * (i + 1));
@@ -45,7 +45,7 @@ static char	*find_var(char *str, t_hash_table *env)
 		return (NULL);
 	var[i] = '\0';
 	i = 0;
-	while (str[i] && str[i] != '\"' && str[i] != '\''
+	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\''
 		&& str[i] != '+' && str[i] != '=' && str[i] != '$')
 	{
 		var[i] = str[i];
@@ -81,7 +81,7 @@ static void	dollar_question_mark(t_tokens **tokens, int doll_pos, int stat)
 	(*tokens)->token = new_token;
 }
 
-static void	replace(t_tokens **tokens, t_hash_table *env, int doll_pos, int s)
+static void	regular(t_tokens **tokens, t_hash_table *env, int doll_pos)
 {
 	int		i;
 	int		len;
@@ -89,11 +89,6 @@ static void	replace(t_tokens **tokens, t_hash_table *env, int doll_pos, int s)
 	char	*env_var;
 	char	*new_token;
 
-	if ((*tokens)->token[doll_pos + 1] == '?')
-	{
-		dollar_question_mark(tokens, doll_pos, s);
-		return ;
-	}
 	env_var = find_var((*tokens)->token + doll_pos + 1, env);
 	len = calculate_len((*tokens)->token, doll_pos, env_var, &flag);
 	new_token = malloc(len + 1);
@@ -110,7 +105,7 @@ static void	replace(t_tokens **tokens, t_hash_table *env, int doll_pos, int s)
 
 void	env_vars(t_tokens **tokens, t_hash_table *env, int stat)
 {
-	int			dollar_position;
+	int			dollar_pos;
 	int			end_of_var;
 	t_tokens	*tmp;
 
@@ -119,11 +114,13 @@ void	env_vars(t_tokens **tokens, t_hash_table *env, int stat)
 	{
 		while (1)
 		{
-			dollar_position = -1;
+			dollar_pos = -1;
 			end_of_var = -1;
-			find_dollar(tmp->token, &dollar_position, &end_of_var);
-			if (dollar_position != -1 && end_of_var != -1)
-				replace(&tmp, env, dollar_position, stat);
+			find_dollar(tmp->token, &dollar_pos, &end_of_var);
+			if (dollar_pos != -1 && end_of_var != -1 && tmp->token[dollar_pos + 1] != '?')
+				regular(&tmp, env, dollar_pos);
+			else if (dollar_pos != -1 && end_of_var != -1 && tmp->token[dollar_pos + 1] == '?')
+				dollar_question_mark(&tmp, dollar_pos, stat);
 			else
 				break ;
 		}
