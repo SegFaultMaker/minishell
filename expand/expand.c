@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:24:40 by armarake         ###   ########.fr       */
+/*   Created: 2025/05/28 15:22:15 by armarake          #+#    #+#             */
+/*   Updated: 2025/05/28 15:38:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
+#include "expand.h"
 
-int	execute(t_tokens *tokens, t_hash_table *env, int stat)
+void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 {
-/*	int	pipes;
-
-	pipes = check_pipes(tokens);
-	if (pipes)
-		 stat = execute_with_pipes(tokens, env, pipes);
-	else*/
-	expand_tokens(&tokens, env, stat);
-	stat = execute_no_pipes(tokens, env);
-	return (stat);
+	env_vars(tokens, env, stat);
+	remove_quotes(tokens);
 }

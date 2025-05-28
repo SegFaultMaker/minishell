@@ -16,16 +16,17 @@ OBJECTS_DIR = objs/
 BUILTINS_DIR = builtins/
 ENVIRONMENT_DIR = environment/
 EXECUTE_DIR = execute/
-INIT_DIR = init/
+EXPAND_DIR = expand/
 PARSER_DIR = parser/
 
 MAIN_FILENAME = minishell init_signals minishell_utils
 BUILTIN_FILENAMES = $(addprefix $(BUILTINS_DIR), cd echo env export_utils export pwd unset)
 ENVIRONMENT_FILENAMES = $(addprefix $(ENVIRONMENT_DIR), convert_to_strings create delete hashing init operations resize utils)
-EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs redir_operations env_vars env_var_utils)
+EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs redir_operations)
+EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand env_vars env_var_utils handle_quotes)
 PARSER_FILNAMES = $(addprefix $(PARSER_DIR), assign_types assign_utils parser_utils parser syntax_check)
 
-FILENAMES = $(MAIN_FILENAME) $(BUILTIN_FILENAMES) $(ENVIRONMENT_FILENAMES) $(EXECUTE_FILENAMES) $(PARSER_FILNAMES)
+FILENAMES = $(MAIN_FILENAME) $(BUILTIN_FILENAMES) $(ENVIRONMENT_FILENAMES) $(EXECUTE_FILENAMES) $(EXPAND_FILENAMES) $(PARSER_FILNAMES)
 SOURCES = $(addsuffix .c, $(FILENAMES))
 OBJECTS = $(addprefix $(OBJECTS_DIR), $(addsuffix .o, $(notdir $(FILENAMES))))
 
@@ -68,6 +69,11 @@ $(OBJECTS_DIR)%.o: $(BUILTINS_DIR)%.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(ENVIRONMENT_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJECTS_DIR)%.o: $(EXPAND_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
 	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

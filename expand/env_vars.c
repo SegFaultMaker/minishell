@@ -6,21 +6,28 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/26 16:15:48 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:43:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
+#include "expand.h"
 
-static int	find_dollar(char *str)
+static void	find_dollar(char *str, int *doll_pos, int *var_end)
 {
 	int	i;
 
 	i = -1;
 	while (str[++i])
 		if (str[i] == '$' && str[i + 1])
-			return (i);
-	return (INT_MIN);
+		{
+			*doll_pos = i;
+			i++;
+			while (str[i] && str[i] != '\"' && str[i] != '\''
+				&& str[i] != '+' && str[i] != '=' && str[i] != '$')
+				i++;
+			*var_end = i;
+			return ;
+		}
 }
 
 static char	*find_var(char *str, t_hash_table *env)
@@ -104,6 +111,7 @@ static void	replace(t_tokens **tokens, t_hash_table *env, int doll_pos, int s)
 void	env_vars(t_tokens **tokens, t_hash_table *env, int stat)
 {
 	int			dollar_position;
+	int			end_of_var;
 	t_tokens	*tmp;
 
 	tmp = *tokens;
@@ -111,8 +119,10 @@ void	env_vars(t_tokens **tokens, t_hash_table *env, int stat)
 	{
 		while (1)
 		{
-			dollar_position = find_dollar(tmp->token);
-			if (dollar_position != INT_MIN)
+			dollar_position = -1;
+			end_of_var = -1;
+			find_dollar(tmp->token, &dollar_position, &end_of_var);
+			if (dollar_position != -1 && end_of_var != -1)
 				replace(&tmp, env, dollar_position, stat);
 			else
 				break ;

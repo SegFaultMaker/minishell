@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/26 16:13:39 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:24:21 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <sys/wait.h>
 # include "../libft/libft.h"
 # include "../minishell.h"
+# include "../expand/expand.h"
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
 
@@ -37,10 +38,5 @@ int		quit_with_error(int flag, char *target, char *description, int stat);
 int		define_type(t_tokens *tokens);
 void	free_matrix(char **matrix);
 char	*find_cmd(char *cmd, char **envp);
-void	env_vars(t_tokens **tokens, t_hash_table *env, int stat);
-void	add_the_rest(t_tokens **tokens, int doll_pos, char **new, int start);
-int		safe_strlen(char *str);
-int		calculate_len(char *old, int doll_pos, char *env_var, int *flag);
-int		the_rest_len(char *old_token, int start);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:23:10 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/25 21:56:19 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:19:36 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
+#include "expand.h"
 
 int	calculate_len(char *old, int doll_pos, char *env_var, int *flag)
 {
