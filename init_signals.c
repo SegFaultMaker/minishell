@@ -6,11 +6,11 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:58:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 15:39:37 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:47:22 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 static	void	sig_handle(int sig)
 {

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 12:09:05 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:21:48 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 //			executes
 int		execute_no_pipes(t_tokens *cmd, t_hash_table *env);
-int		execute_with_pipes(t_tokens *tokens, t_hash_table *envp, int pipes);
+int		execute_with_pipes(t_tokens *tokens, t_hash_table *envp);
 
 //			handle redirs
 int		do_redir(t_tokens *tokens, int *saved_in, int *saved_out);
@@ -39,5 +39,7 @@ int		quit_with_error(int flag, char *target, char *description, int stat);
 int		define_type(t_tokens *tokens);
 void	free_matrix(char **matrix);
 char	*find_cmd(char *cmd, char **envp);
+int		get_commands(t_tokens *tokens);
+char	***get_argvs(t_tokens *tokens, int i);
 
 #endif

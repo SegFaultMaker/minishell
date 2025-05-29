@@ -6,54 +6,50 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:58:01 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/29 12:54:34 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:04:02 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static int	get_commands(t_tokens *tokens)
+static int	handle_binary(char **argv, char **envp)
 {
-	int	res;
+	char	*path;
+	pid_t	pid;
 
-	res = 0;
-	while (tokens)
+	path = find_cmd(argv[0], envp);
+	if (!argv || !envp)
+		return (quit_with_error(1, "execution", "malloc error", 1));
+	if (!path)
 	{
-		if (tokens->type == COMMAND)
-			res++;
-		tokens = tokens->next;
+		free_matrix(argv);
+		free_matrix(envp);
+		return (127);
 	}
-	return (res);
-}
-
-static char	***get_argvs(t_tokens *tokens)
-{
-	char	***res;
-	int		i;
-
-	i = get_commands(tokens);
-	res = malloc(sizeof(char **) * (i + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (tokens)
+	pid = fork();
+	if (pid == -1)
+		return (quit_with_error(0, "fork", NULL, errno));
+	if (pid == 0)
 	{
-		while (tokens && tokens->type != COMMAND)
-			tokens = tokens->next;
-		res[i] = tokens_to_strings(tokens);
-		i++;
+		if (do_redir(tmp, &saved_in, &saved_out) != 0)
+			return (errno);
+		if (execve(path, argv, envp) == -1)
+			return (quit_with_error(0, NULL, NULL, errno));
 	}
-	res[i] = NULL;
-	return (res);
+	free(path);
+	return (0);
 }
 
 int	execute_with_pipes(t_tokens *tokens, t_hash_table *envp)
 {
 	char	***argv_container;
+	char	**envp_strings;
 	int		stat;
 	int		i;
 
-	argv_container = get_argvs(tokens, pipes);
+	i = get_commands(tokens);
+	argv_container = get_argvs(tokens, i);
+	envp_strings = ht_to_strings(envp, 0);
 	stat = 0;
 	i = 0;
 	while (tokens)
@@ -62,10 +58,10 @@ int	execute_with_pipes(t_tokens *tokens, t_hash_table *envp)
 			tokens = tokens->next;
 		if (tokens->type == COMMAND)
 		{
-			stat = handle_binary(argv_container[i]);
+			stat = handle_binary(argv_container[i], envp_strings);
 			i++;
 		}
 		else
-			stat = handle_builti(tokens);
+			stat = handle_builtin(tokens);
 	}
 }

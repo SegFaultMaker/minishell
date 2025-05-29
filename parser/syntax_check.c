@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:13:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/29 13:24:25 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:49:07 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,19 @@ static int	check_quotes(char *str)
 	while (*str)
 	{
 		if (*str == '\"')
+		{
+			str++;
+			while (*str && *str != '\"')
+				str++;
 			dquote++;
+		}
 		else if (*str == '\'')
+		{
+			str++;
+			while (*str && *str != '\"')
+				str++;
 			squote++;
+		}
 		str++;
 	}
 	if ((dquote % 2 != 0) || (squote % 2 != 0))
