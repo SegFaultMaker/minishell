@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:14:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/27 14:39:46 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:29:15 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	free_values(t_tokens **cmd, char **input)
 
 int	handle_input(t_tokens **cmd, t_hash_table *envp, char **input, int stat)
 {
-	if (cmd)
+	if (*cmd)
 	{
 		stat = execute(*cmd, envp, stat);
 		if (stat == -1)

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:24:40 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:24:51 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 {
-/*	int	pipes;
+//	int	pipes;
 
-	pipes = check_pipes(tokens);
-	if (pipes)
-		 stat = execute_with_pipes(tokens, env, pipes);
-	else*/
 	expand_tokens(&tokens, env, stat);
-	stat = execute_no_pipes(tokens, env);
+/*	pipes = check_pipes(tokens);
+	if (pipes)
+		stat = execute_with_pipes(tokens, env, pipes);
+	else*/
+		stat = execute_no_pipes(tokens, env);
 	return (stat);
 }
