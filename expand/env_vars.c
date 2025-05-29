@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 00:12:36 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 00:30:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 static int	needs_handling(char *str, int index)
 {
 	int	i;
+	int	len;
 
 	if (index == 0)
 		i = index;
 	else
 		i = index + 1;
-	while (i < safe_strlen(str))
+	len = safe_strlen(str);
+	while (i < len)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 			return (QUOTE_HANDLE);
@@ -40,6 +42,27 @@ static int	find_dollar(char *str)
 		if (str[i] == '$' && str[i + 1])
 			return (i);
 	return (-1);
+}
+
+static int	new_handle_index(char *str, int index)
+{
+	int	i;
+	int	len;
+
+	if (index == 0)
+		i = index;
+	else
+		i = index + 1;
+	len = safe_strlen(str);
+	while (i < len)
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			return (index);
+		if (str[i] == '$' && str[i + 1])
+			return (index);
+		i++;
+	}
+	return (index);
 }
 
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
@@ -65,6 +88,7 @@ void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 					regular(&tmp, env, dollar_pos);
 				else if (dollar_pos != -1 && tmp->token[dollar_pos + 1] == '?')
 					dollar_question_mark(&tmp, dollar_pos, stat);
+				handle_index = new_handle_index(tmp->token, handle_index);
 			}
 			if (!handle_status)
 				break ;
