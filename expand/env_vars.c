@@ -6,23 +6,27 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/29 17:43:33 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 00:09:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-static int	needs_handling(char *str)
+static int	needs_handling(char *str, int index)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
+	if (index == 0)
+		i = index;
+	else
+		i = index + 1;
+	while (i < safe_strlen(str))
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 			return (QUOTE_HANDLE);
 		if (str[i] == '$' && str[i + 1])
 			return (ENV_VAR_HANDLE);
+		i++;
 	}
 	return (0);
 }
@@ -41,17 +45,19 @@ static int	find_dollar(char *str)
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 {
 	int			handle_status;
+	int			handle_index;
 	int			dollar_pos;
 	t_tokens	*tmp;
 
 	tmp = *tokens;
 	while (tmp->type != NEWL)
 	{
+		handle_index = 0;
 		while (1)
 		{
-			handle_status = needs_handling(tmp->token);
+			handle_status = needs_handling(tmp->token, handle_index);
 			if (handle_status == QUOTE_HANDLE)
-				handle_token(&tmp, env, stat);
+				handle_index = handle_token(&tmp, env, stat);
 			else if (handle_status == ENV_VAR_HANDLE)
 			{
 				dollar_pos = find_dollar(tmp->token);

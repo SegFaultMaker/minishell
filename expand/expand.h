@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 17:14:43 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:49:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int		calculate_len(char *old, int doll_pos, char *env_var, int *flag);
 int		the_rest_len(char *old_token, int start);
 
 //			Quotes
-void	handle_token(t_tokens **tokens, t_hash_table *env, int stat);
+int	handle_token(t_tokens **tokens, t_hash_table *env, int stat);
 
 #endif
