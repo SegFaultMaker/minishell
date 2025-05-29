@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 00:09:23 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 00:12:36 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 		{
 			handle_status = needs_handling(tmp->token, handle_index);
 			if (handle_status == QUOTE_HANDLE)
-				handle_index = handle_token(&tmp, env, stat);
+				handle_index = handle_token(&tmp, env, stat, handle_index);
 			else if (handle_status == ENV_VAR_HANDLE)
 			{
 				dollar_pos = find_dollar(tmp->token);

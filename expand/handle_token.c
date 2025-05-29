@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:24:49 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 23:49:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 00:13:09 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static void	remove_quotes(t_tokens **tokens, char quote)
 	(*tokens)->token = new;
 }
 
-int	handle_token(t_tokens **tokens, t_hash_table *env, int stat)
+int	handle_token(t_tokens **tokens, t_hash_table *env, int stat, int index)
 {
 	int		quote_start;
 	int		quote_end;
@@ -104,8 +104,8 @@ int	handle_token(t_tokens **tokens, t_hash_table *env, int stat)
 	char	quote;
 
 	dollar_pos = -1;
-	find_positions((*tokens)->token, &quote_start, &quote_end, &quote);
-	if (must_expand((*tokens)->token, quote_start, quote_end, &dollar_pos))
+	find_positions((*tokens)->token + index, &quote_start, &quote_end, &quote);
+	if (must_expand((*tokens)->token + index, quote_start, quote_end, &dollar_pos))
 	{
 		if (dollar_pos != -1  && (*tokens)->token[dollar_pos + 1] != '?')
 			regular(tokens, env, dollar_pos);
