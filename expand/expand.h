@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 15:10:35 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:14:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include "../minishell.h"
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
+
+# define QUOTE_HANDLE 1
+# define ENV_VAR_HANDLE 2
 
 //			Env vars
 void	dollar_question_mark(t_tokens **tokens, int doll_pos, int stat);
