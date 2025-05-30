@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_vars.c                                         :+:      :+:    :+:   */
+/*   expand_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 20:01:32 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 21:15:54 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	needs_handling(char *str, int index)
 
 static int	find_dollar(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -65,11 +65,24 @@ static int	new_handle_index(char *str, int index)
 	return (index);
 }
 
+static int	env_var_handle(
+	t_tokens **tokens, t_hash_table *env, int stat, int handle_index
+)
+{
+	int	dollar_pos;
+
+	dollar_pos = find_dollar((*tokens)->token);
+	if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] != '?')
+		regular(tokens, env, dollar_pos);
+	else if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] == '?')
+		dollar_question_mark(tokens, dollar_pos, stat);
+	return (new_handle_index((*tokens)->token, handle_index));
+}
+
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 {
 	int			handle_status;
 	int			handle_index;
-	int			dollar_pos;
 	t_tokens	*tmp;
 
 	tmp = *tokens;
@@ -80,16 +93,9 @@ void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 		{
 			handle_status = needs_handling(tmp->token, handle_index);
 			if (handle_status == QUOTE_HANDLE)
-				handle_index = handle_token(&tmp, env, stat, handle_index);
+				handle_index = quote_handle(&tmp, env, stat, handle_index);
 			else if (handle_status == ENV_VAR_HANDLE)
-			{
-				dollar_pos = find_dollar(tmp->token);
-				if (dollar_pos != -1  && tmp->token[dollar_pos + 1] != '?')
-					regular(&tmp, env, dollar_pos);
-				else if (dollar_pos != -1 && tmp->token[dollar_pos + 1] == '?')
-					dollar_question_mark(&tmp, dollar_pos, stat);
-				handle_index = new_handle_index(tmp->token, handle_index);
-			}
+				handle_index = env_var_handle(&tmp, env, stat, handle_index);
 			if (!handle_status)
 				break ;
 		}

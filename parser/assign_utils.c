@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   assign_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 11:29:51 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/08 11:44:23 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:58:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../main/minishell.h"
 
 t_tokens	*handle_first(t_tokens **tokens)
 {

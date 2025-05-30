@@ -13,20 +13,21 @@ INCLUDES = -I. -Ilibft
 
 OBJECTS_DIR = objs/
 
+MAIN_DIR = main/
 BUILTINS_DIR = builtins/
 ENVIRONMENT_DIR = environment/
 EXECUTE_DIR = execute/
 EXPAND_DIR = expand/
 PARSER_DIR = parser/
 
-MAIN_FILENAME = minishell init_signals minishell_utils
+MAIN_FILENAMES = $(addprefix $(MAIN_DIR), minishell init_signals minishell_utils)
 BUILTIN_FILENAMES = $(addprefix $(BUILTINS_DIR), cd echo env export_utils export pwd unset)
 ENVIRONMENT_FILENAMES = $(addprefix $(ENVIRONMENT_DIR), convert_to_strings create delete hashing init operations resize utils)
 EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs redir_operations)
-EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand env_vars env_var_utils handle_token)
+EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand_tokens env_var_handle env_var_utils quote_handle quote_utils)
 PARSER_FILNAMES = $(addprefix $(PARSER_DIR), assign_types assign_utils parser_utils parser syntax_check)
 
-FILENAMES = $(MAIN_FILENAME) $(BUILTIN_FILENAMES) $(ENVIRONMENT_FILENAMES) $(EXECUTE_FILENAMES) $(EXPAND_FILENAMES) $(PARSER_FILNAMES)
+FILENAMES = $(MAIN_FILENAMES) $(BUILTIN_FILENAMES) $(ENVIRONMENT_FILENAMES) $(EXECUTE_FILENAMES) $(EXPAND_FILENAMES) $(PARSER_FILNAMES)
 SOURCES = $(addsuffix .c, $(FILENAMES))
 OBJECTS = $(addprefix $(OBJECTS_DIR), $(addsuffix .o, $(notdir $(FILENAMES))))
 
@@ -35,7 +36,7 @@ LIBFT = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJECTS)
-	@echo "$(BLUE)Compiling $@...$(WHITE)"
+	@echo "$(YELLOW)Compiling $@...$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME) $(LIBFT) $(LDFLAGS)
 	@echo "$(GREEN)Done!$(WHITE)"
 	@clear
@@ -58,7 +59,7 @@ $(LIBFT):
 	@make -sC libft
 	@echo "$(GREEN)Done!$(WHITE)"
 
-$(OBJECTS_DIR)%.o: %.c
+$(OBJECTS_DIR)%.o: $(MAIN_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
 	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

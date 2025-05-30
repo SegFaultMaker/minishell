@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 00:12:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 21:57:47 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define EXPAND_H
 
 # include "../libft/libft.h"
-# include "../minishell.h"
+# include "../main/minishell.h"
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
 
@@ -31,6 +31,9 @@ int		calculate_len(char *old, int doll_pos, char *env_var, int *flag);
 int		the_rest_len(char *old_token, int start);
 
 //			Quotes
-int	handle_token(t_tokens **tokens, t_hash_table *env, int stat, int index);
+int		quote_handle(t_tokens **tokens, t_hash_table *env, int stat, int index);
+int		must_expand(char *str, int start, int end, int *doll_pos);
+int		find_new_end(char *str, int start, char quote);
+void	remove_quote_helper(char *str, char quote, char **new, int len);
 
 #endif

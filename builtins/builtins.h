@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/27 16:41:24 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:56:40 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define BUILTINS_H
 
 # include "../libft/libft.h"
-# include "../minishell.h"
+# include "../main/minishell.h"
 # include "../execute/execute.h"
 # include "../environment/environment.h"
 

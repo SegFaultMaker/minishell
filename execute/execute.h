@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 14:21:48 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:57:04 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <sys/wait.h>
 # include "../libft/libft.h"
-# include "../minishell.h"
+# include "../main/minishell.h"
 # include "../expand/expand.h"
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
