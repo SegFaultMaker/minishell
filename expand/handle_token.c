@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:24:49 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 00:13:09 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:51:54 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,17 @@ static void	check_positions(char *str, int *quote_start, int *quote_end, char *q
 static void	find_positions(char *str, int *quote_start, int *quote_end, char *quote)
 {
 	int		i;
+	int		stop;
 
 	i = -1;
+	stop = 0;
 	*quote_start = -1;
 	*quote_end = -1;
 	*quote = '\0';
 	while (str[++i])
 	{
+		if (stop)
+			break ;
 		if (!(*quote) && (str[i] == '\'' || str[i] == '\"'))
 		{
 			*quote = str[i];
@@ -56,6 +60,7 @@ static void	find_positions(char *str, int *quote_start, int *quote_end, char *qu
 				if (str[i] == *quote)
 				{
 					*quote_end = i;
+					stop = 1;
 					break ;
 				}
 		}
@@ -101,19 +106,24 @@ int	handle_token(t_tokens **tokens, t_hash_table *env, int stat, int index)
 	int		quote_start;
 	int		quote_end;
 	int		dollar_pos;
+	int		expand_status;
 	char	quote;
 
 	dollar_pos = -1;
 	find_positions((*tokens)->token + index, &quote_start, &quote_end, &quote);
-	if (must_expand((*tokens)->token + index, quote_start, quote_end, &dollar_pos))
+	expand_status = must_expand((*tokens)->token + index, quote_start, quote_end, &dollar_pos);
+	if (expand_status)
 	{
 		if (dollar_pos != -1  && (*tokens)->token[dollar_pos + 1] != '?')
 			regular(tokens, env, dollar_pos);
 		else if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] == '?')
 			dollar_question_mark(tokens, dollar_pos, stat);
+		quote_end = find_new_end((*tokens)->token, quote_start, quote);
 	}
-	quote_end = find_new_end((*tokens)->token, quote_start, quote);
 	if (quote && (*tokens)->token[quote_start] == quote && (*tokens)->token[quote_end] == quote)
+	{
 		remove_quotes(tokens, quote);
+		quote_end -= 2;
+	}
 	return (quote_end);
 }
