@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:24:49 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 14:51:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:42:05 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,17 @@ static int	must_expand(char *str, int start, int end, int *doll_pos)
 	return (0);
 }
 
-static void	check_positions(char *str, int *quote_start, int *quote_end, char *quote)
-{
-	if (*quote_start == -1 && *quote_end == -1)
-	{
-		*quote_start = 0;
-		*quote_end = ft_strlen(str) - 1;
-		*quote = '\0';
-	}
-}
-
 static void	find_positions(char *str, int *quote_start, int *quote_end, char *quote)
 {
 	int		i;
+	int		len;
 	int		stop;
 
-	i = -1;
+	i = *quote_start;
 	stop = 0;
-	*quote_start = -1;
-	*quote_end = -1;
 	*quote = '\0';
-	while (str[++i])
+	len = ft_strlen(str);
+	while (i < len)
 	{
 		if (stop)
 			break ;
@@ -64,8 +54,8 @@ static void	find_positions(char *str, int *quote_start, int *quote_end, char *qu
 					break ;
 				}
 		}
+		i++;
 	}
-	check_positions(str, quote_start, quote_end, quote);
 }
 
 static int	find_new_end(char *str, int start, char quote)
@@ -87,15 +77,30 @@ static void	remove_quotes(t_tokens **tokens, char quote)
 	int		i;
 	int		j;
 	int		len;
+	int		count;
 	char	*new;
 
-	i = -1;
+	i = 0;
 	j = 0;
+	count = 0;
 	len = ft_strlen((*tokens)->token) - 2;
 	new = malloc(len + 1);
-	while ((*tokens)->token[++i])
-		if ((*tokens)->token[i] != quote)
-			new[j++] = (*tokens)->token[i];
+	while ((*tokens)->token[i] && j < len)
+	{
+		if ((*tokens)->token[i] == quote)
+			count++;
+		if ((*tokens)->token[i] == quote && count > 2)
+		{
+			new[j] = (*tokens)->token[i];
+			j++;
+		}
+		else if ((*tokens)->token[i] != quote)
+		{
+			new[j] = (*tokens)->token[i];
+			j++;
+		}
+		i++;
+	}
 	new[len] = '\0';
 	free((*tokens)->token);
 	(*tokens)->token = new;
@@ -106,14 +111,14 @@ int	handle_token(t_tokens **tokens, t_hash_table *env, int stat, int index)
 	int		quote_start;
 	int		quote_end;
 	int		dollar_pos;
-	int		expand_status;
 	char	quote;
 
+	quote_start = index;
+	quote_end = index;
 	dollar_pos = -1;
-	find_positions((*tokens)->token + index, &quote_start, &quote_end, &quote);
-	expand_status = must_expand((*tokens)->token + index, quote_start, quote_end, &dollar_pos);
-	if (expand_status)
-	{
+	find_positions((*tokens)->token, &quote_start, &quote_end, &quote);
+	if (must_expand((*tokens)->token, quote_start, quote_end, &dollar_pos))
+	{		
 		if (dollar_pos != -1  && (*tokens)->token[dollar_pos + 1] != '?')
 			regular(tokens, env, dollar_pos);
 		else if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] == '?')
