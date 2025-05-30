@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:24:49 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 20:42:05 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/30 20:46:28 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	handle_token(t_tokens **tokens, t_hash_table *env, int stat, int index)
 	quote_end = index;
 	dollar_pos = -1;
 	find_positions((*tokens)->token, &quote_start, &quote_end, &quote);
-	if (must_expand((*tokens)->token, quote_start, quote_end, &dollar_pos))
-	{		
+	while (must_expand((*tokens)->token, quote_start, quote_end, &dollar_pos))
+	{
 		if (dollar_pos != -1  && (*tokens)->token[dollar_pos + 1] != '?')
 			regular(tokens, env, dollar_pos);
 		else if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] == '?')
