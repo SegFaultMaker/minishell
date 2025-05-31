@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 21:57:47 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/31 16:55:46 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,33 @@
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
 
-# define QUOTE_HANDLE 1
-# define ENV_VAR_HANDLE 2
+typedef struct s_data
+{
+	int		i;
+	int		j;
+	int		len;
+	int		stat;
+	int		quote;
+	char	*token;
+}	t_data;
 
-//			Env vars
-void	dollar_question_mark(t_tokens **tokens, int doll_pos, int stat);
-void	regular(t_tokens **tokens, t_hash_table *env, int doll_pos);
+//			Expand
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat);
-void	add_the_rest(t_tokens **tokens, int doll_pos, char **new, int start);
-int		safe_strlen(char *str);
-int		calculate_len(char *old, int doll_pos, char *env_var, int *flag);
-int		the_rest_len(char *old_token, int start);
 
-//			Quotes
-int		quote_handle(t_tokens **tokens, t_hash_table *env, int stat, int index);
-int		must_expand(char *str, int start, int end, int *doll_pos);
-int		find_new_end(char *str, int start, char quote);
-void	remove_quote_helper(char *str, char quote, char **new, int len);
+//			Expand utils
+char	*find_var(char *str, t_hash_table *env);
+int		safe_strlen(char *str);
+int		quote_start(char *token, int *quote, int *i);
+int		quote_end(char *token, int *quote, int *i);
+
+//			Final len utils
+int		dollar_question_mark_len(int *i, int stat);
+int		env_var_len(char *token, int *i, t_hash_table *env);
+int		initialize_vars(int *i, int *quote, int *final_len, char *token);
+
+//			Build utils
+void	handle_dollar_question_mark(char **result, int *i, int *j, int stat);
+void	handle_env_var(char **result, t_data *data, t_hash_table *env);
+t_data	*init_data(char *token, int stat);
 
 #endif

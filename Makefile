@@ -24,7 +24,7 @@ MAIN_FILENAMES = $(addprefix $(MAIN_DIR), minishell init_signals minishell_utils
 BUILTIN_FILENAMES = $(addprefix $(BUILTINS_DIR), cd echo env export_utils export pwd unset)
 ENVIRONMENT_FILENAMES = $(addprefix $(ENVIRONMENT_DIR), convert_to_strings create delete hashing init operations resize utils)
 EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs redir_operations)
-EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand_tokens env_var_handle env_var_utils quote_handle quote_utils)
+EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand_tokens expand_utils final_len_utils build_utils)
 PARSER_FILNAMES = $(addprefix $(PARSER_DIR), assign_types assign_utils parser_utils parser syntax_check)
 
 FILENAMES = $(MAIN_FILENAMES) $(BUILTIN_FILENAMES) $(ENVIRONMENT_FILENAMES) $(EXECUTE_FILENAMES) $(EXPAND_FILENAMES) $(PARSER_FILNAMES)
