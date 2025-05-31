@@ -6,99 +6,117 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 21:15:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/31 14:26:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-static int	needs_handling(char *str, int index)
-{
-	int	i;
-	int	len;
+char	*find_var(char *str, t_hash_table *env);
 
-	if (index == 0)
-		i = index;
-	else
-		i = index + 1;
-	len = safe_strlen(str);
-	while (i < len)
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return (QUOTE_HANDLE);
-		if (str[i] == '$' && str[i + 1])
-			return (ENV_VAR_HANDLE);
-		i++;
-	}
-	return (0);
+char *remove_and_expand_quotes(char *token, t_hash_table *env, int stat)
+{
+    int i = 0, len = safe_strlen(token);
+    int quote = 0;
+    int final_len = 0;
+
+    // FIRST PASS: calculate needed length
+    while (i < len)
+    {
+        if (!quote && (token[i] == '\'' || token[i] == '"'))
+        {
+            quote = token[i++];
+            continue;
+        }
+        else if (quote && token[i] == quote)
+        {
+            quote = 0;
+            i++;
+            continue;
+        }
+        if (token[i] == '$' && token[i + 1] && quote != '\'')
+        {
+            if (token[i + 1] == '?')
+            {
+                char *status = ft_itoa(stat);
+                final_len += safe_strlen(status);
+                free(status);
+                i += 2;
+            }
+            else
+            {
+                char *env_val = find_var(token + i + 1, env);
+                final_len += safe_strlen(env_val);
+                i++; // Skip $
+                while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
+                    i++;
+            }
+            continue;
+        }
+        final_len++;
+        i++;
+    }
+
+    // Allocate exact memory (+1 for null-terminator)
+    char *result = malloc(final_len + 1);
+
+    // SECOND PASS: build the actual result
+    i = 0;
+    int j = 0;
+    quote = 0;
+    while (i < len)
+    {
+        if (!quote && (token[i] == '\'' || token[i] == '"'))
+        {
+            quote = token[i++];
+            continue;
+        }
+        else if (quote && token[i] == quote)
+        {
+            quote = 0;
+            i++;
+            continue;
+        }
+        if (token[i] == '$' && token[i + 1] && quote != '\'')
+        {
+            if (token[i + 1] == '?')
+            {
+                char *status = ft_itoa(stat);
+                int slen = safe_strlen(status);
+                ft_memmove(result + j, status, slen);
+                j += slen;
+                free(status);
+                i += 2;
+            }
+            else
+            {
+                char *env_val = find_var(token + i + 1, env);
+                int elen = safe_strlen(env_val);
+                ft_memmove(result + j, env_val, elen);
+                j += elen;
+                i++; // Skip $
+                while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
+                    i++;
+            }
+            continue;
+        }
+        result[j++] = token[i++];
+    }
+    result[j] = '\0';
+
+    return result;
 }
 
-static int	find_dollar(char *str)
+
+void expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 {
-	int	i;
+    t_tokens *tmp = *tokens;
 
-	i = -1;
-	while (str[++i])
-		if (str[i] == '$' && str[i + 1])
-			return (i);
-	return (-1);
-}
-
-static int	new_handle_index(char *str, int index)
-{
-	int	i;
-	int	len;
-
-	if (index == 0)
-		i = index;
-	else
-		i = index + 1;
-	len = safe_strlen(str);
-	while (i < len)
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return (index);
-		if (str[i] == '$' && str[i + 1])
-			return (index);
-		i++;
-	}
-	return (index);
-}
-
-static int	env_var_handle(
-	t_tokens **tokens, t_hash_table *env, int stat, int handle_index
-)
-{
-	int	dollar_pos;
-
-	dollar_pos = find_dollar((*tokens)->token);
-	if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] != '?')
-		regular(tokens, env, dollar_pos);
-	else if (dollar_pos != -1 && (*tokens)->token[dollar_pos + 1] == '?')
-		dollar_question_mark(tokens, dollar_pos, stat);
-	return (new_handle_index((*tokens)->token, handle_index));
-}
-
-void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
-{
-	int			handle_status;
-	int			handle_index;
-	t_tokens	*tmp;
-
-	tmp = *tokens;
-	while (tmp->type != NEWL)
-	{
-		handle_index = 0;
-		while (1)
-		{
-			handle_status = needs_handling(tmp->token, handle_index);
-			if (handle_status == QUOTE_HANDLE)
-				handle_index = quote_handle(&tmp, env, stat, handle_index);
-			else if (handle_status == ENV_VAR_HANDLE)
-				handle_index = env_var_handle(&tmp, env, stat, handle_index);
-			if (!handle_status)
-				break ;
-		}
-		tmp = tmp->next;
-	}
+    while (tmp->type != NEWL)
+    {
+        char *new_token = remove_and_expand_quotes(tmp->token, env, stat);
+        free(tmp->token);
+        tmp->token = new_token;
+        tmp = tmp->next;
+    }
 }

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   env_var_handle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:13:48 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 17:36:42 by armarake         ###   ########.fr       */
+/*   Updated: 2025/05/31 14:15:20 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-static char	*find_var(char *str, t_hash_table *env)
+char	*find_var(char *str, t_hash_table *env)
 {
 	int		i;
 	char	*var;
