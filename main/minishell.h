@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/27 14:49:33 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:22:36 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,9 @@ typedef enum e_types
 typedef struct s_tokens
 {
 	char			*token;
-	t_types			type;			
+	t_types			type;		
 	struct s_tokens	*next;
 }	t_tokens;
-
-typedef struct s_commands
-{
-	t_tokens			*first;
-	t_tokens			*second;
-	struct s_commands	*next;
-}	t_commands;
 
 //				Init
 void		init_signals(void);

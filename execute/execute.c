@@ -6,21 +6,27 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/29 14:51:11 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:14:51 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
+// static int	execute_all(t_commands *commands, t_tokens *tokens, t_hash_table *env)
+// {
+// 	(void)commands;
+// 	(void)tokens;
+// 	(void)env;
+// 	return (0);
+// }
+
 int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 {
-//	int	pipes;
+	// t_commands	*commands;
 
 	expand_tokens(&tokens, env, stat);
-/*	pipes = check_pipes(tokens);
-	if (pipes)
-		stat = execute_with_pipes(tokens, env);
-	else*/
-		stat = execute_no_pipes(tokens, env);
+	// commands = tokens_to_commands(tokens);
+	// stat = execute_all(commands, tokens, env);
+	stat = execute_no_pipes(tokens, env);
 	return (stat);
 }

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 20:57:04 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:07:54 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,20 @@
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
 
+typedef struct s_commands
+{
+	char				*cmd;
+	char				**args;
+	int					input;
+	int					output;
+	struct s_commands	*next;
+}	t_commands;
+
 //			executes
 int		execute_no_pipes(t_tokens *cmd, t_hash_table *env);
-int		execute_with_pipes(t_tokens *tokens, t_hash_table *envp);
+
+//			commands
+t_commands	*tokens_to_commands(t_tokens *tokens);
 
 //			handle redirs
 int		do_redir(t_tokens *tokens, int *saved_in, int *saved_out);
@@ -39,7 +50,5 @@ int		quit_with_error(int flag, char *target, char *description, int stat);
 int		define_type(t_tokens *tokens);
 void	free_matrix(char **matrix);
 char	*find_cmd(char *cmd, char **envp);
-int		get_commands(t_tokens *tokens);
-char	***get_argvs(t_tokens *tokens, int i);
 
 #endif
