@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:13:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 13:47:53 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:21:57 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,38 +24,32 @@ static void	generate_error(t_tokens *tmp)
 	errno = 2;
 }
 
-// static int	check_quotes(char *str)
-// {
-// 	int	dquote;
-// 	int	squote;
+static int	check_quotes(char *str)
+{
+	int	dquote;
+ 	int	squote;
 
-// 	dquote = 0;
-// 	squote = 0;
-// 	while (*str)
-// 	{
-// 		if (*str == '\"')
-// 		{
-// 			str++;
-// 			while (*str && *str != '\"')
-// 				str++;
-// 			dquote++;
-// 		}
-// 		else if (*str == '\'')
-// 		{
-// 			str++;
-// 			while (*str && *str != '\"')
-// 				str++;
-// 			squote++;
-// 		}
-// 		str++;
-// 	}
-// 	if ((dquote % 2 != 0) || (squote % 2 != 0))
-// 	{
-// 		ft_putendl_fd("minishell: syntax: Invalid quotes", 2);
-// 		return (0);
-// 	}
-// 	return (1);
-// }
+ 	dquote = 0;
+ 	squote = 0;
+ 	while (*str)
+ 	{
+		if (*str == '\"' && !dquote)
+			dquote = 1;
+		else if (*str == '\"' && dquote)
+			dquote = 0;
+		if (*str == '\'' && !squote)
+			squote = 1;
+		else if (*str == '\'' && squote)
+			squote = 0;
+		str++;
+ 	}
+ 	if (dquote || squote)
+ 	{
+ 		ft_putendl_fd("minishell: syntax: Invalid quotes", 2);
+ 		return (0);
+ 	}
+ 	return (1);
+}
 
 int	syntax_check(t_tokens *tmp)
 {
@@ -66,8 +60,8 @@ int	syntax_check(t_tokens *tmp)
 	}
 	while (tmp)
 	{
-		// if (!check_quotes(tmp->token))
-		// 	return (0);
+		if (!check_quotes(tmp->token))
+			return (0);
 		if (is_redir_pipe(tmp->type))
 		{
 			if (is_redir_pipe(tmp->next->type))
