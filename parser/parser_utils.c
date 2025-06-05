@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 20:58:21 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:48:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main/minishell.h"
+#include "parser.h"
 
 int	is_redir_pipe(t_types type)
 {
@@ -29,9 +29,7 @@ int	ft_isquote(char c)
 int	check_redir_pipe_operator(char *token, int regime)
 {
 	if (!ft_strncmp(token, "<<", 2)
-		|| !ft_strncmp(token, ">>", 2)
-		|| !ft_strncmp(token, "||", 2)
-		|| !ft_strncmp(token, "&&", 2))
+		|| !ft_strncmp(token, ">>", 2))
 		return (2);
 	else if (!ft_strncmp(token, "<", 1)
 		|| !ft_strncmp(token, ">", 1)
@@ -43,9 +41,7 @@ int	check_redir_pipe_operator(char *token, int regime)
 			token++;
 		token--;
 		if (!ft_strncmp(token, "<<", 2)
-			|| !ft_strncmp(token, ">>", 2)
-			|| !ft_strncmp(token, "||", 2)
-			|| !ft_strncmp(token, "&&", 2))
+			|| !ft_strncmp(token, ">>", 2))
 			return (-2);
 		else if (!ft_strncmp(token, "<", 1)
 			|| !ft_strncmp(token, ">", 1)
@@ -81,6 +77,8 @@ t_tokens	*new_token(char *content)
 	if (!node)
 		return (NULL);
 	node->token = content;
+	node->input = STDIN_FILENO;
+	node->output = STDOUT_FILENO;
 	node->next = NULL;
 	return (node);
 }

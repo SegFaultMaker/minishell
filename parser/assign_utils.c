@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 11:29:51 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 20:58:16 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:48:06 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main/minishell.h"
+#include "parser.h"
 
 t_tokens	*handle_first(t_tokens **tokens)
 {

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/04 19:07:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:00:42 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,10 @@
 # include "../expand/expand.h"
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
-
-typedef struct s_commands
-{
-	char				*cmd;
-	char				**args;
-	int					input;
-	int					output;
-	struct s_commands	*next;
-}	t_commands;
+# include "../parser/parser.h"
 
 //			executes
 int		execute_no_pipes(t_tokens *cmd, t_hash_table *env);
-
-//			commands
-t_commands	*tokens_to_commands(t_tokens *tokens);
 
 //			handle redirs
 int		do_redir(t_tokens *tokens, int *saved_in, int *saved_out);

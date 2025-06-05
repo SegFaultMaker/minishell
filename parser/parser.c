@@ -10,7 +10,7 @@
 /*																			  */
 /* ************************************************************************** */
 
-#include "../main/minishell.h"
+#include "parser.h"
 
 static int	single_quotes(char **str, char **start)
 {

@@ -9,7 +9,7 @@ WHITE = \033[0m
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 LDFLAGS = -lreadline
-INCLUDES = -I. -Ilibft
+INCLUDES = -Ilibft -Iparser -Ibuiltins -Ienvironment -Iexecute -Iexpand -Imain
 
 OBJECTS_DIR = objs/
 
@@ -23,7 +23,7 @@ PARSER_DIR = parser/
 MAIN_FILENAMES = $(addprefix $(MAIN_DIR), minishell init_signals minishell_utils)
 BUILTIN_FILENAMES = $(addprefix $(BUILTINS_DIR), cd echo env export_utils export pwd unset)
 ENVIRONMENT_FILENAMES = $(addprefix $(ENVIRONMENT_DIR), convert_to_strings create delete hashing init operations resize utils)
-EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs redir_operations commands)
+EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), execute_no_pipes execute_utils execute find_cmd handle_redirs redir_operations)
 EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand_tokens expand_utils final_len_utils build_utils)
 PARSER_FILNAMES = $(addprefix $(PARSER_DIR), assign_types assign_utils parser_utils parser syntax_check)
 
@@ -59,6 +59,11 @@ $(LIBFT):
 	@make -sC libft
 	@echo "$(GREEN)Done!$(WHITE)"
 
+$(OBJECTS_DIR)%.o: $(PARSER_DIR)%.c
+	@mkdir -p $(OBJECTS_DIR)
+	@echo "$(BLUE)Compiling $@$(WHITE)"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
 $(OBJECTS_DIR)%.o: $(MAIN_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
 	@echo "$(BLUE)Compiling $@$(WHITE)"
@@ -80,11 +85,6 @@ $(OBJECTS_DIR)%.o: $(EXPAND_DIR)%.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJECTS_DIR)%.o: $(EXECUTE_DIR)%.c
-	@mkdir -p $(OBJECTS_DIR)
-	@echo "$(BLUE)Compiling $@$(WHITE)"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJECTS_DIR)%.o: $(PARSER_DIR)%.c
 	@mkdir -p $(OBJECTS_DIR)
 	@echo "$(BLUE)Compiling $@$(WHITE)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

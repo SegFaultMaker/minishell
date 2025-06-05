@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/30 20:56:40 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:49:20 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include "../main/minishell.h"
 # include "../execute/execute.h"
+# include "../parser/parser.h"
 # include "../environment/environment.h"
 
 # define ADD_MODE INT_MAX

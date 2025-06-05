@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/03 16:09:23 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:48:11 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main/minishell.h"
+#include "parser.h"
 
 t_types	get_type(char *token)
 {
@@ -35,8 +35,6 @@ t_types	get_type(char *token)
 			return (APPEND);
 		else if (!ft_strcmp(token, "|"))
 			return (PIPE);
-		else if (!ft_strcmp(token, "&&") || !ft_strcmp(token, "||"))
-			return (OPERATOR);
 	}
 	return (COMMAND);
 }
@@ -58,8 +56,7 @@ static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
 		tmp->type = NONE;
 		return (tmp);
 	}
-	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != OPERATOR
-		&& tmp->type != NEWL)
+	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != NEWL)
 	{
 		tmp->type = ARGUMENT;
 		tmp = tmp->next;
@@ -133,8 +130,6 @@ void	assign_types(t_tokens **tokens)
 			tmp = assign_as_arg(&tmp, 0);
 		if (!tmp)
 			return ;
-		if (tmp->type == OPERATOR)
-			tmp = tmp->next;
 		else
 		{
 			tmp = handle_redir_pipe(&tmp);

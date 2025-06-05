@@ -6,11 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:13:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/30 20:58:31 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:47:53 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main/minishell.h"
+#include "parser.h"
 
 static void	generate_error(t_tokens *tmp)
 {
@@ -59,7 +59,7 @@ static void	generate_error(t_tokens *tmp)
 
 int	syntax_check(t_tokens *tmp)
 {
-	if (tmp->type == PIPE || tmp->type == OPERATOR)
+	if (tmp->type == PIPE)
 	{
 		generate_error(tmp);
 		return (0);
@@ -68,7 +68,7 @@ int	syntax_check(t_tokens *tmp)
 	{
 		// if (!check_quotes(tmp->token))
 		// 	return (0);
-		if (is_redir_pipe(tmp->type) || tmp->type == OPERATOR)
+		if (is_redir_pipe(tmp->type))
 		{
 			if (is_redir_pipe(tmp->next->type))
 			{

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/31 16:55:46 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:46:00 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../main/minishell.h"
 # include "../builtins/builtins.h"
 # include "../environment/environment.h"
+# include "../parser/parser.h"
 
 typedef struct s_data
 {

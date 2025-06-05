@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/04 18:22:36 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:12:24 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 # include <signal.h>
 # include <limits.h>
 # include <errno.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "./libft/libft.h"
-# include "./environment/environment.h"
+# include "../libft/libft.h"
+# include "../environment/environment.h"
+# include "../parser/parser.h"
 
 //			Error MSGs
 # define SYNTAX_ERR "minishell: syntax error near unexpected token "
@@ -35,29 +37,7 @@
 # define BREAK_LOOP 1
 # define CONTINUE_LOOP 2
 
-typedef enum e_types
-{
-	NONE,
-	BUILTIN,
-	COMMAND,
-	ARGUMENT,
-	PIPE,
-	INPUT,
-	OUTPUT,
-	HERE_DOC,
-	APPEND,
-	FILE_NAME,
-	LIMITER,
-	OPERATOR,
-	NEWL
-}	t_types;
-
-typedef struct s_tokens
-{
-	char			*token;
-	t_types			type;		
-	struct s_tokens	*next;
-}	t_tokens;
+typedef struct s_tokens t_tokens;
 
 //				Init
 void		init_signals(void);
@@ -67,18 +47,6 @@ void		start_shell(t_hash_table *environment);
 
 //				Execution
 int			execute(t_tokens *tokens, t_hash_table *env, int stat);
-
-//				Parser
-t_tokens	*parser(char *str);
-t_tokens	*new_token(char *content);
-void		assign_types(t_tokens **tokens);
-void		free_tokens(t_tokens **tokens);
-int			syntax_check(t_tokens *tmp);
-int			ft_isquote(char c);
-int			check_redir_pipe_operator(char *token, int regime);
-int			is_redir_pipe(t_types type);
-t_types		get_type(char *token);
-t_tokens	*handle_first(t_tokens **tokens);
 
 //				Utils
 char		*read_input(void);
