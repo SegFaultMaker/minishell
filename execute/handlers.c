@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 17:34:57 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:10:22 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,7 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 {
 	pid_t		pid;
 	int			res;
-	int			saved_in;
-	int			saved_out;
 
-	saved_in = INT_MIN;
-	saved_out = INT_MIN;
 	res = 0;
 	pid = fork();
 	if (pid == -1)
@@ -28,9 +24,15 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 	if (pid == 0)
 	{
 		if (cmd->input != STDIN_FILENO)
+		{
 			dup2(cmd->input, STDIN_FILENO);
-		if (cmd->output != STDIN_FILENO)
-			dup2(cmd->output, STDIN_FILENO);
+			close(cmd->input);
+		}
+		if (cmd->output != STDOUT_FILENO)
+		{	
+			dup2(cmd->output, STDOUT_FILENO);
+			close(cmd->output);
+		}
 		if (execve(path, argv, envp) == -1)
 			quit_with_error(0, NULL, NULL, errno);
 	}
