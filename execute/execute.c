@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 16:43:36 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:53:24 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,22 @@ int **allocate_pipe_fds(int pipe_count)
 	return (result);
 }
 
+int	execute_all(t_tokens *tokens, t_hash_table *env)
+{
+	int	stat;
+
+	stat = 0;
+	while (tokens)
+	{
+		if (define_type(tokens) == COMMAND)
+			stat = handle_binary(tokens, env);
+		else if (define_type(tokens) == BUILTIN)
+			stat = handle_builtin(tokens, env);
+		tokens = tokens->next;
+	}
+	return (stat);
+}
+
 int execute(t_tokens *tokens, t_hash_table *env, int stat)
 {
 	int **pipe_fds;
@@ -112,7 +128,7 @@ int execute(t_tokens *tokens, t_hash_table *env, int stat)
 	if (!pipe_fds)
 		return (quit_with_error(1, "pipes", "pipe allocation error", 1));
 	do_redirections(&tokens, pipe_fds);
-	// stat = execute_all(tokens, env);
+	stat = execute_all(tokens, env);
 	free_pipes(pipe_fds);
 	return (stat);
 }

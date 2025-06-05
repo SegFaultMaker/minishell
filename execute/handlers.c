@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_no_pipes.c                                 :+:      :+:    :+:   */
+/*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 16:38:04 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:52:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static int	safe_execve(t_tokens *tmp, char *path, char **argv, char **envp)
+static int	safe_execve(char *path, char **argv, char **envp)
 {
 	pid_t		pid;
 	int			res;
@@ -27,8 +27,6 @@ static int	safe_execve(t_tokens *tmp, char *path, char **argv, char **envp)
 		return (quit_with_error(0, "fork", NULL, errno));
 	if (pid == 0)
 	{
-		if (do_redir(tmp, &saved_in, &saved_out) != 0)
-			return (errno);
 		if (execve(path, argv, envp) == -1)
 			quit_with_error(0, NULL, NULL, errno);
 	}
@@ -54,27 +52,20 @@ static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat)
 		*stat = -1;
 }
 
-static int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
+int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 {
 	int			stat;
-	int			saved_in;
-	int			saved_out;
 	t_tokens	*temp;
 
-	saved_in = INT_MIN;
-	saved_out = INT_MIN;
 	stat = 0;
 	temp = tokens;
-	if (do_redir(temp, &saved_in, &saved_out) != 0)
-		return (errno);
 	while (tokens->type != BUILTIN)
 		tokens = tokens->next;
 	execute_functions(tokens, envp, &stat);
-	undo_redir(saved_in, saved_out);
 	return (stat);
 }
 
-static int	handle_binary(t_tokens *cmd, t_hash_table *env)
+int	handle_binary(t_tokens *cmd, t_hash_table *env)
 {
 	char	**argv;
 	char	**envp;
@@ -92,7 +83,7 @@ static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 		free_matrix(envp);
 		return (127);
 	}
-	res = safe_execve(cmd, full_path, argv, envp);
+	res = safe_execve(full_path, argv, envp);
 	free_matrix(argv);
 	free_matrix(envp);
 	if (full_path)
