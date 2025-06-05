@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 19:08:50 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:13:54 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void do_redirections(t_tokens **tokens, int **pipe_fds)
 	
 	int i;
 
-	tmp = *tokens;
 	i = 0;
 	cmd = NULL;
+	tmp = *tokens;
 	while (tmp->type != NEWL)
 	{
 		if (!cmd)

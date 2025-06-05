@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 19:10:22 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,30 @@ static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat)
 int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 {
 	int			stat;
+	int			saved_in;
+	int			saved_out;
 	t_tokens	*temp;
 
 	stat = 0;
 	temp = tokens;
+	saved_in = INT_MIN;
+	saved_out = INT_MIN;
 	while (tokens->type != BUILTIN)
 		tokens = tokens->next;
+	if (tokens->input != STDIN_FILENO)
+	{
+		saved_in = dup(STDIN_FILENO);
+		dup2(tokens->input, STDIN_FILENO);
+		close(tokens->input);
+	}
+	if (tokens->output != STDOUT_FILENO)
+	{
+		saved_out = dup(STDOUT_FILENO);
+		dup2(tokens->output, STDOUT_FILENO);
+		close(tokens->output);
+	}
 	execute_functions(tokens, envp, &stat);
-	return (stat);
+	return (undo_builtin_redirs(saved_in, saved_out), stat);
 }
 
 int	handle_binary(t_tokens *cmd, t_hash_table *env)

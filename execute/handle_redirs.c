@@ -6,13 +6,13 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 16:20:56 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-void	undo_redir(int saved_in, int saved_out)
+void	undo_builtin_redirs(int saved_in, int saved_out)
 {
 	if (saved_in != INT_MIN)
 	{

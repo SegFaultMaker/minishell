@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/05 16:51:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:23:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		handle_builtin(t_tokens *tokens, t_hash_table *envp);
 
 //			handle redirs
 int		do_redir(t_tokens *tokens, int *saved_in, int *saved_out);
-void	undo_redir(int saved_in, int saved_out);
+void	undo_builtin_redirs(int saved_in, int saved_out);
 int		except_here_doc(t_tokens *tokens, int *saved_in, int *saved_out);
 int		open_infile(char *filename);
 int		open_outfile(char *filename, int mode);
