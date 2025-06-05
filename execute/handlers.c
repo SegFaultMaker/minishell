@@ -6,13 +6,13 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 16:52:23 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:34:57 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static int	safe_execve(char *path, char **argv, char **envp)
+static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 {
 	pid_t		pid;
 	int			res;
@@ -27,6 +27,10 @@ static int	safe_execve(char *path, char **argv, char **envp)
 		return (quit_with_error(0, "fork", NULL, errno));
 	if (pid == 0)
 	{
+		if (cmd->input != STDIN_FILENO)
+			dup2(cmd->input, STDIN_FILENO);
+		if (cmd->output != STDIN_FILENO)
+			dup2(cmd->output, STDIN_FILENO);
 		if (execve(path, argv, envp) == -1)
 			quit_with_error(0, NULL, NULL, errno);
 	}
@@ -83,7 +87,7 @@ int	handle_binary(t_tokens *cmd, t_hash_table *env)
 		free_matrix(envp);
 		return (127);
 	}
-	res = safe_execve(full_path, argv, envp);
+	res = safe_execve(cmd, full_path, argv, envp);
 	free_matrix(argv);
 	free_matrix(envp);
 	if (full_path)

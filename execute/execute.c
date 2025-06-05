@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 16:53:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:38:38 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void do_redirections(t_tokens **tokens, int **pipe_fds)
 		}
 		else if (tmp->type == PIPE)
 		{
-			if (cmd->input != STDIN_FILENO)
+			if (cmd->input == STDIN_FILENO)
 				dup2(pipe_fds[i][0], cmd->input);
-			if (cmd->output != STDOUT_FILENO)
+			if (cmd->output == STDOUT_FILENO)
 				dup2(pipe_fds[i][1], cmd->output);
 			close(pipe_fds[i][0]);
 			close(pipe_fds[i][1]);

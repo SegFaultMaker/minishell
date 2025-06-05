@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 13:48:11 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:51:00 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,7 @@ static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
 		tmp = tmp->next;
 	tmp->type = get_type(tmp->token);
 	if (is_redir_pipe(tmp->type))
-	{
-		tmp->type = NONE;
 		return (tmp);
-	}
 	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != NEWL)
 	{
 		tmp->type = ARGUMENT;
@@ -133,7 +130,7 @@ void	assign_types(t_tokens **tokens)
 		else
 		{
 			tmp = handle_redir_pipe(&tmp);
-			if (tmp && tmp->type != NONE)
+			if (tmp)
 				tmp = tmp->next;
 		}
 	}

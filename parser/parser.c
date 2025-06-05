@@ -177,8 +177,6 @@ t_tokens	*parser(char *str)
 // 			ft_printf("FILE_NAME\n");
 // 		else if (tmp->type == LIMITER)
 // 			ft_printf("LIMITER\n");
-// 		else if (tmp->type == OPERATOR)
-// 			ft_printf("OPERATOR\n");
 // 		else if (tmp->type == NONE)
 // 			ft_printf("NONE\n");
 // 		else
