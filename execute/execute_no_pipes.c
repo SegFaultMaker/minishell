@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/04 19:13:21 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:38:04 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,26 +98,4 @@ static int	handle_binary(t_tokens *cmd, t_hash_table *env)
 	if (full_path)
 		free(full_path);
 	return (res);
-}
-
-int	execute_no_pipes(t_tokens *tokens, t_hash_table *env)
-{
-	int			stat;
-	int			saved_in;
-	int			saved_out;
-
-	saved_in = INT_MIN;
-	saved_out = INT_MIN;
-	stat = 0;
-	if (define_type(tokens) == BUILTIN)
-		return (handle_builtin(tokens, env));
-	else if (define_type(tokens) == COMMAND)
-		return (handle_binary(tokens, env));
-	else
-	{
-		if (do_redir(tokens, &saved_in, &saved_out) != 0)
-			return (errno);
-		undo_redir(saved_in, saved_out);
-	}
-	return (stat);
 }

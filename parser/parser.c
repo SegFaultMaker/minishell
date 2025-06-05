@@ -130,10 +130,7 @@ t_tokens	*parser(char *str)
 	current->next->type = NEWL;
 	assign_types(&head);
 	if (!syntax_check(head))
-	{
-		free_tokens(&head);
-		return (NULL);
-	}
+		return (free_tokens(&head), NULL);
 	return (head);
 }
 

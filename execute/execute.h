@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/05 14:00:42 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:20:42 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	undo_redir(int saved_in, int saved_out);
 int		except_here_doc(t_tokens *tokens, int *saved_in, int *saved_out);
 int		open_infile(char *filename);
 int		open_outfile(char *filename, int mode);
-void	here_doc(t_tokens *tokens);
+void	here_doc(t_tokens *tokens, int fd);
 
 //			utils
 char	**tokens_to_strings(t_tokens *cmd);

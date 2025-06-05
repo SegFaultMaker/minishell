@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/21 15:48:59 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:20:56 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	free_values(char *temp, char *input)
 	input = NULL;
 }
 
-void	here_doc(t_tokens *tokens)
+void	here_doc(t_tokens *tokens, int fd)
 {
 	char	*input;
 	char	*temp;
@@ -83,23 +83,6 @@ void	here_doc(t_tokens *tokens)
 	if (input)
 		free(input);
 	get_next_line(-1);
+	write(fd, res, ft_strlen(res));
 	free(res);
-}
-
-int	do_redir(t_tokens *tokens, int *saved_in, int *saved_out)
-{
-	while (tokens)
-	{
-		if (tokens->type == OUTPUT || tokens->type == APPEND
-			|| tokens->type == INPUT)
-		{
-			errno = except_here_doc(tokens, saved_in, saved_out);
-			if (errno)
-				return (errno);
-		}
-		if (tokens->type == HERE_DOC)
-			here_doc(tokens);
-		tokens = tokens->next;
-	}
-	return (0);
 }
