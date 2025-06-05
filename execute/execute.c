@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 19:13:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:49:14 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ int	execute_all(t_tokens *tokens, t_hash_table *env)
 	stat = 0;
 	while (tokens)
 	{
-		if (define_type(tokens) == COMMAND)
+		if (tokens->type == COMMAND)
 			stat = handle_binary(tokens, env);
-		else if (define_type(tokens) == BUILTIN)
+		else if (tokens->type == BUILTIN)
 			stat = handle_builtin(tokens, env);
 		tokens = tokens->next;
 	}

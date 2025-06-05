@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 13:57:40 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:52:59 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,6 @@ int	check_pipes(t_tokens *tokens)
 		tokens = tokens->next;
 	}
 	return (pipe_count);
-}
-
-int	define_type(t_tokens *tokens)
-{
-	while (tokens)
-	{
-		if (tokens->type == BUILTIN)
-			return (BUILTIN);
-		if (tokens->type == COMMAND)
-			return (COMMAND);
-		tokens = tokens->next;
-	}
-	return (NONE);
 }
 
 int	quit_with_error(int flag, char *target, char *description, int stat)
