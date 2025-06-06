@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/05 20:52:59 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 23:09:42 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,17 @@ void	free_matrix(char **matrix)
 	}
 	free(matrix);
 	matrix = NULL;
+}
+
+t_tokens	*find_executable(t_tokens *current)
+{
+	t_tokens	*tmp;
+
+	tmp = current;
+	while (tmp->type != NEWL && tmp->type != PIPE)
+	{
+		if (tmp->type == COMMAND || tmp->type == BUILTIN)
+			return (tmp);
+	}
+	return (NULL);
 }

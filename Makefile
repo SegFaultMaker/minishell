@@ -23,7 +23,7 @@ PARSER_DIR = parser/
 MAIN_FILENAMES = $(addprefix $(MAIN_DIR), minishell init_signals minishell_utils)
 BUILTIN_FILENAMES = $(addprefix $(BUILTINS_DIR), cd echo env export_utils export pwd unset)
 ENVIRONMENT_FILENAMES = $(addprefix $(ENVIRONMENT_DIR), convert_to_strings create delete hashing init operations resize utils)
-EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), handlers execute_utils execute find_cmd handle_redirs redir_operations)
+EXECUTE_FILENAMES = $(addprefix $(EXECUTE_DIR), handlers execute_utils execute find_cmd redir_utils file_open handle_tokens_redirs)
 EXPAND_FILENAMES = $(addprefix $(EXPAND_DIR), expand_tokens expand_utils final_len_utils build_utils)
 PARSER_FILNAMES = $(addprefix $(PARSER_DIR), assign_types parser_utils parser syntax_check)
 

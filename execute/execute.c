@@ -12,24 +12,12 @@
 
 #include "execute.h"
 
-t_tokens	*find_executable(t_tokens *current)
-{
-	t_tokens	*tmp;
-
-	tmp = current;
-	while (tmp->type != NEWL && tmp->type != PIPE)
-	{
-		if (tmp->type == COMMAND || tmp->type == BUILTIN)
-			return (tmp);
-	}
-	return (NULL);
-}
-
 void	do_redirections(t_tokens **tokens, int **pipe_fds)
 {
 	t_tokens	*current;
 	t_tokens	*executable;
 	int			i;
+	int			handle_status;
 
 	i = 0;
 	current = *tokens;
@@ -38,57 +26,27 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	{
 		if (current->type == INPUT)
 		{
-			executable->input = open_infile(current->next->token);
-			if (executable->input == -1)
-			{
-				executable->execute = false;
-				while (1)
-				{
-					if (current->type == PIPE)
-						break ;
-					if (current->type == NEWL)
-						return ;
-					current = current->next;
-				}
-				executable = find_executable(current->next);
-				current = executable;
+			handle_status = handle_input_redir(&current, &executable);
+			if (handle_status == BREAK_REDIR_LOOP)
+				break ;
+			if (handle_status == RETURN_FROM_FUNCTION)
+				return ;
+			if (handle_status == CONTINUE_REDIR_LOOP)
 				continue ;
-			}
 		}
 		else if (current->type == OUTPUT || current->type == APPEND)
 		{
-			executable->output = open_outfile(current->next->token, current->type);
-			if (executable->output == -1)
-			{
-				executable->execute = false;
-				while (1)
-				{
-					if (current->type == PIPE)
-						break ;
-					if (current->type == NEWL)
-						return ;
-					current = current->next;
-				}
-				executable = find_executable(current->next);
-				current = executable;
+			handle_status = handle_output_redir(&current, &executable);
+			if (handle_status == BREAK_REDIR_LOOP)
+				break ;
+			if (handle_status == RETURN_FROM_FUNCTION)
+				return ;
+			if (handle_status == CONTINUE_REDIR_LOOP)
 				continue ;
-			}
-			
 		}
 		else if (current->type == PIPE)
 		{
-			if (executable->output != STDIN_FILENO)
-				close(pipe_fds[i][1]);
-			else
-			{
-				executable->output = pipe_fds[i][1];
-				executable->piped_out = true;
-			}
-			current = current->next;
-			executable = find_executable(current);
-			executable->input = pipe_fds[i][0];
-			executable->piped_in = true;
-			i++;
+			handle_pipe_redir(&current, &executable, pipe_fds, &i);
 			continue ;
 		}
 		current = current->next;
