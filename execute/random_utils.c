@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_utils.c                                      :+:      :+:    :+:   */
+/*   random_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 22:59:50 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 00:36:58 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,6 @@ void	undo_builtin_redirs(int saved_in, int saved_out)
 		dup2(saved_out, STDOUT_FILENO);
 		close(saved_out);
 	}
-}
-
-int	except_here_doc(t_tokens *tokens, int *saved_in, int *saved_out)
-{
-	int	fd;
-
-	if (tokens->type == INPUT)
-	{
-		fd = open_infile(tokens->next->token);
-		if (fd == errno)
-			return (errno);
-		*saved_in = dup(STDIN_FILENO);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-	if (tokens->type == OUTPUT || tokens->type == APPEND)
-	{
-		fd = open_outfile(tokens->next->token, tokens->type);
-		if (fd == errno)
-			return (errno);
-		*saved_out = dup(STDOUT_FILENO);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-	return (0);
 }
 
 static void	free_values(char *temp, char *input)

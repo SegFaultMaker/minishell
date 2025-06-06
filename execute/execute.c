@@ -12,14 +12,12 @@
 
 #include "execute.h"
 
-void	do_redirections(t_tokens **tokens, int **pipe_fds)
+static void	redirect_input(t_tokens **tokens)
 {
 	t_tokens	*current;
 	t_tokens	*executable;
-	int			i;
 	int			handle_status;
 
-	i = 0;
 	current = *tokens;
 	executable = find_executable(current);
 	while (current->type != NEWL)
@@ -34,7 +32,23 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 			if (handle_status == CONTINUE_REDIR_LOOP)
 				continue ;
 		}
-		else if (current->type == OUTPUT || current->type == APPEND)
+		current = current->next;
+	}
+}
+
+static void	redirect_output_and_pipes(t_tokens **tokens, int **pipe_fds)
+{
+	t_tokens	*current;
+	t_tokens	*executable;
+	int			handle_status;
+	int			i;
+
+	i = 0;
+	current = *tokens;
+	executable = find_executable(current);
+	while (current->type != NEWL)
+	{
+		if (current->type == OUTPUT || current->type == APPEND)
 		{
 			handle_status = handle_output_redir(&current, &executable);
 			if (handle_status == BREAK_REDIR_LOOP)
@@ -45,65 +59,31 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 				continue ;
 		}
 		else if (current->type == PIPE)
-		{
 			handle_pipe_redir(&current, &executable, pipe_fds, &i);
-			continue ;
-		}
 		current = current->next;
 	}
 }
 
-void	free_pipes(int ***array)
+static void	do_here_doc(t_tokens **tokens)
 {
-	int	i;
+	t_tokens	*current;
+	t_tokens	*executable;
 
-	i = 0;
-	if (!array || !*array)
-		return ;
-	while ((*array)[i])
+	current = *tokens;
+	executable = find_executable(current);
+	while (current->type != NEWL)
 	{
-		free((*array)[i]);
-		i++;
+		if (current->type == HERE_DOC)
+			here_doc(current, executable->input);
+		current = current->next;
 	}
-	free(*array);
 }
 
-int	**allocate_pipe_fds(int pipe_count)
+static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 {
-	int	i;
-	int	**result;
-
-	i = 0;
-	result = malloc(sizeof(int *) * (pipe_count + 1));
-	if (!result)
-		return (NULL);
-	while (i < pipe_count)
-	{
-		result[i] = malloc(sizeof(int) * 2);
-		if (!result)
-			return (free_pipes(&result), NULL);
-		if (pipe(result[i]))
-			return (free_pipes(&result), NULL);
-		i++;
-	}
-	result[i] = NULL;
-	return (result);
-}
-
-int	execute_all(t_tokens *tokens, t_hash_table *env)
-{
-	int	stat;
-
-	stat = 0;
-	while (tokens)
-	{
-		if (tokens->type == COMMAND && tokens->execute)
-			stat = handle_binary(tokens, env);
-		else if (tokens->type == BUILTIN && tokens->execute)
-			stat = handle_builtin(tokens, env);
-		tokens = tokens->next;
-	}
-	return (stat);
+	redirect_input(tokens);
+	redirect_output_and_pipes(tokens, pipe_fds);
+	do_here_doc(tokens);
 }
 
 int	execute(t_tokens *tokens, t_hash_table *env, int stat)
@@ -117,7 +97,15 @@ int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 	if (!pipe_fds)
 		return (quit_with_error(1, "pipes", "pipe allocation error", 1));
 	do_redirections(&tokens, pipe_fds);
-	stat = execute_all(tokens, env);
+	stat = 0;
+	while (tokens)
+	{
+		if (tokens->type == COMMAND && tokens->execute)
+			stat = handle_binary(tokens, env);
+		else if (tokens->type == BUILTIN && tokens->execute)
+			stat = handle_builtin(tokens, env);
+		tokens = tokens->next;
+	}
 	free_pipes(&pipe_fds);
 	return (stat);
 }

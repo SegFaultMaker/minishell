@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 15:03:57 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/07 00:38:11 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 	}
 	if (cmd->piped_out)
 		close(cmd->output);
-	wait(&res);
-	return (res);
+	return (wait(&res), res);
 }
 
 static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat)
