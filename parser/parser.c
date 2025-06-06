@@ -134,56 +134,56 @@ t_tokens	*parser(char *str)
 	return (head);
 }
 
-// int	main()
-// {
-// 	char		*line;
-// 	int	i = 1;
-// 	t_tokens	*tokens;
-// 	t_tokens	*tmp;
+/*int	main()
+{
+ 	char		*line;
+ 	int	i = 1;
+ 	t_tokens	*tokens;
+ 	t_tokens	*tmp;
 
-// 	line = NULL;
-// 	line = readline("$ ");
-// 	if (!line)
-// 		return (0);
-// 	tokens = parser(line);
-// 	tmp = tokens;
-// 	if (!tmp)
-// 	{
-// 		free(line);
-// 		return (0);
-// 	}
-// 	ft_printf("==== Commands ====\n");
-// 	i = 1;
-// 	while (tmp)
-// 	{
-// 		ft_printf("Token %d: %s ", i, tmp->token);
-// 		if (tmp->type == BUILTIN)
-// 			ft_printf("BUILTIN\n");
-// 		else if (tmp->type == COMMAND)
-// 			ft_printf("COMMAND\n");
-// 		else if (tmp->type == ARGUMENT)
-// 			ft_printf("ARGUMENT\n");
-// 		else if (tmp->type == PIPE)
-// 			ft_printf("PIPE\n");
-// 		else if (tmp->type == INPUT)
-// 			ft_printf("INPUT\n");
-// 		else if (tmp->type == OUTPUT)
-// 			ft_printf("OUTPUT\n");
-// 		else if (tmp->type == HERE_DOC)
-// 			ft_printf("HERE_DOC\n");
-// 		else if (tmp->type == APPEND)
-// 			ft_printf("APPPEND\n");
-// 		else if (tmp->type == FILE_NAME)
-// 			ft_printf("FILE_NAME\n");
-// 		else if (tmp->type == LIMITER)
-// 			ft_printf("LIMITER\n");
-// 		else if (tmp->type == NONE)
-// 			ft_printf("NONE\n");
-// 		else
-// 			ft_printf("NEWL");
-// 		i++;
-// 		tmp = tmp->next;
-// 	}
-// 	free(line);
-// 	free_tokens(&tokens);
-// }
+ 	line = NULL;
+ 	line = readline("$ ");
+ 	if (!line)
+ 		return (0);
+ 	tokens = parser(line);
+ 	tmp = tokens;
+ 	if (!tmp)
+ 	{
+ 		free(line);
+ 		return (0);
+ 	}
+ 	ft_printf("==== Commands ====\n");
+ 	i = 1;
+ 	while (tmp)
+ 	{
+ 		ft_printf("Token %d: %s ", i, tmp->token);
+ 		if (tmp->type == BUILTIN)
+ 			ft_printf("BUILTIN\n");
+ 		else if (tmp->type == COMMAND)
+ 			ft_printf("COMMAND\n");
+ 		else if (tmp->type == ARGUMENT)
+ 			ft_printf("ARGUMENT\n");
+ 		else if (tmp->type == PIPE)
+ 			ft_printf("PIPE\n");
+ 		else if (tmp->type == INPUT)
+ 			ft_printf("INPUT\n");
+ 		else if (tmp->type == OUTPUT)
+ 			ft_printf("OUTPUT\n");
+ 		else if (tmp->type == HERE_DOC)
+ 			ft_printf("HERE_DOC\n");
+ 		else if (tmp->type == APPEND)
+ 			ft_printf("APPPEND\n");
+ 		else if (tmp->type == FILE_NAME)
+ 			ft_printf("FILE_NAME\n");
+ 		else if (tmp->type == LIMITER)
+ 			ft_printf("LIMITER\n");
+ 		else if (tmp->type == NONE)
+ 			ft_printf("NONE\n");
+ 		else
+ 			ft_printf("NEWL");
+ 		i++;
+ 		tmp = tmp->next;
+ 	}
+ 	free(line);
+ 	free_tokens(&tokens);
+}*/

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/06 12:38:05 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:32:41 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int			syntax_check(t_tokens *tmp);
 int			ft_isquote(char c);
 int			check_redir_pipe_operator(char *token, int regime);
 int			is_redir_pipe(t_types type);
-t_types		get_type(char *token);
 t_tokens	*handle_first(t_tokens **tokens);
 
 #endif

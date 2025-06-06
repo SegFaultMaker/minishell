@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 14:00:34 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:03:57 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ int	handle_builtin(t_tokens *tokens, t_hash_table *envp)
 	int			stat;
 	int			saved_in;
 	int			saved_out;
-	t_tokens	*temp;
 
 	stat = 0;
-	temp = tokens;
 	saved_in = INT_MIN;
 	saved_out = INT_MIN;
 	while (tokens->type != BUILTIN)

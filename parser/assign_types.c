@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   assign_types.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 15:26:10 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 17:51:00 by armarake         ###   ########.fr       */
+/*   Created: 2025/06/06 14:44:11 by nasargsy          #+#    #+#             */
+/*   Updated: 2025/06/06 15:31:59 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_types	get_type(char *token)
+static t_types	get_type(char *token)
 {
 	if (!ft_strcmp(token, "echo") || !ft_strcmp(token, "cd")
 		|| !ft_strcmp(token, "pwd")
@@ -39,75 +39,41 @@ t_types	get_type(char *token)
 	return (COMMAND);
 }
 
-static t_tokens	*assign_as_arg(t_tokens	**tokens, int stat)
+static t_tokens *handle_redirs(t_tokens **tokens)
 {
 	t_tokens	*tmp;
+	int			is_file;
 
 	tmp = *tokens;
-	if (!tmp)
-		return (tmp);
-	if (stat == 1)
-		tmp->type = ARGUMENT;
-	if (tmp->next && stat == 0)
-		tmp = tmp->next;
-	tmp->type = get_type(tmp->token);
-	if (is_redir_pipe(tmp->type))
-		return (tmp);
-	while (tmp && !is_redir_pipe(tmp->type) && tmp->type != NEWL)
+	if (tmp->type == OUTPUT || tmp->type == INPUT || tmp->type == APPEND)
+		is_file = 1;
+	else if (tmp->type == HERE_DOC)
+		is_file = 0;
+	tmp = tmp->next;
+	if (tmp)
 	{
-		tmp->type = ARGUMENT;
+		if (is_file)
+			tmp->type = FILE_NAME;
+		else
+			tmp->type = LIMITER;
 		tmp = tmp->next;
-		tmp->type = get_type(tmp->token);
 	}
 	return (tmp);
 }
 
-static t_tokens	*handle_redirs(t_tokens **tokens)
+static t_tokens	*handle_commands(t_tokens **tokens)
 {
 	t_tokens	*tmp;
 
 	tmp = *tokens;
-	if (tmp->type == HERE_DOC)
-	{
-		tmp = tmp->next;
-		tmp->type = get_type(tmp->token);
-		while (is_redir_pipe(tmp->type))
-		{
-			tmp = tmp->next;
-			tmp->type = get_type(tmp->token);
-		}
-		tmp->type = LIMITER;
-		return (tmp->next);
-	}
 	tmp = tmp->next;
-	tmp->type = get_type(tmp->token);
-	while (is_redir_pipe(tmp->type))
+	while (tmp)
 	{
-		tmp = tmp->next;
 		tmp->type = get_type(tmp->token);
-	}
-	tmp->type = FILE_NAME;
-	return (tmp->next);
-}
-
-static t_tokens	*handle_redir_pipe(t_tokens **tokens)
-{
-	t_tokens	*tmp;
-
-	tmp = *tokens;
-	if (!(tmp->next))
-		return (NULL);
-	if (tmp->type == PIPE)
-	{
+		if (is_redir_pipe(tmp->type))
+			break ;
+		tmp->type = ARGUMENT;
 		tmp = tmp->next;
-		tmp->type = get_type(tmp->token);
-		tmp = tmp->next;
-		tmp = assign_as_arg(&tmp, 2);
-	}
-	else
-	{
-		tmp = handle_redirs(&tmp);
-		tmp = assign_as_arg(&tmp, 1);
 	}
 	return (tmp);
 }
@@ -117,21 +83,20 @@ void	assign_types(t_tokens **tokens)
 	t_tokens	*tmp;
 
 	tmp = *tokens;
-	tmp = handle_first(&tmp);
 	while (tmp)
 	{
-		if (!tmp)
-			break ;
 		tmp->type = get_type(tmp->token);
-		if (tmp->type == BUILTIN || tmp->type == COMMAND)
-			tmp = assign_as_arg(&tmp, 0);
-		if (!tmp)
-			return ;
-		else
+		if (tmp->type == COMMAND || tmp->type == BUILTIN)
+			tmp = handle_commands(&tmp);
+		else if (tmp->type == OUTPUT || tmp->type == INPUT
+				|| tmp->type == APPEND || tmp->type == HERE_DOC)
+			tmp = handle_redirs(&tmp);
+		else if (tmp->type == PIPE)
 		{
-			tmp = handle_redir_pipe(&tmp);
-			if (tmp)
-				tmp = tmp->next;
+			tmp = tmp->next;
+			continue ;
 		}
+		else if (tmp->type == NEWL)
+			break ;
 	}
 }
