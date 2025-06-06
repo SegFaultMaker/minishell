@@ -6,7 +6,7 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:44:11 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 15:31:59 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:00:35 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static t_tokens	*handle_commands(t_tokens **tokens)
 	while (tmp)
 	{
 		tmp->type = get_type(tmp->token);
-		if (is_redir_pipe(tmp->type))
+		if (is_redir_pipe(tmp->type) || tmp->type == NEWL)
 			break ;
 		tmp->type = ARGUMENT;
 		tmp = tmp->next;
