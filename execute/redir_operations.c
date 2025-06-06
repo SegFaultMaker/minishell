@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:12:08 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 22:22:33 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 22:38:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	open_infile(char *filename)
 {
 	if (access(filename, F_OK) != 0)
-		return (quit_with_error(1, filename, NULL, errno));
+		return (quit_with_error(1, filename, NULL, errno), -1);
 	if (access(filename, R_OK) != 0)
-		return (quit_with_error(1, filename, NULL, errno));
+		return (quit_with_error(1, filename, NULL, errno), -1);
 	return (open(filename, O_RDONLY));
 }
 

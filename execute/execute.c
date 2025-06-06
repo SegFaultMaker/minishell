@@ -37,7 +37,24 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	while (current->type != NEWL)
 	{
 		if (current->type == INPUT)
+		{
 			executable->input = open_infile(current->next->token);
+			if (executable->input == -1)
+			{
+				executable->execute = false;
+				while (1)
+				{
+					if (current->type == PIPE)
+						break ;
+					if (current->type == NEWL)
+						return ;
+					current = current->next;
+				}
+				executable = find_executable(current->next);
+				current = executable;
+				continue ;
+			}
+		}
 		else if (current->type == OUTPUT || current->type == APPEND)
 		{
 			executable->output = open_outfile(current->next->token, current->type);
