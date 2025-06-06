@@ -12,35 +12,10 @@
 
 #include "execute.h"
 
-static void	redirect_input(t_tokens **tokens)
+static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 {
 	t_tokens	*current;
 	t_tokens	*executable;
-	int			handle_status;
-
-	current = *tokens;
-	executable = find_executable(current);
-	while (current->type != NEWL)
-	{
-		if (current->type == INPUT)
-		{
-			handle_status = handle_input_redir(&current, &executable);
-			if (handle_status == BREAK_REDIR_LOOP)
-				break ;
-			if (handle_status == RETURN_FROM_FUNCTION)
-				return ;
-			if (handle_status == CONTINUE_REDIR_LOOP)
-				continue ;
-		}
-		current = current->next;
-	}
-}
-
-static void	redirect_output_and_pipes(t_tokens **tokens, int **pipe_fds)
-{
-	t_tokens	*current;
-	t_tokens	*executable;
-	int			handle_status;
 	int			i;
 
 	i = 0;
@@ -48,42 +23,20 @@ static void	redirect_output_and_pipes(t_tokens **tokens, int **pipe_fds)
 	executable = find_executable(current);
 	while (current->type != NEWL)
 	{
-		if (current->type == OUTPUT || current->type == APPEND)
+		if (current->type == INPUT)
 		{
-			handle_status = handle_output_redir(&current, &executable);
-			if (handle_status == BREAK_REDIR_LOOP)
-				break ;
-			if (handle_status == RETURN_FROM_FUNCTION)
-				return ;
-			if (handle_status == CONTINUE_REDIR_LOOP)
+			if (handle_input_redir(&current, &executable) == CONTINUE_REDIR_LOOP)
+				continue ;
+		}
+		else if ((current->type == OUTPUT) || (current->type == APPEND))
+		{
+			if (handle_output_redir(&current, &executable) == CONTINUE_REDIR_LOOP)
 				continue ;
 		}
 		else if (current->type == PIPE)
 			handle_pipe_redir(&current, &executable, pipe_fds, &i);
 		current = current->next;
 	}
-}
-
-static void	do_here_doc(t_tokens **tokens)
-{
-	t_tokens	*current;
-	t_tokens	*executable;
-
-	current = *tokens;
-	executable = find_executable(current);
-	while (current->type != NEWL)
-	{
-		if (current->type == HERE_DOC)
-			here_doc(current, executable->input);
-		current = current->next;
-	}
-}
-
-static void	do_redirections(t_tokens **tokens, int **pipe_fds)
-{
-	redirect_input(tokens);
-	redirect_output_and_pipes(tokens, pipe_fds);
-	do_here_doc(tokens);
 }
 
 int	execute(t_tokens *tokens, t_hash_table *env, int stat)

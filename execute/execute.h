@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 00:37:02 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 03:44:01 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 # include "../environment/environment.h"
 # include "../parser/parser.h"
 
-# define BREAK_REDIR_LOOP 1
-# define CONTINUE_REDIR_LOOP 2
-# define RETURN_FROM_FUNCTION 3
+# define CONTINUE_REDIR_LOOP 1
 
 //				executes
 int			handle_binary(t_tokens *cmd, t_hash_table *env);

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 00:37:23 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 03:36:41 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 		(*executable)->execute = false;
 		while (1)
 		{
-			if ((*current)->type == PIPE)
-				return (BREAK_REDIR_LOOP);
-			if ((*current)->type == NEWL)
-				return (RETURN_FROM_FUNCTION);
+			if ((*current)->type == PIPE || (*current)->type == NEWL)
+				break ;
 			(*current) = (*current)->next;
 		}
 		(*executable) = find_executable((*current)->next);
@@ -42,10 +40,8 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 		(*executable)->execute = false;
 		while (1)
 		{
-			if ((*current)->type == PIPE)
-				return (BREAK_REDIR_LOOP);
-			if ((*current)->type == NEWL)
-				return (RETURN_FROM_FUNCTION);
+			if ((*current)->type == PIPE || (*current)->type == NEWL)
+				break ;
 			(*current) = (*current)->next;
 		}
 		(*executable) = find_executable((*current)->next);
@@ -68,6 +64,13 @@ void	handle_pipe_redir(t_tokens **current, t_tokens **executable,
 	(*executable) = find_executable((*current)->next);
 	(*executable)->input = pipe_fds[(*i)][0];
 	(*executable)->piped_in = true;
+	// if ((*executable)->input != STDIN_FILENO)
+	// 	close((*executable)->input);
+	// else
+	// {
+	// 	(*executable)->input = pipe_fds[(*i)][0];
+	// 	(*executable)->piped_in = true;
+	// }
 	(*i)++;
 }
 
