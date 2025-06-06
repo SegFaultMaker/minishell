@@ -42,8 +42,13 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 			executable->output = open_outfile(current->next->token, current->type);
 		else if (current->type == PIPE)
 		{
-			executable->output = pipe_fds[i][1];
-			executable->piped_out = true;
+			if (executable->output != STDIN_FILENO)
+				close(pipe_fds[i][1]);
+			else
+			{
+				executable->output = pipe_fds[i][1];
+				executable->piped_out = true;
+			}
 			current = current->next;
 			executable = find_executable(current);
 			executable->input = pipe_fds[i][0];
@@ -55,19 +60,19 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	}
 }
 
-void	free_pipes(int **array)
+void	free_pipes(int ***array)
 {
 	int	i;
 
 	i = 0;
 	if (!array || !*array)
 		return ;
-	while (array[i])
+	while ((*array)[i])
 	{
-		free(array[i]);
+		free((*array)[i]);
 		i++;
 	}
-	free(array);
+	free(*array);
 }
 
 int	**allocate_pipe_fds(int pipe_count)
@@ -83,9 +88,9 @@ int	**allocate_pipe_fds(int pipe_count)
 	{
 		result[i] = malloc(sizeof(int) * 2);
 		if (!result)
-			return (free_pipes(result), NULL);
+			return (free_pipes(&result), NULL);
 		if (pipe(result[i]))
-			return (free_pipes(result), NULL);
+			return (free_pipes(&result), NULL);
 		i++;
 	}
 	result[i] = NULL;
@@ -120,6 +125,6 @@ int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 		return (quit_with_error(1, "pipes", "pipe allocation error", 1));
 	do_redirections(&tokens, pipe_fds);
 	stat = execute_all(tokens, env);
-	free_pipes(pipe_fds);
+	free_pipes(&pipe_fds);
 	return (stat);
 }
