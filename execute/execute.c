@@ -39,7 +39,25 @@ void	do_redirections(t_tokens **tokens, int **pipe_fds)
 		if (current->type == INPUT)
 			executable->input = open_infile(current->next->token);
 		else if (current->type == OUTPUT || current->type == APPEND)
+		{
 			executable->output = open_outfile(current->next->token, current->type);
+			if (executable->output == -1)
+			{
+				executable->execute = false;
+				while (1)
+				{
+					if (current->type == PIPE)
+						break ;
+					if (current->type == NEWL)
+						return ;
+					current = current->next;
+				}
+				executable = find_executable(current->next);
+				current = executable;
+				continue ;
+			}
+			
+		}
 		else if (current->type == PIPE)
 		{
 			if (executable->output != STDIN_FILENO)
@@ -104,9 +122,9 @@ int	execute_all(t_tokens *tokens, t_hash_table *env)
 	stat = 0;
 	while (tokens)
 	{
-		if (tokens->type == COMMAND)
+		if (tokens->type == COMMAND && tokens->execute)
 			stat = handle_binary(tokens, env);
-		else if (tokens->type == BUILTIN)
+		else if (tokens->type == BUILTIN && tokens->execute)
 			stat = handle_builtin(tokens, env);
 		tokens = tokens->next;
 	}
