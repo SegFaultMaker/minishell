@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 15:33:50 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:13:17 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 void	start_shell(t_hash_table *environment)
 {
-	t_tokens	*cmd;
-	int			stat;
-	char		*input;
-	int			check_status;
+	t_tokens		*cmd;
+	int				stat;
+	char			*input;
+	int				check_status;
+	struct termios	termios;
 
 	stat = 0;
 	input = NULL;
 	while (1)
 	{
+		tcgetattr(STDOUT_FILENO, &termios);
 		input = read_input();
 		check_status = check_input(&input);
 		if (check_status == BREAK_LOOP)
@@ -31,6 +33,7 @@ void	start_shell(t_hash_table *environment)
 			continue ;
 		cmd = parser(input);
 		stat = handle_input(&cmd, environment, &input, stat);
+		tcsetattr(STDOUT_FILENO, 0, &termios);
 		if (stat == INT_MIN)
 			return ;
 	}

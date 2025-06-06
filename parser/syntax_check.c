@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   syntax_check.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 14:13:41 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 14:21:57 by nasargsy         ###   ########.fr       */
-/*                                                                            */
+/*																			  */
+/*														  :::	   ::::::::   */
+/*	 syntax_check.c										:+:		 :+:	:+:   */
+/*													  +:+ +:+		  +:+	  */
+/*	 By: armarake <marvin@42.fr>					+#+  +:+	   +#+		  */
+/*												  +#+#+#+#+#+	+#+			  */
+/*	 Created: 2025/04/30 14:13:41 by nasargsy		   #+#	  #+#			  */
+/*	 Updated: 2025/06/05 14:21:57 by nasargsy		  ###	########.fr		  */
+/*																			  */
 /* ************************************************************************** */
 
 #include "parser.h"
@@ -27,12 +27,12 @@ static void	generate_error(t_tokens *tmp)
 static int	check_quotes(char *str)
 {
 	int	dquote;
- 	int	squote;
+	int	squote;
 
- 	dquote = 0;
- 	squote = 0;
- 	while (*str)
- 	{
+	dquote = 0;
+	squote = 0;
+	while (*str)
+	{
 		if (*str == '\"' && !dquote)
 			dquote = 1;
 		else if (*str == '\"' && dquote)
@@ -42,13 +42,13 @@ static int	check_quotes(char *str)
 		else if (*str == '\'' && squote)
 			squote = 0;
 		str++;
- 	}
- 	if (dquote || squote)
- 	{
- 		ft_putendl_fd("minishell: syntax: Invalid quotes", 2);
- 		return (0);
- 	}
- 	return (1);
+	}
+	if (dquote || squote)
+	{
+		ft_putendl_fd("minishell: syntax: Invalid quotes", 2);
+		return (0);
+	}
+	return (1);
 }
 
 int	syntax_check(t_tokens *tmp)

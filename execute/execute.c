@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 16:06:15 by nasargsy         ###   ########.fr       */
-/*                                                                            */
+/*																			  */
+/*														  :::	   ::::::::   */
+/*	 execute.c											:+:		 :+:	:+:   */
+/*													  +:+ +:+		  +:+	  */
+/*	 By: armarake <marvin@42.fr>					+#+  +:+	   +#+		  */
+/*												  +#+#+#+#+#+	+#+			  */
+/*	 Created: 2025/05/12 15:21:29 by nasargsy		   #+#	  #+#			  */
+/*	 Updated: 2025/06/06 16:06:15 by nasargsy		  ###	########.fr		  */
+/*																			  */
 /* ************************************************************************** */
 
 #include "execute.h"
@@ -25,11 +25,11 @@ t_tokens	*find_executable(t_tokens *current)
 	return (NULL);
 }
 
-void do_redirections(t_tokens **tokens, int **pipe_fds)
+void	do_redirections(t_tokens **tokens, int **pipe_fds)
 {
 	t_tokens	*current;
 	t_tokens	*executable;
-	int i;
+	int			i;
 
 	i = 0;
 	current = *tokens;
@@ -55,9 +55,9 @@ void do_redirections(t_tokens **tokens, int **pipe_fds)
 	}
 }
 
-void free_pipes(int **array)
+void	free_pipes(int **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!array || !*array)
@@ -70,10 +70,10 @@ void free_pipes(int **array)
 	free(array);
 }
 
-int **allocate_pipe_fds(int pipe_count)
+int	**allocate_pipe_fds(int pipe_count)
 {
-	int i;
-	int **result;
+	int	i;
+	int	**result;
 
 	i = 0;
 	result = malloc(sizeof(int *) * (pipe_count + 1));
@@ -108,10 +108,10 @@ int	execute_all(t_tokens *tokens, t_hash_table *env)
 	return (stat);
 }
 
-int execute(t_tokens *tokens, t_hash_table *env, int stat)
+int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 {
-	int **pipe_fds;
-	int pipe_count;
+	int	**pipe_fds;
+	int	pipe_count;
 
 	expand_tokens(&tokens, env, stat);
 	pipe_count = check_pipes(tokens);

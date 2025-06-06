@@ -6,7 +6,7 @@
 /*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:44:11 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 16:00:35 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:15:51 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_types	get_type(char *token)
 	return (COMMAND);
 }
 
-static t_tokens *handle_redirs(t_tokens **tokens)
+static t_tokens	*handle_redirs(t_tokens **tokens)
 {
 	t_tokens	*tmp;
 	int			is_file;
@@ -89,7 +89,7 @@ void	assign_types(t_tokens **tokens)
 		if (tmp->type == COMMAND || tmp->type == BUILTIN)
 			tmp = handle_commands(&tmp);
 		else if (tmp->type == OUTPUT || tmp->type == INPUT
-				|| tmp->type == APPEND || tmp->type == HERE_DOC)
+			|| tmp->type == APPEND || tmp->type == HERE_DOC)
 			tmp = handle_redirs(&tmp);
 		else if (tmp->type == PIPE)
 		{

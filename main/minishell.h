@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 12:36:15 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:13:50 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <signal.h>
 # include <limits.h>
 # include <errno.h>
+# include <termios.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
