@@ -6,13 +6,14 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 14:12:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 12:36:15 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdbool.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>

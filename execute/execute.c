@@ -6,61 +6,52 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:21:29 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 20:49:14 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:57:27 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-void do_redirections(t_tokens **tokens, int **pipe_fds)
+t_tokens	*find_executable(t_tokens *current)
 {
 	t_tokens	*tmp;
-	t_tokens	*cmd;
-	t_tokens	*start;
-	
+
+	tmp = current;
+	while (tmp->type != NEWL && tmp->type != PIPE)
+	{
+		if (tmp->type == COMMAND || tmp->type == BUILTIN)
+			return (tmp);
+	}
+	return (NULL);
+}
+
+void do_redirections(t_tokens **tokens, int **pipe_fds)
+{
+	t_tokens	*current;
+	t_tokens	*executable;
 	int i;
 
 	i = 0;
-	cmd = NULL;
-	tmp = *tokens;
-	while (tmp->type != NEWL)
+	current = *tokens;
+	executable = find_executable(current);
+	while (current->type != NEWL)
 	{
-		if (!cmd)
+		if (current->type == INPUT)
+			executable->input = open_infile(current->next->token);
+		else if (current->type == OUTPUT || current->type == APPEND)
+			executable->output = open_outfile(current->next->token, current->type);
+		else if (current->type == PIPE)
 		{
-			start = tmp;
-			while (tmp->type != PIPE && (tmp->type != COMMAND && tmp->type != BUILTIN))
-				tmp = tmp->next;
-			cmd = tmp;
-			tmp = start;
-		}
-		if (tmp->type == OUTPUT || tmp->type == APPEND)
-		{
-			// if (cmd->output == STDOUT_FILENO)
-			// 	close(cmd->output);
-			cmd->output = open_outfile(tmp->next->token, tmp->type);
-		}
-		else if (tmp->type == INPUT)
-		{
-			// if (cmd->input == STDIN_FILENO)
-			// 	close(cmd->input);
-			cmd->input = open_infile(tmp->next->token);
-		}
-		else if (tmp->type == PIPE)
-		{
-			if (cmd->input == STDIN_FILENO)
-				dup2(pipe_fds[i][0], cmd->input);
-			if (cmd->output == STDOUT_FILENO)
-				dup2(pipe_fds[i][1], cmd->output);
-			close(pipe_fds[i][0]);
-			close(pipe_fds[i][1]);
+			executable->output = pipe_fds[i][1];
+			executable->piped_out = true;
+			current = current->next;
+			executable = find_executable(current);
+			executable->input = pipe_fds[i][0];
+			executable->piped_in = true;
 			i++;
-			tmp = tmp->next;
-			cmd = NULL;
 			continue ;
 		}
-		else if (tmp->type == HERE_DOC)
-			here_doc(tmp, cmd->input);
-		tmp = tmp->next;
+		current = current->next;
 	}
 }
 

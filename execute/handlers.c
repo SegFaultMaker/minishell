@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/05 19:23:16 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:00:34 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 			close(cmd->input);
 		}
 		if (cmd->output != STDOUT_FILENO)
-		{	
+		{
 			dup2(cmd->output, STDOUT_FILENO);
 			close(cmd->output);
 		}
 		if (execve(path, argv, envp) == -1)
 			quit_with_error(0, NULL, NULL, errno);
 	}
+	if (cmd->piped_out)
+		close(cmd->output);
 	wait(&res);
 	return (res);
 }
