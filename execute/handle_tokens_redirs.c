@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 13:20:21 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:24:47 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 int	handle_input_redir(t_tokens **current, t_tokens **executable)
 {
+	if ((*executable)->type == NEWL)
+		return ((*current) = (*executable), CONTINUE_THE_LOOP);
+	if ((*executable)->type == PIPE)
+	{
+		(*current) = (*executable);
+		(*executable) = NULL;
+		return (CONTINUE_THE_LOOP);
+	}
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{
@@ -35,6 +43,14 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 
 int	handle_output_redir(t_tokens **current, t_tokens **executable)
 {
+	if ((*executable)->type == NEWL)
+		return ((*current) = (*executable), CONTINUE_THE_LOOP);
+	if ((*executable)->type == PIPE)
+	{
+		(*current) = (*executable);
+		(*executable) = NULL;
+		return (CONTINUE_THE_LOOP);
+	}
 	(*executable)->output = open_outfile((*current)->next->token,
 			(*current)->type);
 	if ((*executable)->output == -1)
@@ -58,7 +74,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 void	handle_pipe_redir(t_tokens **current, t_tokens **executable,
 	int **pipe_fds, int *i)
 {
-	if ((*executable)->output != STDOUT_FILENO)
+	if (!(*executable) || (*executable)->output != STDOUT_FILENO)
 		close(pipe_fds[(*i)][1]);
 	else
 	{

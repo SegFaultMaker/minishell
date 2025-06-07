@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 13:36:27 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:46:49 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,5 @@ t_tokens	*find_executable(t_tokens *current)
 			return (tmp);
 		tmp = tmp->next;
 	}
-	return (NULL);
+	return (tmp);
 }
