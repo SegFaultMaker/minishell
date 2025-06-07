@@ -21,16 +21,18 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	i = 0;
 	current = *tokens;
 	executable = find_executable(current);
-	while (current->type != NEWL)
+	while (current && current->type != NEWL)
 	{
 		if (current->type == INPUT)
 		{
-			if (handle_input_redir(&current, &executable) == CONTINUE_REDIR_LOOP)
+			if (handle_input_redir(&current, &executable)
+				== CONTINUE_REDIR_LOOP)
 				continue ;
 		}
 		else if ((current->type == OUTPUT) || (current->type == APPEND))
 		{
-			if (handle_output_redir(&current, &executable) == CONTINUE_REDIR_LOOP)
+			if (handle_output_redir(&current, &executable)
+				== CONTINUE_REDIR_LOOP)
 				continue ;
 		}
 		else if (current->type == PIPE)
