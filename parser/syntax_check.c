@@ -33,13 +33,13 @@ static int	check_quotes(char *str)
 	squote = 0;
 	while (*str)
 	{
-		if (*str == '\"' && !dquote)
+		if (*str == '\"' && !dquote && !squote)
 			dquote = 1;
-		else if (*str == '\"' && dquote)
+		else if (*str == '\"' && dquote && !squote)
 			dquote = 0;
-		if (*str == '\'' && !squote)
+		else if (*str == '\'' && !squote && !dquote)
 			squote = 1;
-		else if (*str == '\'' && squote)
+		else if (*str == '\'' && squote && !dquote)
 			squote = 0;
 		str++;
 	}
