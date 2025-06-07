@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 04:00:09 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:20:21 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 		}
 		(*executable) = find_executable((*current)->next);
 		(*current) = (*executable);
-		return (CONTINUE_REDIR_LOOP);
+		return (CONTINUE_THE_LOOP);
 	}
 	return (0);
 }
@@ -50,7 +50,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 		}
 		(*executable) = find_executable((*current)->next);
 		(*current) = (*executable);
-		return (CONTINUE_REDIR_LOOP);
+		return (CONTINUE_THE_LOOP);
 	}
 	return (0);
 }

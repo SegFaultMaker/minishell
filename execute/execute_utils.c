@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:05:27 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/06 23:09:42 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:36:27 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_tokens	*find_executable(t_tokens *current)
 	{
 		if (tmp->type == COMMAND || tmp->type == BUILTIN)
 			return (tmp);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

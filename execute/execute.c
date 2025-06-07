@@ -25,14 +25,12 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	{
 		if (current->type == INPUT)
 		{
-			if (handle_input_redir(&current, &executable)
-				== CONTINUE_REDIR_LOOP)
+			if (handle_input_redir(&current, &executable) == CONTINUE_THE_LOOP)
 				continue ;
 		}
 		else if ((current->type == OUTPUT) || (current->type == APPEND))
 		{
-			if (handle_output_redir(&current, &executable)
-				== CONTINUE_REDIR_LOOP)
+			if (handle_output_redir(&current, &executable) == CONTINUE_THE_LOOP)
 				continue ;
 		}
 		else if (current->type == PIPE)

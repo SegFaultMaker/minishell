@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 03:44:01 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/07 13:15:51 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "../environment/environment.h"
 # include "../parser/parser.h"
 
-# define CONTINUE_REDIR_LOOP 1
+# define CONTINUE_THE_LOOP 1
 
 //				executes
 int			handle_binary(t_tokens *cmd, t_hash_table *env);
