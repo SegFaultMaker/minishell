@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/31 17:10:08 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 00:41:32 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	calculate_final_len(char *token, t_hash_table *env, int stat)
 			continue ;
 		else if (quote_end(token, &quote, &i))
 			continue ;
-		if (token[i] == '$' && token[i + 1] && quote != '\'')
+		if (token[i] == '$' && token[i + 1] && (ft_isalnum(token[i + 1])
+				|| token[i + 1] == '_' || token[i + 1] == '?') && quote != '\'')
 		{
 			if (token[i + 1] == '?')
 				final_len += dollar_question_mark_len(&i, stat);
@@ -53,7 +54,9 @@ char	*remove_and_expand_quotes(char *token, t_hash_table *env, int stat)
 			continue ;
 		else if (quote_end(token, &(data->quote), &(data->i)))
 			continue ;
-		if (token[data->i] == '$' && token[data->i + 1] && data->quote != '\'')
+		if (token[data->i] == '$' && token[data->i + 1]
+			&& (ft_isalnum(token[data->i + 1]) || token[data->i + 1] == '_'
+				|| token[data->i + 1] == '?') && data->quote != '\'')
 		{
 			if (token[data->i + 1] == '?')
 				handle_dollar_question_mark(&result, &data->i, &data->j, stat);
@@ -64,9 +67,7 @@ char	*remove_and_expand_quotes(char *token, t_hash_table *env, int stat)
 		result[(data->j)++] = token[(data->i)++];
 	}
 	result[data->j] = '\0';
-	free(data->token);
-	free(data);
-	return (result);
+	return (free(data->token), free(data), result);
 }
 
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
