@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/05 13:49:20 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:39:33 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		unset(t_tokens *tokens, t_hash_table *ht);
 int		cd(t_tokens *tokens, t_hash_table *ht);
 int		echo(t_tokens *tokens);
 int		pwd(t_hash_table *envp);
+int		exit(t_tokens *tmp, int prev_stat);
 
 //			utils
 char	*get_key_end(char *arg, int mode);
