@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:34:29 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:13:54 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ static int	adjust(int stat)
 	return (res);
 }
 
-int	exit(t_tokens *tmp, int prev_stat)
+int	exit_builtin(t_tokens *tmp, int prev_stat)
 {
-	int	res;
-	int	N;
-	int	i;
+	int		res;
+	char	*N;
+	int		i;
 
 	res = prev_stat;
 	if (tmp->next->type == ARGUMENT)
@@ -39,7 +39,7 @@ int	exit(t_tokens *tmp, int prev_stat)
 		N = tmp->token;
 		while (N[i])
 		{
-			if (!ft_isnum(N[i]))
+			if (!ft_isdigit(N[i]))
 				return (quit_with_error(1, "exit",
 						"numeric argument required", 1));
 			i++;

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:14:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/29 13:29:15 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:22:46 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,18 @@ static void	free_values(t_tokens **cmd, char **input)
 	input = NULL;
 }
 
-int	handle_input(t_tokens **cmd, t_hash_table *envp, char **input, int stat)
+int	handle_input(t_tokens **cmd, t_hash_table *envp, char **input, bool *must_exit)
 {
+	int	stat;
+
+	stat = 0;
 	if (*cmd)
 	{
-		stat = execute(*cmd, envp, stat);
-		if (stat == -1)
+		stat = execute(*cmd, envp, stat, must_exit);
+		if (must_exit)
 		{
 			free_values(cmd, input);
-			return (INT_MIN);
+			return (stat);
 		}
 	}
 	else

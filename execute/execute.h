@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 14:04:27 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:06:15 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 //				executes
 int			handle_binary(t_tokens *cmd, t_hash_table *env);
-int			handle_builtin(t_tokens *tokens, t_hash_table *envp);
+int			handle_builtin(t_tokens *tokens, t_hash_table *envp, bool *must_exit);
 
 //				random redirs
 void		undo_builtin_redirs(int saved_in, int saved_out);

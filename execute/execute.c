@@ -39,10 +39,10 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	}
 }
 
-int	execute(t_tokens *tokens, t_hash_table *env, int stat)
+int	execute(t_tokens *tokens, t_hash_table *env, int stat, bool *must_exit)
 {
-	int	**pipe_fds;
-	int	pipe_count;
+	int		**pipe_fds;
+	int		pipe_count;
 
 	expand_tokens(&tokens, env, stat);
 	pipe_count = check_pipes(tokens);
@@ -56,7 +56,7 @@ int	execute(t_tokens *tokens, t_hash_table *env, int stat)
 		if (tokens->type == COMMAND && tokens->execute)
 			stat = handle_binary(tokens, env);
 		else if (tokens->type == BUILTIN && tokens->execute)
-			stat = handle_builtin(tokens, env);
+			stat = handle_builtin(tokens, env, must_exit);
 		tokens = tokens->next;
 	}
 	free_pipes(&pipe_fds);

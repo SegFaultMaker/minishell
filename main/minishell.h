@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/07 15:08:29 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:06 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,12 @@ typedef struct s_tokens t_tokens;
 //				Init
 void		init_signals(void);
 
-//				Shell
-void		start_shell(t_hash_table *environment);
-
 //				Execution
-int			execute(t_tokens *tokens, t_hash_table *env, int stat);
+int			execute(t_tokens *tokens, t_hash_table *env, int stat, bool *must_exit);
 
 //				Utils
 char		*read_input(void);
 int			check_input(char **input);
 int			handle_input(t_tokens **cmd, t_hash_table *envp,
-				char **input, int stat);
+					char **input, bool *must_exit);
 #endif
