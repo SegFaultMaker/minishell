@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:23:52 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:35:29 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	adjust(int stat)
 {
-	int res;
+	int	res;
 
 	res = stat;
 	if (stat < 0)
@@ -26,9 +26,9 @@ static int	adjust(int stat)
 
 int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count)
 {
-	int		res;
-	char	*N;
 	int		i;
+	int		res;
+	char	*arg;
 
 	res = stat_struct->stat;
 	if (tmp->next && tmp->next->type == ARGUMENT)
@@ -36,15 +36,15 @@ int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count)
 	if (tmp->type == ARGUMENT)
 	{
 		i = 0;
-		N = tmp->token;
-		while (N[i])
+		arg = tmp->token;
+		while (arg[i])
 		{
-			if (!ft_isdigit(N[i]))
+			if (!ft_isdigit(arg[i]))
 				return (quit_with_error(1, "exit",
 						"numeric argument required", 1));
 			i++;
 		}
-		res = ft_atoi(N);
+		res = ft_atoi(arg);
 	}
 	res = adjust(res);
 	if (pipe_count == 0)

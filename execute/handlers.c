@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:27:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:34:24 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 	return (wait(&res), res);
 }
 
-static void	execute_functions(t_tokens *tokens, t_hash_table *envp, t_stat *stat_struct, int pipe_count)
+static void	execute_functions(t_tokens *tokens, t_hash_table *envp,
+				t_stat *stat_struct, int pipe_count)
 {
 	if (!ft_strcmp(tokens->token, "cd"))
 		stat_struct->stat = cd(tokens->next, envp);
@@ -59,7 +60,8 @@ static void	execute_functions(t_tokens *tokens, t_hash_table *envp, t_stat *stat
 		stat_struct->stat = exit_builtin(tokens->next, stat_struct, pipe_count);
 }
 
-void	handle_builtin(t_tokens *tokens, t_hash_table *envp, t_stat *stat_struct, int pipe_count)
+void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
+			t_stat *stat_struct, int pipe_count)
 {
 	int			saved_in;
 	int			saved_out;

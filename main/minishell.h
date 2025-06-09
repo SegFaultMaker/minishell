@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:10:20 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:32:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define BREAK_LOOP 1
 # define CONTINUE_LOOP 2
 
-typedef struct s_tokens t_tokens;
+typedef struct s_tokens	t_tokens;
 
 typedef struct s_status
 {
@@ -57,5 +57,6 @@ void		execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct);
 char		*read_input(void);
 int			check_input(char **input);
 void		handle_input(t_tokens **cmd, t_hash_table *envp,
-					char **input, t_stat *stat_struct);
+				char **input, t_stat *stat_struct);
+
 #endif

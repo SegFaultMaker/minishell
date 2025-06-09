@@ -49,7 +49,8 @@ void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 	pipe_fds = allocate_pipe_fds(pipe_count);
 	if (!pipe_fds)
 	{
-		stat_struct->stat = quit_with_error(1, "pipes", "pipe allocation error", 1);
+		stat_struct->stat = quit_with_error(1, "pipes",
+				"pipe allocation error", 1);
 		return ;
 	}
 	do_redirections(&tokens, pipe_fds);

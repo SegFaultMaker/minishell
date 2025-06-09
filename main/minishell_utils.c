@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:14:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/09 14:07:14 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:33:09 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static void	free_values(t_tokens **cmd, char **input)
 	input = NULL;
 }
 
-void	handle_input(t_tokens **cmd, t_hash_table *envp, char **input, t_stat *stat_struct)
+void	handle_input(t_tokens **cmd, t_hash_table *envp,
+			char **input, t_stat *stat_struct)
 {
 	if (*cmd)
 	{
