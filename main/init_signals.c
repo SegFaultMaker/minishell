@@ -6,7 +6,7 @@
 /*   By: nasargsy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:58:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 16:14:56 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/07 15:09:00 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static	void	sig_handle(int sig)
 	if (sig == SIGQUIT)
 		(void)0;
 	else if (sig == SIGINT)
-		printf("\n");
+		printf("\b\n" BLUE "→  " RESET);
 }
 
 void	init_signals(void)

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:12:16 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/05/27 16:55:48 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:40:05 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	cd(t_tokens *tmp, t_hash_table *env)
 	char	*current;
 
 	new = tmp->token;
+	if (tmp->next->type == ARGUMENT)
+		return (quit_with_error(1, "cd", "too many arguments", 1));
 	if (!new || !*new)
 		return (0);
 	current = ht_search(env, "PWD");

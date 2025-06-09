@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 16:13:17 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:45:39 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ int	main(int argc, char *argv[], char *envp[])
 	rl_clear_history();
 	(void)argc;
 	(void)argv;
+	printf("exit\n");
 }
