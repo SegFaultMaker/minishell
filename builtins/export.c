@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/27 14:49:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 22:49:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	export(t_tokens *tokens, t_hash_table *ht)
 	int	process;
 
 	stat = 0;
-	if (!tokens)
+	if (tokens && (is_redir_pipe(tokens->type) || tokens->type == NEWL))
 		return (env(ht, 1), stat);
 	while (tokens && !is_redir_pipe(tokens->type) && tokens->type != NEWL)
 	{
