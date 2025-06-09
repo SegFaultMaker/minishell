@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/07 14:24:47 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:50:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 	if ((*executable)->type == PIPE)
 	{
 		(*current) = (*executable);
-		(*executable) = NULL;
-		return (CONTINUE_THE_LOOP);
+		return ((*executable) = NULL, CONTINUE_THE_LOOP);
 	}
 	(*executable)->output = open_outfile((*current)->next->token,
 			(*current)->type);

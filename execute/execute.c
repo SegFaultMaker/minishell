@@ -39,26 +39,27 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	}
 }
 
-int	execute(t_tokens *tokens, t_hash_table *env, int stat, bool *must_exit)
+void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 {
 	int		**pipe_fds;
 	int		pipe_count;
 
-	expand_tokens(&tokens, env, stat);
+	expand_tokens(&tokens, env, stat_struct->stat);
 	pipe_count = check_pipes(tokens);
 	pipe_fds = allocate_pipe_fds(pipe_count);
 	if (!pipe_fds)
-		return (quit_with_error(1, "pipes", "pipe allocation error", 1));
+	{
+		stat_struct->stat = quit_with_error(1, "pipes", "pipe allocation error", 1);
+		return ;
+	}
 	do_redirections(&tokens, pipe_fds);
-	stat = 0;
 	while (tokens)
 	{
 		if (tokens->type == COMMAND && tokens->execute)
-			stat = handle_binary(tokens, env);
+			handle_binary(tokens, env, stat_struct);
 		else if (tokens->type == BUILTIN && tokens->execute)
-			stat = handle_builtin(tokens, env, must_exit, pipe_count);
+			handle_builtin(tokens, env, stat_struct, pipe_count);
 		tokens = tokens->next;
 	}
 	free_pipes(&pipe_fds);
-	return (stat);
 }

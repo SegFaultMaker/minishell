@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:42:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:27:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,29 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 	return (wait(&res), res);
 }
 
-static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat, bool *must_exit, int pipe_count)
+static void	execute_functions(t_tokens *tokens, t_hash_table *envp, t_stat *stat_struct, int pipe_count)
 {
 	if (!ft_strcmp(tokens->token, "cd"))
-		*stat = cd(tokens->next, envp);
+		stat_struct->stat = cd(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "pwd"))
-		*stat = pwd(envp);
+		stat_struct->stat = pwd(envp);
 	else if (!ft_strcmp(tokens->token, "echo"))
-		*stat = echo(tokens->next);
+		stat_struct->stat = echo(tokens->next);
 	else if (!ft_strcmp(tokens->token, "env"))
-		*stat = env(envp, 0);
+		stat_struct->stat = env(envp, 0);
 	else if (!ft_strcmp(tokens->token, "export"))
-		*stat = export(tokens->next, envp);
+		stat_struct->stat = export(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "unset"))
-		*stat = unset(tokens->next, envp);
+		stat_struct->stat = unset(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "exit"))
-		*stat = exit_builtin(tokens->next, *stat, must_exit, pipe_count);
+		stat_struct->stat = exit_builtin(tokens->next, stat_struct, pipe_count);
 }
 
-int	handle_builtin(t_tokens *tokens, t_hash_table *envp, bool *must_exit, int pipe_count)
+void	handle_builtin(t_tokens *tokens, t_hash_table *envp, t_stat *stat_struct, int pipe_count)
 {
-	int			stat;
 	int			saved_in;
 	int			saved_out;
 
-	stat = 0;
 	saved_in = INT_MIN;
 	saved_out = INT_MIN;
 	while (tokens->type != BUILTIN)
@@ -82,32 +80,34 @@ int	handle_builtin(t_tokens *tokens, t_hash_table *envp, bool *must_exit, int pi
 		dup2(tokens->output, STDOUT_FILENO);
 		close(tokens->output);
 	}
-	execute_functions(tokens, envp, &stat, must_exit, pipe_count);
-	return (undo_builtin_redirs(saved_in, saved_out), stat);
+	execute_functions(tokens, envp, stat_struct, pipe_count);
+	undo_builtin_redirs(saved_in, saved_out);
 }
 
-int	handle_binary(t_tokens *cmd, t_hash_table *env)
+void	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
 {
 	char	**argv;
 	char	**envp;
 	char	*full_path;
-	int		res;
 
 	argv = tokens_to_strings(cmd);
 	envp = ht_to_strings(env, 0);
 	full_path = find_cmd(argv[0], envp);
 	if (!argv || !envp)
-		return (quit_with_error(1, "execution", "malloc error", 1));
+	{
+		stat_struct->stat = quit_with_error(1, "execution", "malloc error", 1);
+		return ;
+	}
 	if (!full_path)
 	{
 		free_matrix(argv);
 		free_matrix(envp);
-		return (127);
+		stat_struct->stat = 127;
+		return ;
 	}
-	res = safe_execve(cmd, full_path, argv, envp);
+	stat_struct->stat = safe_execve(cmd, full_path, argv, envp);
 	free_matrix(argv);
 	free_matrix(envp);
 	if (full_path)
 		free(full_path);
-	return (res);
 }
