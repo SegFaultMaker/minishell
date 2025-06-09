@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:12:16 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 09:40:05 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:56:47 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	cd(t_tokens *tmp, t_hash_table *env)
 	if (!current)
 		return (quit_with_error(1, "cd", "PWD not set", 1));
 	if (chdir(new) == -1)
-		return (quit_with_error(1, "cd", NULL, 1));
+	{
+		quit_with_error(1, "cd", NULL, errno);
+		return (1);
+	}
 	new = getcwd(NULL, 0);
 	if (!new || !*new)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:35:29 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:01:04 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count)
 		arg = tmp->token;
 		while (arg[i])
 		{
-			if (!ft_isdigit(arg[i]))
+			if (!ft_isdigit(arg[i]) && arg[i] != '+' && arg[i] != '-')
 				return (quit_with_error(1, "exit",
-						"numeric argument required", 1));
+						"numeric argument required", 2));
 			i++;
 		}
 		res = ft_atoi(arg);
