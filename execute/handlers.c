@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:12:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:42:54 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 	return (wait(&res), res);
 }
 
-static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat, bool *must_exit)
+static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat, bool *must_exit, int pipe_count)
 {
 	if (!ft_strcmp(tokens->token, "cd"))
 		*stat = cd(tokens->next, envp);
@@ -56,13 +56,10 @@ static void	execute_functions(t_tokens *tokens, t_hash_table *envp, int *stat, b
 	else if (!ft_strcmp(tokens->token, "unset"))
 		*stat = unset(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "exit"))
-	{
-		*stat = exit_builtin(tokens->next, *stat);
-		*must_exit = true;
-	}
+		*stat = exit_builtin(tokens->next, *stat, must_exit, pipe_count);
 }
 
-int	handle_builtin(t_tokens *tokens, t_hash_table *envp, bool *must_exit)
+int	handle_builtin(t_tokens *tokens, t_hash_table *envp, bool *must_exit, int pipe_count)
 {
 	int			stat;
 	int			saved_in;
@@ -85,7 +82,7 @@ int	handle_builtin(t_tokens *tokens, t_hash_table *envp, bool *must_exit)
 		dup2(tokens->output, STDOUT_FILENO);
 		close(tokens->output);
 	}
-	execute_functions(tokens, envp, &stat, must_exit);
+	execute_functions(tokens, envp, &stat, must_exit, pipe_count);
 	return (undo_builtin_redirs(saved_in, saved_out), stat);
 }
 

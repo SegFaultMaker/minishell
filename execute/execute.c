@@ -56,7 +56,7 @@ int	execute(t_tokens *tokens, t_hash_table *env, int stat, bool *must_exit)
 		if (tokens->type == COMMAND && tokens->execute)
 			stat = handle_binary(tokens, env);
 		else if (tokens->type == BUILTIN && tokens->execute)
-			stat = handle_builtin(tokens, env, must_exit);
+			stat = handle_builtin(tokens, env, must_exit, pipe_count);
 		tokens = tokens->next;
 	}
 	free_pipes(&pipe_fds);

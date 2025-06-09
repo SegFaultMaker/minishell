@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:13:54 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:44:59 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ static int	adjust(int stat)
 	return (res);
 }
 
-int	exit_builtin(t_tokens *tmp, int prev_stat)
+int	exit_builtin(t_tokens *tmp, int prev_stat, bool *must_exit, int pipe_count)
 {
 	int		res;
 	char	*N;
 	int		i;
 
 	res = prev_stat;
-	if (tmp->next->type == ARGUMENT)
+	if (tmp->next && tmp->next->type == ARGUMENT)
 		return (quit_with_error(1, "exit", "too many arguments", 1));
 	if (tmp->type == ARGUMENT)
 	{
@@ -47,5 +47,7 @@ int	exit_builtin(t_tokens *tmp, int prev_stat)
 		res = ft_atoi(N);
 	}
 	res = adjust(res);
+	if (pipe_count == 0)
+		*must_exit = true;
 	return (res);
 }
