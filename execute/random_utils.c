@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 12:47:36 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:54:52 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ void	here_doc(t_tokens *tokens, int fd)
 	free(res);
 }
 
-int	get_last_stat(pid_t pid, int last_is_binary, int count, int last_stat)
+int	get_last_stat(t_stat *stat_struct, int count)
 {
 	int	res;
 
-	res = last_stat;
-	if (last_is_binary)
-		waitpid(pid, &res, 0);
+	res = stat_struct->stat;
+	if (stat_struct->last_is_binary && stat_struct->pid != -1)
+		waitpid(stat_struct->pid, &res, 0);
 	while (count)
 	{
 		wait(NULL);

@@ -39,14 +39,30 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	}
 }
 
+void	execute_all(t_tokens *tokens, t_hash_table *env,
+			t_stat *stat_struct, int pipe_count)
+{
+	while (tokens)
+	{
+		if (tokens->type == COMMAND && tokens->execute)
+		{
+			stat_struct->pid = handle_binary(tokens, env, stat_struct);
+			stat_struct->last_is_binary = 1;
+		}
+		else if (tokens->type == BUILTIN && tokens->execute)
+		{
+			handle_builtin(tokens, env, stat_struct, pipe_count);
+			stat_struct->last_is_binary = 0;
+		}
+		tokens = tokens->next;
+	}
+}
+
 void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 {
 	int		**pipe_fds;
 	int		pipe_count;
-	int		last_is_binary;
-	pid_t	pid;
 
-	last_is_binary = 0;
 	expand_tokens(&tokens, env, stat_struct->stat);
 	pipe_count = check_pipes(tokens);
 	pipe_fds = allocate_pipe_fds(pipe_count);
@@ -57,21 +73,7 @@ void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 		return ;
 	}
 	do_redirections(&tokens, pipe_fds);
-	while (tokens)
-	{
-		if (tokens->type == COMMAND && tokens->execute)
-		{
-			pid = handle_binary(tokens, env, stat_struct);
-			last_is_binary = 1;
-		}
-		else if (tokens->type == BUILTIN && tokens->execute)
-		{
-			handle_builtin(tokens, env, stat_struct, pipe_count);
-			last_is_binary = 0;
-		}
-		tokens = tokens->next;
-	}
+	execute_all(tokens, env, stat_struct, pipe_count);
 	free_pipes(&pipe_fds);
-	stat_struct->stat = get_last_stat(pid, last_is_binary,
-			pipe_count, stat_struct->stat);
+	stat_struct->stat = get_last_stat(stat_struct, pipe_count);
 }

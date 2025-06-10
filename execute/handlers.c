@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 12:39:16 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:37:08 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,19 +99,17 @@ pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
 	if (!argv || !envp)
 	{
 		stat_struct->stat = quit_with_error(1, "execution", "malloc error", 1);
-		return (0);
+		return (-1);
 	}
 	if (!full_path)
 	{
-		free_matrix(argv);
-		free_matrix(envp);
 		stat_struct->stat = 127;
-		return (0);
+		return (free_matrix(argv), free_matrix(envp), -1);
 	}
 	pid = safe_execve(cmd, full_path, argv, envp);
 	free_matrix(argv);
 	free_matrix(envp);
 	if (full_path)
 		free(full_path);
-	return(pid);
+	return (pid);
 }
