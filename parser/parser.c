@@ -77,7 +77,7 @@ static int	regular(char **str, char **start)
 			|| (ft_isquote(**str) && in_quote))
 			in_quote = !in_quote;
 		if ((check_redir_pipe_operator(*str, 1) || ft_isspace(**str))
-				&& !in_quote)
+			&& !in_quote)
 			break ;
 		len++;
 		(*str)++;

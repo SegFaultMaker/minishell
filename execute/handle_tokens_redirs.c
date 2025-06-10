@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/11 00:33:31 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:38:33 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,8 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 		return (open_infile((*current)->next->token),
 			(*current) = (*executable), CONTINUE_THE_LOOP);
 	if ((*executable)->type == PIPE)
-	{
-		(*current) = (*executable);
-		(*executable) = NULL;
-		return (CONTINUE_THE_LOOP);
-	}
+		return ((*current) = (*executable),
+			(*executable) = NULL, CONTINUE_THE_LOOP);
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{
@@ -49,10 +46,8 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 		return (open_outfile((*current)->next->token, (*current)->type),
 			(*current) = (*executable), CONTINUE_THE_LOOP);
 	if ((*executable)->type == PIPE)
-	{
-		(*current) = (*executable);
-		return ((*executable) = NULL, CONTINUE_THE_LOOP);
-	}
+		return ((*current) = (*executable),
+			(*executable) = NULL, CONTINUE_THE_LOOP);
 	(*executable)->output = open_outfile((*current)->next->token,
 			(*current)->type);
 	if ((*executable)->output == -1)
