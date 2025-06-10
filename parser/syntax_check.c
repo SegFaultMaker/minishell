@@ -58,15 +58,16 @@ int	syntax_check(t_tokens *tmp)
 		generate_error(tmp);
 		return (0);
 	}
-	while (tmp)
+	while (tmp && tmp->type != NEWL)
 	{
 		if (!check_quotes(tmp->token))
 			return (0);
 		if (is_redir_pipe(tmp->type))
 		{
-			if (is_redir_pipe(tmp->next->type))
+			if (tmp->next->type == tmp->type || tmp->next->type == NEWL)
 			{
-				if (is_redir_pipe(tmp->next->next->type))
+				if (is_redir_pipe(tmp->next->type != NEWL
+						&& tmp->next->next->type))
 					generate_error(tmp->next);
 				else
 					generate_error(tmp);

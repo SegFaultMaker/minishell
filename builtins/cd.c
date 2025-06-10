@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:12:16 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:56:47 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:04:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	cd(t_tokens *tmp, t_hash_table *env)
 	char	*current;
 
 	new = tmp->token;
-	if (tmp->next->type == ARGUMENT)
+	if (tmp->next && tmp->next->type == ARGUMENT)
 		return (quit_with_error(1, "cd", "too many arguments", 1));
 	if (!new || !*new)
 		return (0);

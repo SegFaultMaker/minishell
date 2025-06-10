@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:24:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:41:26 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static	t_stat	*create_stat_struct(void)
 	stat_struct = malloc(sizeof(t_stat));
 	stat_struct->must_exit = false;
 	stat_struct->stat = 0;
+	stat_struct->last_is_binary = 0;
 	return (stat_struct);
 }
 

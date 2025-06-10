@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assign_types.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nasargsy <nasargsy@student.42yerevan.am>   +#+  +:+       +#+        */
+/*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:44:11 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/06 16:15:51 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:01:05 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static t_tokens	*handle_redirs(t_tokens **tokens)
 			tmp->type = FILE_NAME;
 		else
 			tmp->type = LIMITER;
-		tmp = tmp->next;
 	}
 	return (tmp);
 }
@@ -98,5 +97,7 @@ void	assign_types(t_tokens **tokens)
 		}
 		else if (tmp->type == NEWL)
 			break ;
+		else
+			tmp = tmp->next;
 	}
 }
