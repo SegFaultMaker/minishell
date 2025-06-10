@@ -43,7 +43,10 @@ void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 {
 	int		**pipe_fds;
 	int		pipe_count;
+	int		last_is_binary;
+	pid_t	pid;
 
+	last_is_binary = 0;
 	expand_tokens(&tokens, env, stat_struct->stat);
 	pipe_count = check_pipes(tokens);
 	pipe_fds = allocate_pipe_fds(pipe_count);
@@ -57,10 +60,18 @@ void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 	while (tokens)
 	{
 		if (tokens->type == COMMAND && tokens->execute)
-			handle_binary(tokens, env, stat_struct);
+		{
+			pid = handle_binary(tokens, env, stat_struct);
+			last_is_binary = 1;
+		}
 		else if (tokens->type == BUILTIN && tokens->execute)
+		{
 			handle_builtin(tokens, env, stat_struct, pipe_count);
+			last_is_binary = 0;
+		}
 		tokens = tokens->next;
 	}
 	free_pipes(&pipe_fds);
+	stat_struct->stat = get_last_stat(pid, last_is_binary,
+			pipe_count, stat_struct->stat);
 }

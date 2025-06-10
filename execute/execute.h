@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/09 14:34:39 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 12:40:04 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define CONTINUE_THE_LOOP 1
 
 //				handlers
-void		handle_binary(t_tokens *cmd, t_hash_table *env,
+pid_t		handle_binary(t_tokens *cmd, t_hash_table *env,
 				t_stat *stat_struct);
 void		handle_builtin(t_tokens *tokens, t_hash_table *envp,
 				t_stat *stat_struct, int pipe_count);
@@ -50,6 +50,8 @@ char		**tokens_to_strings(t_tokens *cmd);
 int			check_pipes(t_tokens *tokens);
 int			quit_with_error(int flag, char *target, char *description,
 				int stat);
+int			get_last_stat(pid_t pid, int last_is_binary,
+				int count, int last_stat);
 void		free_matrix(char **matrix);
 char		*find_cmd(char *cmd, char **envp);
 t_tokens	*find_executable(t_tokens *current);

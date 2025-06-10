@@ -6,13 +6,13 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:34:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 12:39:16 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
+static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 {
 	pid_t		pid;
 	int			res;
@@ -38,7 +38,7 @@ static int	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 	}
 	if (cmd->piped_out)
 		close(cmd->output);
-	return (wait(&res), res);
+	return (pid);
 }
 
 static void	execute_functions(t_tokens *tokens, t_hash_table *envp,
@@ -86,11 +86,12 @@ void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
 	undo_builtin_redirs(saved_in, saved_out);
 }
 
-void	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
+pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
 {
 	char	**argv;
 	char	**envp;
 	char	*full_path;
+	pid_t	pid;
 
 	argv = tokens_to_strings(cmd);
 	envp = ht_to_strings(env, 0);
@@ -98,18 +99,19 @@ void	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
 	if (!argv || !envp)
 	{
 		stat_struct->stat = quit_with_error(1, "execution", "malloc error", 1);
-		return ;
+		return (0);
 	}
 	if (!full_path)
 	{
 		free_matrix(argv);
 		free_matrix(envp);
 		stat_struct->stat = 127;
-		return ;
+		return (0);
 	}
-	stat_struct->stat = safe_execve(cmd, full_path, argv, envp);
+	pid = safe_execve(cmd, full_path, argv, envp);
 	free_matrix(argv);
 	free_matrix(envp);
 	if (full_path)
 		free(full_path);
+	return(pid);
 }

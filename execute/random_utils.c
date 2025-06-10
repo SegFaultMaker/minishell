@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/07 00:36:58 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 12:47:36 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,19 @@ void	here_doc(t_tokens *tokens, int fd)
 	get_next_line(-1);
 	write(fd, res, ft_strlen(res));
 	free(res);
+}
+
+int	get_last_stat(pid_t pid, int last_is_binary, int count, int last_stat)
+{
+	int	res;
+
+	res = last_stat;
+	if (last_is_binary)
+		waitpid(pid, &res, 0);
+	while (count)
+	{
+		wait(NULL);
+		count--;
+	}
+	return (res);
 }
