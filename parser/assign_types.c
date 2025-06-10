@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:44:11 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 16:01:05 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:44:43 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@ static t_tokens	*handle_redirs(t_tokens **tokens)
 	else if (tmp->type == HERE_DOC)
 		is_file = 0;
 	tmp = tmp->next;
-	if (tmp)
+	tmp->type = get_type(tmp->token);
+	if (is_redir_pipe(tmp->type))
+		return (tmp);
+	if (tmp && tmp->next)
 	{
 		if (is_file)
 			tmp->type = FILE_NAME;
 		else
 			tmp->type = LIMITER;
+		tmp = tmp->next;
 	}
 	return (tmp);
 }
@@ -69,8 +73,13 @@ static t_tokens	*handle_commands(t_tokens **tokens)
 	while (tmp)
 	{
 		tmp->type = get_type(tmp->token);
-		if (is_redir_pipe(tmp->type) || tmp->type == NEWL)
+		if (tmp->type == PIPE || tmp->type == NEWL)
 			break ;
+		else if (is_redir_pipe(tmp->type))
+		{
+			tmp = handle_redirs(&tmp);
+			continue ;
+		}
 		tmp->type = ARGUMENT;
 		tmp = tmp->next;
 	}
@@ -87,7 +96,7 @@ void	assign_types(t_tokens **tokens)
 		tmp->type = get_type(tmp->token);
 		if (tmp->type == COMMAND || tmp->type == BUILTIN)
 			tmp = handle_commands(&tmp);
-		else if (tmp->type == OUTPUT || tmp->type == INPUT
+		if (tmp->type == OUTPUT || tmp->type == INPUT
 			|| tmp->type == APPEND || tmp->type == HERE_DOC)
 			tmp = handle_redirs(&tmp);
 		else if (tmp->type == PIPE)

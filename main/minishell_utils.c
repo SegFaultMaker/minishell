@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:14:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/10 11:53:28 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:40:42 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*read_input(void)
 {
 	char	*input;
 
-	input = readline(BLUE "\b\b\b→  " RESET);
+	input = readline(BLUE "→  " RESET);
 	if (input && *input)
 		add_history(input);
 	return (input);

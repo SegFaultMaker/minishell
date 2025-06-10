@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 13:37:08 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:57:40 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 {
 	pid_t		pid;
-	int			res;
 
-	res = 0;
 	pid = fork();
 	if (pid == -1)
 		return (quit_with_error(0, "fork", NULL, errno));

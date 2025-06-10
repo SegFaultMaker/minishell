@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 14:56:10 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:38:07 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,39 @@
 
 static int	check_arg(t_tokens *tokens)
 {
-	char	*tmp;
+	t_tokens	*tmp;
+	char		*arg;
 
-	tmp = tokens->token;
-	tmp++;
-	while (*tmp && *tmp == 'n')
-		tmp++;
-	if (tmp)
+	tmp = tokens;
+	while (tmp->type != NEWL && tmp->type != ARGUMENT)
+		tmp = tmp->next;
+	if (*(tmp->token) != '-')
 		return (1);
-	return (0);
+	arg = tmp->token;
+	arg++;
+	while (*arg && *arg == 'n')
+		arg++;
+	if (!*arg)
+	{
+		free(tmp->token);
+		tmp->token = NULL;
+		return (0);
+	}
+	return (1);
 }
 
 int	echo(t_tokens *tokens)
 {
 	int	nl;
 
-	nl = 1;
-	if (!tokens || tokens->type != ARGUMENT)
+	nl = check_arg(tokens);
+	while (tokens->type != PIPE && tokens->type != NEWL)
 	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		return (0);
-	}
-	if (*(tokens->token) == '-' && check_arg(tokens))
-	{
-		nl = 0;
-		tokens = tokens->next;
-	}
-	while (tokens && tokens->type != PIPE && tokens->type != NEWL)
-	{
-		if (tokens->type == ARGUMENT)
+		if (tokens->type == ARGUMENT && tokens->token)
 		{
 			ft_putstr_fd(tokens->token, STDOUT_FILENO);
-			if (tokens->next && tokens->next->type == ARGUMENT)
+			if (tokens->next && tokens->next->type == ARGUMENT
+					&& tokens->next->token)
 				ft_putchar_fd(' ', STDOUT_FILENO);
 		}
 		tokens = tokens->next;

@@ -64,7 +64,7 @@ int	syntax_check(t_tokens *tmp)
 			return (0);
 		if (is_redir_pipe(tmp->type))
 		{
-			if (tmp->next->type == tmp->type || tmp->next->type == NEWL)
+			if (is_redir_pipe(tmp->next->type) || tmp->next->type == NEWL)
 			{
 				if (is_redir_pipe(tmp->next->type != NEWL
 						&& tmp->next->next->type))
