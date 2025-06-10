@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/10 15:44:59 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:33:31 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 			(*current) = (*current)->next;
 		}
 		(*executable) = find_executable((*current)->next);
+		(*executable)->input = open("/dev/null", O_RDWR);
 		(*current) = (*executable);
 		return (CONTINUE_THE_LOOP);
 	}
@@ -66,6 +67,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 			(*current) = (*current)->next;
 		}
 		(*executable) = find_executable((*current)->next);
+		(*executable)->input = open("/dev/null", O_RDWR);
 		(*current) = (*executable);
 		return (CONTINUE_THE_LOOP);
 	}
@@ -75,14 +77,6 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 void	handle_pipe_redir(t_tokens **current, t_tokens **executable,
 	int **pipe_fds, int *i)
 {
-	// if ((*current)->next && (*current)->next->type == BUILTIN)
-	// {
-	// 	close(pipe_fds[(*i)][1]);
-	// 	(*executable)->execute = false;
-	// 	(*executable) = find_executable((*current)->next);
-	// 	(*i)++;
-	// 	return ;
-	// }
 	if (!(*executable) || (*executable)->output != STDOUT_FILENO)
 		close(pipe_fds[(*i)][1]);
 	else
@@ -92,7 +86,6 @@ void	handle_pipe_redir(t_tokens **current, t_tokens **executable,
 	}
 	(*executable) = find_executable((*current)->next);
 	(*executable)->input = pipe_fds[(*i)][0];
-	(*executable)->piped_in = true;
 	(*i)++;
 }
 

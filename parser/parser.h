@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/06 22:14:40 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:31:22 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_tokens
 	t_types			type;
 	int				input;
 	int				output;
-	bool			piped_in;
 	bool			piped_out;
 	bool			execute;
 	struct s_tokens	*next;
