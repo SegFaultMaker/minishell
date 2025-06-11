@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:46:56 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/09 14:23:12 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:05:14 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,22 @@
 # define ADD_MODE INT_MAX
 # define JOIN_MODE INT_MIN
 
-//			enviroment
-int		export(t_tokens *tokens, t_hash_table *ht);
-int		env(t_hash_table *ht, int mode);
-int		unset(t_tokens *tokens, t_hash_table *ht);
+//				enviroment
+int			export(t_tokens *tokens, t_hash_table *ht);
+int			env(t_hash_table *ht, int mode);
+int			unset(t_tokens *tokens, t_hash_table *ht);
 
-//			other
-int		cd(t_tokens *tokens, t_hash_table *ht);
-int		echo(t_tokens *tokens);
-int		pwd(t_hash_table *envp);
-int		exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count);
+//				other
+int			cd(t_tokens *tokens, t_hash_table *ht);
+int			echo(t_tokens *tokens);
+int			pwd(t_hash_table *envp);
+int			exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count);
 
-//			utils
-char	*get_key_end(char *arg, int mode);
-char	*get_key(char *arg, char *key_end);
-void	free_key_value(char *key, char *value, char *existing, int mode);
+//				utils
+char		*get_key_end(char *arg, int mode);
+char		*get_key(char *arg, char *key_end);
+void		free_key_value(char *key, char *value, char *existing, int mode);
+t_tokens	*find_argument(t_tokens *tmp);
+int			argument_count(t_tokens *tmp);
 
 #endif

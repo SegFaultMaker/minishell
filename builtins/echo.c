@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:54:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/11 00:37:00 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:38:22 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	echo(t_tokens *tokens)
 		if (tokens->type == ARGUMENT && tokens->token)
 		{
 			ft_putstr_fd(tokens->token, STDOUT_FILENO);
-			if (tokens->next && tokens->next->type == ARGUMENT
-				&& tokens->next->token)
+			if (tokens->next && tokens->next->type != NEWL
+				&& tokens->next->type != PIPE)
 				ft_putchar_fd(' ', STDOUT_FILENO);
 		}
 		tokens = tokens->next;
@@ -55,13 +55,3 @@ int	echo(t_tokens *tokens)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }
-
-/*int	main()
- {
- 	char	*line;
- 	line = readline("$ ");
- 	t_tokens	*tokens = parser(line);
- 	echo(tokens->next);
- 	free(line);
- 	free_tokens(&tokens);
- }*/

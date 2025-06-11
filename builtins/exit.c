@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 15:01:04 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:45:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count)
 	char	*arg;
 
 	res = stat_struct->stat;
-	if (tmp->next && tmp->next->type == ARGUMENT)
+	if (argument_count(tmp) > 1)
 		return (quit_with_error(1, "exit", "too many arguments", 1));
-	if (tmp->type == ARGUMENT)
+	tmp = find_argument(tmp);
+	if (tmp)
 	{
 		i = 0;
 		arg = tmp->token;

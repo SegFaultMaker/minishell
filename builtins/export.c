@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/09 22:49:02 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:41:44 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,20 @@ int	export(t_tokens *tokens, t_hash_table *ht)
 	stat = 0;
 	if (tokens && (is_redir_pipe(tokens->type) || tokens->type == NEWL))
 		return (env(ht, 1), stat);
-	while (tokens && !is_redir_pipe(tokens->type) && tokens->type != NEWL)
+	while (tokens->type != PIPE && tokens->type != NEWL)
 	{
-		mode = check_argument(tokens->token);
-		if (mode == ADD_MODE || mode == JOIN_MODE)
+		if (tokens->type == ARGUMENT && tokens->token)
 		{
-			process = process_argument(tokens->token, ht, mode);
-			if (process)
-				stat = process;
+			mode = check_argument(tokens->token);
+			if (mode == ADD_MODE || mode == JOIN_MODE)
+			{
+				process = process_argument(tokens->token, ht, mode);
+				if (process)
+					stat = process;
+			}
+			else
+				stat = mode;
 		}
-		else
-			stat = mode;
 		tokens = tokens->next;
 	}
 	return (stat);

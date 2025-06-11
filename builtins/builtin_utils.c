@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
+/*   biultin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:49:08 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/16 22:12:18 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:05:01 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,29 @@ void	free_key_value(char *key, char *value, char *existing, int mode)
 	}
 	free(key);
 	key = NULL;
+}
+
+t_tokens	*find_argument(t_tokens *tmp)
+{
+	while (tmp && tmp->type != PIPE && tmp->type != NEWL)
+	{
+		if (tmp->type == ARGUMENT)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+int	argument_count(t_tokens *tmp)
+{
+	int	count;
+
+	count = 0;
+	while (tmp && tmp->type != PIPE && tmp->type != NEWL)
+	{
+		if (tmp->type == ARGUMENT)
+			count++;
+		tmp = tmp->next;
+	}
+	return (count);
 }
