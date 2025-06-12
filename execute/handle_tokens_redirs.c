@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/11 00:38:33 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/12 21:54:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,13 @@ void	handle_pipe_redir(t_tokens **current, t_tokens **executable,
 		(*executable)->piped_out = true;
 	}
 	(*executable) = find_executable((*current)->next);
-	(*executable)->input = pipe_fds[(*i)][0];
+	if ((*executable)->type != BUILTIN)
+		(*executable)->input = pipe_fds[(*i)][0];
+	else
+	{
+		close(pipe_fds[(*i)][0]);
+		(*executable)->input = open("/dev/null", O_RDWR);
+	}
 	(*i)++;
 }
 
