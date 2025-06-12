@@ -12,7 +12,7 @@
 
 #include "parser.h"
 
-static int	single_quotes(char **str, char **start)
+/*static int	single_quotes(char **str, char **start)
 {
 	int	len;
 	int	in_quote;
@@ -33,25 +33,30 @@ static int	single_quotes(char **str, char **start)
 		(*str)++;
 	}
 	return (len);
-}
+}*/
 
-static int	double_quotes(char **str, char **start)
+static int	quotes(char **str, char **start)
 {
-	int	len;
-	int	in_quote;
+	int		len;
+	int		in_quote;
+	char	last_quote;
 
 	len = 1;
 	in_quote = 1;
+	last_quote = **str;
 	*start = *str;
 	(*str)++;
 	while (**str)
 	{
 		if (ft_isspace(**str) && !in_quote)
 			break ;
-		if (**str == '\"' && in_quote)
+		if ((**str == '\"' || **str == '\'') && in_quote && **str == last_quote)
 			in_quote = 0;
-		else if (**str == '\"' && !in_quote)
+		else if ((**str == '\"' || **str == '\'') && !in_quote)
+		{
 			in_quote = 1;
+			last_quote = **str;
+		}
 		len++;
 		(*str)++;
 	}
@@ -94,10 +99,10 @@ static t_tokens	*get_token(char **str)
 	len = 0;
 	while (ft_isspace(**str))
 		(*str)++;
-	if (**str == '\'')
-		len = single_quotes(str, &start);
-	else if (**str == '\"')
-		len = double_quotes(str, &start);
+/*	if (**str == '\'')
+		len = single_quotes(str, &start);*/
+	if (**str == '\"' || **str == '\'')
+		len = quotes(str, &start);
 	else
 		len = regular(str, &start);
 	if (len == 0)
