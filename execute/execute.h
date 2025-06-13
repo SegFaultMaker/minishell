@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/10 13:49:40 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:57:18 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 //				handlers
 pid_t		handle_binary(t_tokens *cmd, t_hash_table *env,
 				t_stat *stat_struct);
+pid_t		builtin_in_fork(t_tokens *tokens, t_hash_table *envp,
+				t_stat *stat_struct);
 void		handle_builtin(t_tokens *tokens, t_hash_table *envp,
-				t_stat *stat_struct, int pipe_count);
+				t_stat *stat_struct);
 
 //				random redirs
 void		undo_builtin_redirs(int saved_in, int saved_out);

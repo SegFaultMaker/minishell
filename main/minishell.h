@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 13:48:12 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:00:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_tokens	t_tokens;
 typedef struct s_status
 {
 	int		stat;
-	int		last_is_binary;
+	bool	last_in_fork;
 	bool	must_exit;
 	pid_t	pid;
 

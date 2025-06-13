@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/11 17:45:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:06:04 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	adjust(int stat)
 	return (res);
 }
 
-int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count)
+int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, bool in_fork)
 {
 	int		i;
 	int		res;
@@ -48,7 +48,7 @@ int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, int pipe_count)
 		res = ft_atoi(arg);
 	}
 	res = adjust(res);
-	if (pipe_count == 0)
+	if (!in_fork)
 		stat_struct->must_exit = true;
 	return (res);
 }

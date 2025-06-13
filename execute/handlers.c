@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/11 00:31:29 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:22:51 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 		if (execve(path, argv, envp) == -1)
 			quit_with_error(0, NULL, NULL, errno);
 	}
-	if (cmd->piped_out)
+	if (cmd->input != STDIN_FILENO)
+		close(cmd->input);
+	if (cmd->output != STDOUT_FILENO)
 		close(cmd->output);
 	return (pid);
 }
 
 static void	execute_functions(t_tokens *tokens, t_hash_table *envp,
-				t_stat *stat_struct, int pipe_count)
+	t_stat *stat_struct, bool in_fork)
 {
 	if (!ft_strcmp(tokens->token, "cd"))
 		stat_struct->stat = cd(tokens->next, envp);
@@ -55,11 +57,41 @@ static void	execute_functions(t_tokens *tokens, t_hash_table *envp,
 	else if (!ft_strcmp(tokens->token, "unset"))
 		stat_struct->stat = unset(tokens->next, envp);
 	else if (!ft_strcmp(tokens->token, "exit"))
-		stat_struct->stat = exit_builtin(tokens->next, stat_struct, pipe_count);
+		stat_struct->stat = exit_builtin(tokens->next, stat_struct, in_fork);
+}
+
+pid_t	builtin_in_fork(t_tokens *tokens, t_hash_table *envp,
+	t_stat *stat_struct)
+{
+	pid_t		pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (quit_with_error(0, "fork", NULL, errno));
+	if (pid == 0)
+	{
+		if (tokens->input != STDIN_FILENO)
+		{
+			dup2(tokens->input, STDIN_FILENO);
+			close(tokens->input);
+		}
+		if (tokens->output != STDOUT_FILENO)
+		{
+			dup2(tokens->output, STDOUT_FILENO);
+			close(tokens->output);
+		}
+		execute_functions(tokens, envp, stat_struct, true);
+		exit(stat_struct->stat);
+	}
+	if (tokens->input != STDIN_FILENO)
+		close(tokens->input);
+	if (tokens->output != STDOUT_FILENO)
+		close(tokens->output);
+	return (pid);
 }
 
 void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
-			t_stat *stat_struct, int pipe_count)
+			t_stat *stat_struct)
 {
 	int			saved_in;
 	int			saved_out;
@@ -80,7 +112,7 @@ void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
 		dup2(tokens->output, STDOUT_FILENO);
 		close(tokens->output);
 	}
-	execute_functions(tokens, envp, stat_struct, pipe_count);
+	execute_functions(tokens, envp, stat_struct, false);
 	undo_builtin_redirs(saved_in, saved_out);
 }
 

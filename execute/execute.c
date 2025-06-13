@@ -45,14 +45,13 @@ void	execute_all(t_tokens *tokens, t_hash_table *env,
 	while (tokens)
 	{
 		if (tokens->type == COMMAND && tokens->execute)
-		{
 			stat_struct->pid = handle_binary(tokens, env, stat_struct);
-			stat_struct->last_is_binary = 1;
-		}
 		else if (tokens->type == BUILTIN && tokens->execute)
 		{
-			handle_builtin(tokens, env, stat_struct, pipe_count);
-			stat_struct->last_is_binary = 0;
+			if (pipe_count > 0)
+				stat_struct->pid = builtin_in_fork(tokens, env, stat_struct);
+			else
+				handle_builtin(tokens, env, stat_struct);
 		}
 		tokens = tokens->next;
 	}
@@ -75,5 +74,7 @@ void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 	do_redirections(&tokens, pipe_fds);
 	execute_all(tokens, env, stat_struct, pipe_count);
 	free_pipes(&pipe_fds);
+	if (pipe_count > 0)
+		stat_struct->last_in_fork = true;
 	stat_struct->stat = get_last_stat(stat_struct, pipe_count);
 }
