@@ -39,8 +39,8 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	}
 }
 
-void	execute_all(t_tokens *tokens, t_hash_table *env,
-			t_stat *stat_struct, int pipe_count)
+static void	execute_all(t_tokens *tokens, t_hash_table *env,
+			t_stat *stat_struct)
 {
 	while (tokens)
 	{
@@ -51,7 +51,7 @@ void	execute_all(t_tokens *tokens, t_hash_table *env,
 		}
 		else if (tokens->type == BUILTIN && tokens->execute)
 		{
-			if (pipe_count > 0)
+			if (stat_struct->pipe_count > 0)
 			{
 				stat_struct->pid = builtin_in_fork(tokens, env, stat_struct);
 				stat_struct->last_in_fork = false;
@@ -65,22 +65,19 @@ void	execute_all(t_tokens *tokens, t_hash_table *env,
 
 void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 {
-	int		**pipe_fds;
-	int		pipe_count;
-
 	expand_tokens(&tokens, env, stat_struct->stat);
-	pipe_count = check_pipes(tokens);
-	pipe_fds = allocate_pipe_fds(pipe_count);
-	if (!pipe_fds)
+	stat_struct->pipe_count = check_pipes(tokens);
+	stat_struct->pipe_fds = allocate_pipe_fds(stat_struct->pipe_count);
+	if (!stat_struct->pipe_fds)
 	{
 		stat_struct->stat = quit_with_error(1, "pipes",
 				"pipe allocation error", 1);
 		return ;
 	}
-	do_redirections(&tokens, pipe_fds);
-	execute_all(tokens, env, stat_struct, pipe_count);
-	free_pipes(&pipe_fds);
-	if (pipe_count > 0)
+	do_redirections(&tokens, stat_struct->pipe_fds);
+	execute_all(tokens, env, stat_struct);
+	free_pipes(&stat_struct->pipe_fds);
+	if (stat_struct->pipe_count > 0)
 		stat_struct->last_in_fork = true;
-	stat_struct->stat = get_last_stat(stat_struct, pipe_count);
+	stat_struct->stat = get_last_stat(stat_struct);
 }

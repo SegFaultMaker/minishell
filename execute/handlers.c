@@ -6,14 +6,15 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/14 06:17:09 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/14 07:05:16 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
+static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp, t_stat *stat_struct)
 {
+	int			i;
 	pid_t		pid;
 
 	pid = fork();
@@ -30,6 +31,15 @@ static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp)
 		{
 			dup2(cmd->output, STDOUT_FILENO);
 			close(cmd->output);
+		}
+		i = 0;
+		while (stat_struct->pipe_fds[i])
+		{
+			if (stat_struct->pipe_fds[i][0] != cmd->input)
+				close(stat_struct->pipe_fds[i][0]);
+			if (stat_struct->pipe_fds[i][1] != cmd->output)
+				close(stat_struct->pipe_fds[i][1]);
+			i++;
 		}
 		if (execve(path, argv, envp) == -1)
 			quit_with_error(0, NULL, NULL, errno);
@@ -131,10 +141,13 @@ pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
 	}
 	if (!full_path)
 	{
+		if (cmd->output != STDOUT_FILENO)
+			close(cmd->output);
 		stat_struct->stat = 127;
 		return (free_matrix(argv), free_matrix(envp), -1);
 	}
-	pid = safe_execve(cmd, full_path, argv, envp);
+	// create struct for full_path argv and envp
+	pid = safe_execve(cmd, full_path, argv, envp, stat_struct);
 	free_matrix(argv);
 	free_matrix(envp);
 	if (full_path)

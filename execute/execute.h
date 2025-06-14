@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/13 18:57:18 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/14 06:34:28 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char		**tokens_to_strings(t_tokens *cmd);
 int			check_pipes(t_tokens *tokens);
 int			quit_with_error(int flag, char *target, char *description,
 				int stat);
-int			get_last_stat(t_stat *stat_struct, int count);
+int			get_last_stat(t_stat *stat_struct);
 void		free_matrix(char **matrix);
 char		*find_cmd(char *cmd, char **envp);
 t_tokens	*find_executable(t_tokens *current);

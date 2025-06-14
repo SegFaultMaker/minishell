@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/13 14:25:01 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/14 06:34:11 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,13 @@ void	here_doc(t_tokens *tokens, int fd)
 	free(res);
 }
 
-int	get_last_stat(t_stat *stat_struct, int count)
+int	get_last_stat(t_stat *stat_struct)
 {
 	int	res;
+	int	count;
 
 	res = stat_struct->stat;
+	count = stat_struct->pipe_count;
 	if (stat_struct->last_in_fork && stat_struct->pid)
 		waitpid(stat_struct->pid, &res, 0);
 	while (count)
