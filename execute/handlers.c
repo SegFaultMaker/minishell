@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/14 07:05:16 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/14 23:52:01 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,15 @@ pid_t	builtin_in_fork(t_tokens *tokens, t_hash_table *envp,
 		return (quit_with_error(0, "fork", NULL, errno));
 	if (pid == 0)
 	{
+		int i = 0;
+		while (stat_struct->pipe_fds[i])
+		{
+			if (stat_struct->pipe_fds[i][0] != tokens->input)
+				close(stat_struct->pipe_fds[i][0]);
+			if (stat_struct->pipe_fds[i][1] != tokens->output)
+				close(stat_struct->pipe_fds[i][1]);
+			i++;
+		}
 		if (tokens->input != STDIN_FILENO)
 		{
 			dup2(tokens->input, STDIN_FILENO);
