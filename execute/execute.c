@@ -45,11 +45,17 @@ void	execute_all(t_tokens *tokens, t_hash_table *env,
 	while (tokens)
 	{
 		if (tokens->type == COMMAND && tokens->execute)
+		{
 			stat_struct->pid = handle_binary(tokens, env, stat_struct);
+			stat_struct->last_in_fork = true;
+		}
 		else if (tokens->type == BUILTIN && tokens->execute)
 		{
 			if (pipe_count > 0)
+			{
 				stat_struct->pid = builtin_in_fork(tokens, env, stat_struct);
+				stat_struct->last_in_fork = false;
+			}
 			else
 				handle_builtin(tokens, env, stat_struct);
 		}

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/13 19:22:51 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/14 06:17:09 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
 
 	saved_in = INT_MIN;
 	saved_out = INT_MIN;
-	while (tokens->type != BUILTIN)
-		tokens = tokens->next;
 	if (tokens->input != STDIN_FILENO)
 	{
 		saved_in = dup(STDIN_FILENO);
