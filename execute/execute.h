@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/15 11:34:49 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/15 23:28:23 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ int			get_last_stat(t_stat *stat_struct);
 void		free_matrix(char **matrix);
 char		*find_cmd(char *cmd, char **envp);
 t_tokens	*find_executable(t_tokens *current);
+void		dup_and_close(t_tokens *tokens, t_stat *stat_struct);
 
 #endif

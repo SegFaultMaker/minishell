@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/14 06:30:13 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/15 23:33:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ typedef struct s_status
 	int		stat;
 	int		pipe_count;
 	int		**pipe_fds;
+	char	**argv;
+	char	**envp;
+	char	*path;
 	bool	last_in_fork;
 	bool	must_exit;
 	pid_t	pid;

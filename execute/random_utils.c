@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/15 11:35:40 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/15 23:28:53 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,29 @@ int	get_last_stat(t_stat *stat_struct)
 	if (res == 256)
 		res = 1;
 	return (res);
+}
+
+void	dup_and_close(t_tokens *tokens, t_stat *stat_struct)
+{
+	int	i;
+
+	if (tokens->input != STDIN_FILENO)
+	{
+		dup2(tokens->input, STDIN_FILENO);
+		close(tokens->input);
+	}
+	if (tokens->output != STDOUT_FILENO)
+	{
+		dup2(tokens->output, STDOUT_FILENO);
+		close(tokens->output);
+	}
+	i = 0;
+	while (stat_struct->pipe_fds[i])
+	{
+		if (stat_struct->pipe_fds[i][0] != tokens->input)
+			close(stat_struct->pipe_fds[i][0]);
+		if (stat_struct->pipe_fds[i][1] != tokens->output)
+			close(stat_struct->pipe_fds[i][1]);
+		i++;
+	}
 }

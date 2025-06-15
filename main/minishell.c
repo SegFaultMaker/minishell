@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/14 06:30:51 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/15 23:33:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ static	t_stat	*create_stat_struct(void)
 	stat_struct->must_exit = false;
 	stat_struct->pipe_count = 0;
 	stat_struct->pipe_fds = NULL;
+	stat_struct->argv = NULL;
+	stat_struct->envp = NULL;
+	stat_struct->path = NULL;
 	stat_struct->stat = 0;
 	stat_struct->last_in_fork = false;
 	return (stat_struct);

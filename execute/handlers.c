@@ -6,15 +6,14 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/14 23:52:01 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/15 23:33:39 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp, t_stat *stat_struct)
+static pid_t	safe_execve(t_tokens *tokens, t_stat *stat_struct)
 {
-	int			i;
 	pid_t		pid;
 
 	pid = fork();
@@ -22,32 +21,14 @@ static pid_t	safe_execve(t_tokens *cmd, char *path, char **argv, char **envp, t_
 		return (quit_with_error(0, "fork", NULL, errno));
 	if (pid == 0)
 	{
-		if (cmd->input != STDIN_FILENO)
-		{
-			dup2(cmd->input, STDIN_FILENO);
-			close(cmd->input);
-		}
-		if (cmd->output != STDOUT_FILENO)
-		{
-			dup2(cmd->output, STDOUT_FILENO);
-			close(cmd->output);
-		}
-		i = 0;
-		while (stat_struct->pipe_fds[i])
-		{
-			if (stat_struct->pipe_fds[i][0] != cmd->input)
-				close(stat_struct->pipe_fds[i][0]);
-			if (stat_struct->pipe_fds[i][1] != cmd->output)
-				close(stat_struct->pipe_fds[i][1]);
-			i++;
-		}
-		if (execve(path, argv, envp) == -1)
+		dup_and_close(tokens, stat_struct);
+		if (execve(stat_struct->path, stat_struct->argv, stat_struct->envp))
 			quit_with_error(0, NULL, NULL, errno);
 	}
-	if (cmd->input != STDIN_FILENO)
-		close(cmd->input);
-	if (cmd->output != STDOUT_FILENO)
-		close(cmd->output);
+	if (tokens->input != STDIN_FILENO)
+		close(tokens->input);
+	if (tokens->output != STDOUT_FILENO)
+		close(tokens->output);
 	return (pid);
 }
 
@@ -80,25 +61,7 @@ pid_t	builtin_in_fork(t_tokens *tokens, t_hash_table *envp,
 		return (quit_with_error(0, "fork", NULL, errno));
 	if (pid == 0)
 	{
-		int i = 0;
-		while (stat_struct->pipe_fds[i])
-		{
-			if (stat_struct->pipe_fds[i][0] != tokens->input)
-				close(stat_struct->pipe_fds[i][0]);
-			if (stat_struct->pipe_fds[i][1] != tokens->output)
-				close(stat_struct->pipe_fds[i][1]);
-			i++;
-		}
-		if (tokens->input != STDIN_FILENO)
-		{
-			dup2(tokens->input, STDIN_FILENO);
-			close(tokens->input);
-		}
-		if (tokens->output != STDOUT_FILENO)
-		{
-			dup2(tokens->output, STDOUT_FILENO);
-			close(tokens->output);
-		}
+		dup_and_close(tokens, stat_struct);
 		execute_functions(tokens, envp, stat_struct, true);
 		exit(stat_struct->stat);
 	}
@@ -135,31 +98,29 @@ void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
 
 pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
 {
-	char	**argv;
-	char	**envp;
-	char	*full_path;
 	pid_t	pid;
 
-	argv = tokens_to_strings(cmd);
-	envp = ht_to_strings(env, 0);
-	full_path = find_cmd(argv[0], envp);
-	if (!argv || !envp)
+	stat_struct->argv = tokens_to_strings(cmd);
+	stat_struct->envp = ht_to_strings(env, 0);
+	stat_struct->path = find_cmd(stat_struct->argv[0], stat_struct->envp);
+	if (!stat_struct->argv || !stat_struct->envp)
 	{
 		stat_struct->stat = quit_with_error(1, "execution", "malloc error", 1);
 		return (-1);
 	}
-	if (!full_path)
+	if (!stat_struct->path)
 	{
 		if (cmd->output != STDOUT_FILENO)
 			close(cmd->output);
 		stat_struct->stat = 127;
-		return (free_matrix(argv), free_matrix(envp), -1);
+		free_matrix(stat_struct->argv);
+		return (stat_struct->argv = NULL, stat_struct->envp = NULL, -1);
 	}
-	// create struct for full_path argv and envp
-	pid = safe_execve(cmd, full_path, argv, envp, stat_struct);
-	free_matrix(argv);
-	free_matrix(envp);
-	if (full_path)
-		free(full_path);
-	return (pid);
+	pid = safe_execve(cmd, stat_struct);
+	free_matrix(stat_struct->argv);
+	free_matrix(stat_struct->envp);
+	if (stat_struct->path)
+		free(stat_struct->path);
+	return (stat_struct->argv = NULL, stat_struct->envp = NULL,
+		stat_struct->path = NULL, pid);
 }
