@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/03 13:18:44 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/15 11:37:14 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,18 @@ static char	*find_env_variable(char **envp)
 	return (NULL);
 }
 
+static int	check_dir(char *cmd)
+{
+	struct stat	s;
+
+	if (stat(cmd, &s) == 0)
+	{
+		if (s.st_mode & S_IFDIR)
+			return (quit_with_error(1, cmd, "Is a directory", 126));
+	}
+	return (0);
+}
+
 char	*find_cmd(char *cmd, char **envp)
 {
 	char	**paths;
@@ -82,7 +94,7 @@ char	*find_cmd(char *cmd, char **envp)
 	env_variable = NULL;
 	if ((cmd[0] == '.' && cmd[1] == '/') || cmd[0] == '/')
 	{
-		if (check_access(cmd))
+		if (check_access(cmd) || check_dir(cmd))
 			return (NULL);
 		return (ft_strdup(cmd));
 	}

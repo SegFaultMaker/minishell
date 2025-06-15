@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/14 06:34:28 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/15 11:34:49 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define EXECUTE_H
 
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 # include "../main/minishell.h"
 # include "../expand/expand.h"
