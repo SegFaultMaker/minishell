@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 14:09:05 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:58:26 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ static int	check_args(t_tokens *tmp)
 	return (quit_with_error(1, "exit", "too many arguments", all_num));
 }
 
+static int	handle_error(t_stat *stat_struct, int err)
+{
+	if (err)
+		ft_putendl_fd("exit", STDOUT_FILENO);
+	stat_struct->must_exit = true;
+	return (quit_with_error(1, "exit",
+			"numeric argument required", 2));
+}
+
 int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, bool in_fork)
 {
 	int		i;
@@ -55,29 +64,18 @@ int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, bool in_fork)
 	tmp = find_argument(tmp);
 	if (tmp)
 	{
-		i = 0;
+		i = -1;
 		arg = tmp->token;
 		if (!arg[0] || ((arg[0] == '+' || arg[0] == '-') && arg[1] == arg[0]))
-		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
-			stat_struct->must_exit = true;
-			return (quit_with_error(1, "exit",
-						"numeric argument required", 2));
-		}
-		while (arg[i])
-		{
+			return (handle_error(stat_struct, 1));
+		while (arg[++i])
 			if (!ft_isdigit(arg[i]) && arg[i] != '+' && arg[i] != '-')
-				return (quit_with_error(1, "exit",
-						"numeric argument required", 2));
-			i++;
-		}
+				return (handle_error(stat_struct, 0));
 		res = ft_atoi(arg);
 	}
 	res = adjust(res);
 	if (!in_fork)
-	{	
-		ft_putendl_fd("exit", STDOUT_FILENO);
 		stat_struct->must_exit = true;
-	}
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (res);
 }
