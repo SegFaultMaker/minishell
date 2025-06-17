@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/15 23:28:23 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:52:55 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void		undo_builtin_redirs(int saved_in, int saved_out);
 void		here_doc(t_tokens *tokens, int fd);
 
 //				handle tokens redirs
-int			handle_input_redir(t_tokens **current, t_tokens **executable);
-int			handle_output_redir(t_tokens **current, t_tokens **executable);
+int			handle_input_redir(t_tokens **current, t_tokens **executable,
+				t_stat *stat);
+int			handle_output_redir(t_tokens **current, t_tokens **executable,
+				t_stat *stat);
 void		handle_pipe_redir(t_tokens **current, t_tokens **executable,
 				int **pipe_fds, int *i);
 void		free_pipes(int ***array);

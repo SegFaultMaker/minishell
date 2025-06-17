@@ -12,7 +12,7 @@
 
 #include "execute.h"
 
-static void	do_redirections(t_tokens **tokens, int **pipe_fds)
+static void	do_redirections(t_tokens **tokens, t_stat *stat)
 {
 	t_tokens	*current;
 	t_tokens	*executable;
@@ -25,16 +25,16 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 	{
 		if (current->type == INPUT)
 		{
-			if (handle_input_redir(&current, &executable) == CONTINUE_THE_LOOP)
+			if (handle_input_redir(&current, &executable, stat))
 				continue ;
 		}
 		else if ((current->type == OUTPUT) || (current->type == APPEND))
 		{
-			if (handle_output_redir(&current, &executable) == CONTINUE_THE_LOOP)
+			if (handle_output_redir(&current, &executable, stat))
 				continue ;
 		}
 		else if (current->type == PIPE)
-			handle_pipe_redir(&current, &executable, pipe_fds, &i);
+			handle_pipe_redir(&current, &executable, stat->pipe_fds, &i);
 		current = current->next;
 	}
 }
@@ -76,7 +76,7 @@ void	execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct)
 				"pipe allocation error", 1);
 		return ;
 	}
-	do_redirections(&tokens, stat_struct->pipe_fds);
+	do_redirections(&tokens, stat_struct);
 	execute_all(tokens, env, stat_struct);
 	free_pipes(&stat_struct->pipe_fds);
 	if (stat_struct->pipe_count > 0)

@@ -6,13 +6,13 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/14 23:53:35 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:59:19 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	handle_input_redir(t_tokens **current, t_tokens **executable)
+int	handle_input_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 {
 	if ((*executable)->type == NEWL)
 		return (open_infile((*current)->next->token),
@@ -23,6 +23,7 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{
+		stat->stat = 1;
 		(*executable)->execute = false;
 		while (1)
 		{
@@ -40,7 +41,7 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable)
 	return (0);
 }
 
-int	handle_output_redir(t_tokens **current, t_tokens **executable)
+int	handle_output_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 {
 	if ((*executable)->type == NEWL)
 		return (open_outfile((*current)->next->token, (*current)->type),
@@ -52,6 +53,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 			(*current)->type);
 	if ((*executable)->output == -1)
 	{
+		stat->stat = 1;
 		(*executable)->execute = false;
 		while (1)
 		{
@@ -63,8 +65,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable)
 		}
 		(*executable) = find_executable((*current)->next);
 		(*executable)->input = open("/dev/null", O_RDWR);
-		(*current) = (*executable);
-		return (CONTINUE_THE_LOOP);
+		return ((*current) = (*executable), CONTINUE_THE_LOOP);
 	}
 	return (0);
 }
