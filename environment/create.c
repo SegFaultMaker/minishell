@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:21:37 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/04 14:36:15 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:36:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,21 @@ t_ht_item	*ht_new_item(char *k, char *v)
 	if (!item)
 		return (NULL);
 	item->key = ft_strdup(k);
-	item->value = ft_strdup(v);
-	if (!item->key || !item->value)
+	if (!v)
+	{
+		item->print = false;
+		item->value = NULL;
+	}
+	else
+	{
+		item->print = true;
+		item->value = ft_strdup(v);
+	}
+	if (!item->key || (!item->value && v))
 	{
 		free(item->key);
-		free(item->value);
+		if (item->value)
+			free(item->value);
 		free(item);
 		return (NULL);
 	}

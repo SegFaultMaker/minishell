@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:30:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/08 14:42:33 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:09:13 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/libft.h"
 # include <stdio.h>
+# include <stdbool.h>
 
 # define HT_PRIME_1 151
 # define HT_PRIME_2 47
@@ -29,6 +30,7 @@ typedef struct s_ht_item
 {
 	char	*key;
 	char	*value;
+	bool	print;
 }	t_ht_item;
 
 typedef struct s_hash_table
