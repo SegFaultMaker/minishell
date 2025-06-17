@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 15:38:20 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:01:20 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,32 +97,31 @@ void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
 	undo_builtin_redirs(saved_in, saved_out);
 }
 
-pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat_struct)
+pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat)
 {
 	pid_t	pid;
 
-	stat_struct->argv = tokens_to_strings(cmd);
-	stat_struct->envp = ht_to_strings(env, 0);
-	stat_struct->path = find_cmd(stat_struct->argv[0], stat_struct->envp);
-	if (!stat_struct->argv || !stat_struct->envp)
+	stat->argv = tokens_to_strings(cmd);
+	stat->envp = ht_to_strings(env, 0);
+	stat->path = find_cmd(stat->argv[0], stat->envp);
+	if (!stat->argv || !stat->envp)
 	{
-		stat_struct->stat = quit_with_error(1, "execution", "malloc error", 1);
+		stat->stat = quit_with_error(1, "execution", "malloc error", 1);
 		return (-1);
 	}
-	if (!stat_struct->path)
+	if (!stat->path)
 	{
 		if (cmd->output != STDOUT_FILENO)
 			close(cmd->output);
-		stat_struct->stat = 127;
-		free_matrix(stat_struct->argv);
-		free_result(stat_struct->envp);
-		return (stat_struct->argv = NULL, stat_struct->envp = NULL, -1);
+		stat->stat = 127;
+		free_matrix(stat->argv);
+		free_result(stat->envp);
+		return (stat->argv = NULL, stat->envp = NULL, -1);
 	}
-	pid = safe_execve(cmd, stat_struct);
-	free_matrix(stat_struct->argv);
-	free_matrix(stat_struct->envp);
-	if (stat_struct->path)
-		free(stat_struct->path);
-	return (stat_struct->argv = NULL, stat_struct->envp = NULL,
-		stat_struct->path = NULL, pid);
+	pid = safe_execve(cmd, stat);
+	free_matrix(stat->argv);
+	free_matrix(stat->envp);
+	if (stat->path)
+		free(stat->path);
+	return (stat->argv = NULL, stat->envp = NULL, stat->path = NULL, pid);
 }

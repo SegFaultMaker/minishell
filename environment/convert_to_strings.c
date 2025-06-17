@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:23:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 15:45:15 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:00:46 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ static char	*create_string(t_ht_item *item, int mode)
 	else
 		ft_memmove(str + safe_strlen(item->key) + 1, item->value,
 			safe_strlen(item->value));
-	str[len] = '\0';
-	return (str);
+	return (str[len] = '\0', str);
 }
 
 static int	count_length(t_hash_table *ht)
