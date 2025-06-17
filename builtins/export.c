@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:41:31 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 15:29:11 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:46:11 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ static void	invalid_identifier(char *arg)
 	ft_putstr_fd("\': not a valid identifier\n", STDERR_FILENO);
 }
 
+static void	no_value_case(char *arg, t_hash_table *ht)
+{
+	if (ht_search(ht, arg))
+		return ;
+	ht_insert(ht, arg, NULL);
+}
+
 static int	process_argument(char *arg, t_hash_table *ht, int mode)
 {
 	char	*key;
@@ -29,7 +36,7 @@ static int	process_argument(char *arg, t_hash_table *ht, int mode)
 	key_end = get_key_end(arg, mode);
 	existing = NULL;
 	if (!key_end)
-		return (ht_insert(ht, arg, NULL), 0);
+		return (no_value_case(arg, ht), 0);
 	key = get_key(arg, key_end);
 	if (!key)
 		return (invalid_identifier(arg), 1);

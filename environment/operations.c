@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/08 16:18:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:47:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	update(t_hash_table *ht, t_ht_item *c_item, char *key, char *value)
 	{
 		free(c_item->value);
 		c_item->value = ft_strdup(value);
+		c_item->print = true;
 		return (1);
 	}
 	return (0);
