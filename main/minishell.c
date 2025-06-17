@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/15 23:33:39 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:56:02 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	start_shell(t_hash_table *environment, t_stat *stat_struct)
 	input = NULL;
 	while (1)
 	{
+		init_signals();
 		tcgetattr(STDOUT_FILENO, &termios);
 		input = read_input();
 		check_status = check_input(&input);
@@ -59,7 +60,6 @@ int	main(int argc, char *argv[], char *envp[])
 	t_stat			*stat_struct;
 	int				stat;
 
-	init_signals();
 	environment = init_environment(envp);
 	stat_struct = create_stat_struct();
 	start_shell(environment, stat_struct);
@@ -69,6 +69,5 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	stat = stat_struct->stat;
 	free(stat_struct);
-	printf("exit\n");
 	return (stat);
 }

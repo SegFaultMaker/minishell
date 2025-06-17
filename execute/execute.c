@@ -42,6 +42,7 @@ static void	do_redirections(t_tokens **tokens, int **pipe_fds)
 static void	execute_all(t_tokens *tokens, t_hash_table *env,
 			t_stat *stat_struct)
 {
+	signal(SIGINT, &sig_handle_exec);
 	while (tokens)
 	{
 		if (tokens->type == COMMAND && tokens->execute)

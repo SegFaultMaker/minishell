@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/15 23:33:39 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:14:39 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static pid_t	safe_execve(t_tokens *tokens, t_stat *stat_struct)
 		return (quit_with_error(0, "fork", NULL, errno));
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		dup_and_close(tokens, stat_struct);
 		if (execve(stat_struct->path, stat_struct->argv, stat_struct->envp))
 			quit_with_error(0, NULL, NULL, errno);

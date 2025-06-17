@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/15 23:28:53 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:19:54 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	get_last_stat(t_stat *stat_struct)
 		wait(NULL);
 		count--;
 	}
-	if (res == 256)
-		res = 1;
+	if (res >= 256)
+		res /= 256;
 	return (res);
 }
 
