@@ -6,13 +6,13 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:44:11 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/10 22:44:43 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:55:00 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static t_types	get_type(char *token)
+t_types	get_type(char *token)
 {
 	if (!ft_strcmp(token, "echo") || !ft_strcmp(token, "cd")
 		|| !ft_strcmp(token, "pwd")

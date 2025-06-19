@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/09 00:41:32 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:55:51 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,19 @@ char	*remove_and_expand_quotes(char *token, t_hash_table *env, int stat)
 	return (free(data->token), free(data), result);
 }
 
+static void	re_assign(t_tokens **tokens)
+{
+	t_tokens	*tmp;
+
+	tmp = *tokens;
+	while (tmp->type != NEWL)
+	{
+		if (tmp->type == COMMAND && get_type(tmp->token) == BUILTIN)
+			tmp->type = BUILTIN;
+		tmp = tmp->next;
+	}
+}
+
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 {
 	char		*new_token;
@@ -84,4 +97,5 @@ void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat)
 		tmp->token = new_token;
 		tmp = tmp->next;
 	}
+	re_assign(tokens);
 }

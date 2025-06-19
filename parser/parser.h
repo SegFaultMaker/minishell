@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:42:02 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/11 00:31:22 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:55:24 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ typedef struct s_tokens
 //				Parser
 t_tokens	*parser(char *str);
 t_tokens	*new_token(char *content);
+t_types		get_type(char *token);
 void		assign_types(t_tokens **tokens);
 void		free_tokens(t_tokens **tokens);
 int			syntax_check(t_tokens *tmp);
 int			ft_isquote(char c);
 int			check_redir_pipe_operator(char *token, int regime);
 int			is_redir_pipe(t_types type);
-t_tokens	*handle_first(t_tokens **tokens);
 
 #endif
