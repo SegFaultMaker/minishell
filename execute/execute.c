@@ -46,11 +46,6 @@ static void	execute_all(t_tokens *tokens, t_hash_table *env,
 	signal(SIGQUIT, &sig_handle_exec);
 	while (tokens)
 	{
-		if (tokens->type == NONE)
-		{
-			tokens = tokens->next;
-			continue ;
-		}
 		if (tokens->type == COMMAND && tokens->execute)
 		{
 			stat_struct->pid = handle_binary(tokens, env, stat_struct);
