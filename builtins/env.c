@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 18:54:23 by armarake          #+#    #+#             */
-/*   Updated: 2025/05/08 14:50:07 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:36:30 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int	env(t_hash_table *ht, int mode)
 		ft_putendl_fd(result[i], STDOUT_FILENO);
 		i++;
 	}
-	free_result(result);
+	free_result(&result);
 	return (0);
 }

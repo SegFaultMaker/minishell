@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:30:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 15:09:13 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:35:49 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ t_hash_table	*init_environment(char *env[]);
 
 //					to strings
 char			**ht_to_strings(t_hash_table *ht, int mode);
-void			free_result(char **array);
+void			free_result(char ***array);
 
 #endif

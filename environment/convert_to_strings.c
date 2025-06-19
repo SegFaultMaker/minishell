@@ -6,23 +6,23 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:23:06 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 16:00:46 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:36:43 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
 
-void	free_result(char **array)
+void	free_result(char ***array)
 {
 	int	i;
 
 	i = 0;
-	while (array[i])
+	while ((*array)[i])
 	{
-		free(array[i]);
+		free((*array)[i]);
 		i++;
 	}
-	free(array);
+	free((*array));
 }
 
 static char	*create_string(t_ht_item *item, int mode)
@@ -92,7 +92,7 @@ char	**ht_to_strings(t_hash_table *ht, int mode)
 				continue ;
 			result[j] = create_string(ht->items[i], mode);
 			if (!result[j])
-				return (free_result(result), NULL);
+				return (free_result(&result), NULL);
 			j++;
 		}
 	}

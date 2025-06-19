@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:37:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 12:41:21 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:37:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*find_cmd(char *cmd, char **envp)
 	if (!paths)
 		return (NULL);
 	fullpath = get_fullpath(cmd, paths);
-	free_result(paths);
+	free_result(&paths);
 	if (check_access(fullpath))
 		return (NULL);
 	return (fullpath);

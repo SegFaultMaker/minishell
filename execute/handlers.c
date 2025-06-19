@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 16:01:20 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:37:15 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat)
 			close(cmd->output);
 		stat->stat = 127;
 		free_matrix(stat->argv);
-		free_result(stat->envp);
+		free_matrix(stat->envp);
 		return (stat->argv = NULL, stat->envp = NULL, -1);
 	}
 	pid = safe_execve(cmd, stat);
