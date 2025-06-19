@@ -6,23 +6,11 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 09:48:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 14:58:26 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:26:53 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-static int	adjust(int stat)
-{
-	int	res;
-
-	res = stat;
-	if (stat < 0)
-		res += 256;
-	if (stat > 255)
-		res -= 256;
-	return (res);
-}
 
 static int	check_args(t_tokens *tmp)
 {
@@ -73,9 +61,8 @@ int	exit_builtin(t_tokens *tmp, t_stat *stat_struct, bool in_fork)
 				return (handle_error(stat_struct, 0));
 		res = ft_atoi(arg);
 	}
-	res = adjust(res);
 	if (!in_fork)
 		stat_struct->must_exit = true;
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	return (res);
+	return ((int)((unsigned char)res));
 }

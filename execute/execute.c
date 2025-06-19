@@ -46,7 +46,7 @@ static void	execute_all(t_tokens *tokens, t_hash_table *env,
 	signal(SIGQUIT, &sig_handle_exec);
 	while (tokens)
 	{
-		if (!(tokens->token) || !(*(tokens->token)))
+		if (tokens->type == NONE)
 		{
 			tokens = tokens->next;
 			continue ;

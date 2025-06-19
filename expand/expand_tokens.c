@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:19:40 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/19 16:55:51 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:36:26 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,13 @@ static void	re_assign(t_tokens **tokens)
 	{
 		if (tmp->type == COMMAND && get_type(tmp->token) == BUILTIN)
 			tmp->type = BUILTIN;
+		if ((!(tmp->token) || !(*(tmp->token))) && tmp->type == COMMAND)
+		{
+			tmp->type = NONE;
+			tmp = tmp->next;
+			tmp->type = get_type(tmp->token);
+			continue ;
+		}
 		tmp = tmp->next;
 	}
 }
