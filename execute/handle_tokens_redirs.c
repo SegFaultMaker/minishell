@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 16:59:19 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:27:14 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 
 int	handle_input_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 {
-	if ((*executable)->type == NEWL)
+	if ((*executable)->type == NEWL && (*current)->type != HERE_DOC)
 		return (open_infile((*current)->next->token),
-			(*current) = (*executable), CONTINUE_THE_LOOP);
+			(*current) = (*executable), 1);
 	if ((*executable)->type == PIPE)
 		return ((*current) = (*executable),
-			(*executable) = NULL, CONTINUE_THE_LOOP);
+			(*executable) = NULL, 1);
+	if ((*current)->type == HERE_DOC)
+		return (here_doc(current, executable), 0);
+	if ((*executable)->input_is_heredoc)
+	{
+		unlink("here_doc_tmp_file");
+		close((*executable)->input);
+	}
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{
@@ -36,7 +43,7 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 		(*executable) = find_executable((*current)->next);
 		(*executable)->input = open("/dev/null", O_RDWR);
 		(*current) = (*executable);
-		return (CONTINUE_THE_LOOP);
+		return (1);
 	}
 	return (0);
 }
@@ -45,10 +52,10 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 {
 	if ((*executable)->type == NEWL)
 		return (open_outfile((*current)->next->token, (*current)->type),
-			(*current) = (*executable), CONTINUE_THE_LOOP);
+			(*current) = (*executable), 1);
 	if ((*executable)->type == PIPE)
 		return ((*current) = (*executable),
-			(*executable) = NULL, CONTINUE_THE_LOOP);
+			(*executable) = NULL, 1);
 	(*executable)->output = open_outfile((*current)->next->token,
 			(*current)->type);
 	if ((*executable)->output == -1)
@@ -65,7 +72,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 		}
 		(*executable) = find_executable((*current)->next);
 		(*executable)->input = open("/dev/null", O_RDWR);
-		return ((*current) = (*executable), CONTINUE_THE_LOOP);
+		return ((*current) = (*executable), 1);
 	}
 	return (0);
 }
@@ -76,10 +83,7 @@ void	handle_pipe_redir(t_tokens **current, t_tokens **executable,
 	if (!(*executable) || (*executable)->output != STDOUT_FILENO)
 		close(pipe_fds[(*i)][1]);
 	else
-	{
 		(*executable)->output = pipe_fds[(*i)][1];
-		(*executable)->piped_out = true;
-	}
 	(*executable) = find_executable((*current)->next);
 	(*executable)->input = pipe_fds[(*i)][0];
 	(*i)++;

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/11 00:31:25 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 12:56:11 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_tokens	*new_token(char *content)
 	node->token = content;
 	node->input = STDIN_FILENO;
 	node->output = STDOUT_FILENO;
-	node->piped_out = false;
+	node->input_is_heredoc = false;
 	node->execute = true;
 	node->next = NULL;
 	return (node);

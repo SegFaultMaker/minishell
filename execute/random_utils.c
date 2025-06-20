@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 12:19:54 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:29:18 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,40 +26,27 @@ void	undo_builtin_redirs(int saved_in, int saved_out)
 	}
 }
 
-static void	free_values(char *temp, char *input)
+void	here_doc(t_tokens **current, t_tokens **executable)
 {
-	free(temp);
-	free(input);
-	temp = NULL;
-	input = NULL;
-}
+	int		fd;
+	char	*line;
 
-void	here_doc(t_tokens *tokens, int fd)
-{
-	char	*input;
-	char	*temp;
-	char	*res;
-
-	input = NULL;
-	res = ft_strdup("");
-	if (!res)
-		return ;
+	fd = open("here_doc_tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	while (1)
 	{
-		ft_putstr_fd("> ", STDOUT_FILENO);
-		input = get_next_line(STDIN_FILENO);
-		if (!input || !ft_strncmp(input,
-				tokens->next->token, ft_strlen(tokens->next->token)))
+		line = readline(GREEN "> " RESET);
+		if (!line || !ft_strcmp((*current)->next->token, line))
 			break ;
-		temp = res;
-		res = ft_strjoin(res, input);
-		free_values(temp, input);
+		write(fd, line, safe_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+		line = NULL;
 	}
-	if (input)
-		free(input);
-	get_next_line(-1);
-	write(fd, res, ft_strlen(res));
-	free(res);
+	if (line)
+		free(line);
+	close(fd);
+	(*executable)->input_is_heredoc = true;
+	(*executable)->input = open("here_doc_tmp_file", O_RDONLY);
 }
 
 int	get_last_stat(t_stat *stat_struct)

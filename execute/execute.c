@@ -23,12 +23,12 @@ static void	do_redirections(t_tokens **tokens, t_stat *stat)
 	executable = find_executable(current);
 	while (current && current->type != NEWL)
 	{
-		if (current->type == INPUT)
+		if (current->type == INPUT || current->type == HERE_DOC)
 		{
 			if (handle_input_redir(&current, &executable, stat))
 				continue ;
 		}
-		else if ((current->type == OUTPUT) || (current->type == APPEND))
+		else if (current->type == OUTPUT || current->type == APPEND)
 		{
 			if (handle_output_redir(&current, &executable, stat))
 				continue ;

@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 16:52:55 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:20:11 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include "../environment/environment.h"
 # include "../parser/parser.h"
 
-# define CONTINUE_THE_LOOP 1
-
 //				handlers
 pid_t		handle_binary(t_tokens *cmd, t_hash_table *env,
 				t_stat *stat_struct);
@@ -34,7 +32,7 @@ void		handle_builtin(t_tokens *tokens, t_hash_table *envp,
 
 //				random redirs
 void		undo_builtin_redirs(int saved_in, int saved_out);
-void		here_doc(t_tokens *tokens, int fd);
+void		here_doc(t_tokens **current, t_tokens **executable);
 
 //				handle tokens redirs
 int			handle_input_redir(t_tokens **current, t_tokens **executable,

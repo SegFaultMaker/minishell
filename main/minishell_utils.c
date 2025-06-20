@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 14:14:00 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 13:08:58 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:50:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*read_input(void)
 {
 	char	*input;
 
-	input = readline(BLUE "→  " RESET);
+	input = readline(RED "🔥 minihell 🔥" RESET BOLD " → " RESET);
 	if (input && *input)
 		add_history(input);
 	return (input);

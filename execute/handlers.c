@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/19 11:37:15 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:43:01 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static pid_t	safe_execve(t_tokens *tokens, t_stat *stat_struct)
 		close(tokens->input);
 	if (tokens->output != STDOUT_FILENO)
 		close(tokens->output);
+	if (tokens->input_is_heredoc)
+		unlink("here_doc_tmp_file");
 	return (pid);
 }
 
