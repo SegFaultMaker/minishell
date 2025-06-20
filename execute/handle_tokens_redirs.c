@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/20 17:27:14 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/21 03:41:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,11 @@
 
 int	handle_input_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 {
-	if ((*executable)->type == NEWL && (*current)->type != HERE_DOC)
-		return (open_infile((*current)->next->token),
-			(*current) = (*executable), 1);
-	if ((*executable)->type == PIPE)
-		return ((*current) = (*executable),
-			(*executable) = NULL, 1);
-	if ((*current)->type == HERE_DOC)
-		return (here_doc(current, executable), 0);
-	if ((*executable)->input_is_heredoc)
-	{
-		unlink("here_doc_tmp_file");
-		close((*executable)->input);
-	}
+	int	check_status;
+
+	check_status = input_redir_checks(current, executable);
+	if (check_status != 2)
+		return (check_status);
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{

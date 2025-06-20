@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/20 18:16:02 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/21 03:22:52 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void		free_matrix(char **matrix);
 char		*find_cmd(char *cmd, char **envp);
 t_tokens	*find_executable(t_tokens *current);
 void		dup_and_close(t_tokens *tokens, t_stat *stat_struct);
+int			input_redir_checks(t_tokens **current, t_tokens **executable);
 
 #endif
