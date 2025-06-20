@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/20 17:29:18 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:13:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ void	undo_builtin_redirs(int saved_in, int saved_out)
 
 void	here_doc(t_tokens **current, t_tokens **executable)
 {
-	int		fd;
-	char	*line;
+	int			fd;
+	char		*line;
+	static int	index;
 
-	fd = open("here_doc_tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	(*executable)->here_doc_file = ft_itoa(index++);
+	fd = open((*executable)->here_doc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	while (1)
 	{
 		line = readline(GREEN "> " RESET);
@@ -46,7 +48,7 @@ void	here_doc(t_tokens **current, t_tokens **executable)
 		free(line);
 	close(fd);
 	(*executable)->input_is_heredoc = true;
-	(*executable)->input = open("here_doc_tmp_file", O_RDONLY);
+	(*executable)->input = open((*executable)->here_doc_file, O_RDONLY);
 }
 
 int	get_last_stat(t_stat *stat_struct)

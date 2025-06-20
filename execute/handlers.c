@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:23:18 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/20 17:43:01 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:13:12 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static pid_t	safe_execve(t_tokens *tokens, t_stat *stat_struct)
 	if (tokens->output != STDOUT_FILENO)
 		close(tokens->output);
 	if (tokens->input_is_heredoc)
-		unlink("here_doc_tmp_file");
+		unlink(tokens->here_doc_file);
 	return (pid);
 }
 
@@ -72,6 +72,8 @@ pid_t	builtin_in_fork(t_tokens *tokens, t_hash_table *envp,
 		close(tokens->input);
 	if (tokens->output != STDOUT_FILENO)
 		close(tokens->output);
+	if (tokens->input_is_heredoc)
+		unlink(tokens->here_doc_file);
 	return (pid);
 }
 
@@ -97,6 +99,8 @@ void	handle_builtin(t_tokens *tokens, t_hash_table *envp,
 	}
 	execute_functions(tokens, envp, stat_struct, false);
 	undo_builtin_redirs(saved_in, saved_out);
+	if (tokens->input_is_heredoc)
+		unlink(tokens->here_doc_file);
 }
 
 pid_t	handle_binary(t_tokens *cmd, t_hash_table *env, t_stat *stat)

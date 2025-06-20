@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 13:27:47 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/20 12:56:11 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:12:17 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ void	free_tokens(t_tokens **tokens)
 	{
 		next = temp->next;
 		free(temp->token);
+		if (temp->here_doc_file)
+		{
+			free(temp->here_doc_file);
+			temp->here_doc_file = NULL;
+		}
 		free(temp);
 		temp = next;
 	}
@@ -79,6 +84,7 @@ t_tokens	*new_token(char *content)
 	node->token = content;
 	node->input = STDIN_FILENO;
 	node->output = STDOUT_FILENO;
+	node->here_doc_file = NULL;
 	node->input_is_heredoc = false;
 	node->execute = true;
 	node->next = NULL;
