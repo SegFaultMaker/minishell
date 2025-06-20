@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/20 18:13:35 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/21 02:08:02 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,58 @@ void	undo_builtin_redirs(int saved_in, int saved_out)
 	}
 }
 
+static int	stop_here_doc(char *line, char *limit, int line_number)
+{
+	if (!line)
+	{
+		ft_putstr_fd("minishell: warning: here-document at line ",
+			STDOUT_FILENO);
+		ft_putnbr_fd(line_number, STDOUT_FILENO);
+		ft_putstr_fd(" delimited by end-of-file (wanted `",
+			STDOUT_FILENO);
+		ft_putstr_fd(limit, STDOUT_FILENO);
+		ft_putendl_fd("')", STDOUT_FILENO);
+		return (1);
+	}
+	if (ft_strcmp(limit, line) == 0)
+		return (1);
+	return (0);
+}
+
 void	here_doc(t_tokens **current, t_tokens **executable)
 {
+	int			i;
 	int			fd;
 	char		*line;
 	static int	index;
 
-	(*executable)->here_doc_file = ft_itoa(index++);
-	fd = open((*executable)->here_doc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	i = 1;
+	if ((*executable)->type != NEWL && (*executable)->type != PIPE)
+	{
+		(*executable)->here_doc_file = ft_itoa(index++);
+		fd = open((*executable)->here_doc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	}
 	while (1)
 	{
 		line = readline(GREEN "> " RESET);
-		if (!line || !ft_strcmp((*current)->next->token, line))
+		if (stop_here_doc(line, (*current)->next->token, i++))
 			break ;
-		write(fd, line, safe_strlen(line));
-		write(fd, "\n", 1);
+		if ((*executable)->type != NEWL && (*executable)->type != PIPE)
+		{
+			write(fd, line, safe_strlen(line));
+			write(fd, "\n", 1);
+		}
 		free(line);
 		line = NULL;
 	}
 	if (line)
 		free(line);
-	close(fd);
-	(*executable)->input_is_heredoc = true;
-	(*executable)->input = open((*executable)->here_doc_file, O_RDONLY);
+	if ((*executable)->type != NEWL && (*executable)->type != PIPE)
+	{
+		close(fd);
+		(*executable)->input_is_heredoc = true;
+		(*executable)->input = open((*executable)->here_doc_file, O_RDONLY);
+	}
 }
 
 int	get_last_stat(t_stat *stat_struct)
