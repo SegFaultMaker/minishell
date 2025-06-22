@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/20 17:49:17 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:57:52 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ typedef struct s_status
 
 }	t_stat;
 
-//				Init
+//				Signals
 void		init_signals(void);
 void		sig_handle_exec(int sig);
+void		sigint_heredoc(int sig);
 
 //				Execution
 void		execute(t_tokens *tokens, t_hash_table *env, t_stat *stat_struct);

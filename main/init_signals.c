@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:58:48 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/21 01:30:21 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:57:32 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ static	void	sig_handle(int sig)
 		(void)0;
 	else if (sig == SIGINT)
 		printf("\n" RED "🔥 minihell 🔥" RESET BOLD " → " RESET);
+}
+
+void	sigint_heredoc(int sig)
+{
+	(void)sig;
+	printf("\n");
+	exit(130);
 }
 
 void	sig_handle_exec(int sig)
