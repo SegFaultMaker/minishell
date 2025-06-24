@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:33:19 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/22 18:57:52 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:29:04 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ typedef struct s_tokens	t_tokens;
 typedef struct s_status
 {
 	int		stat;
+	int		here_doc_fd;
+	int		here_doc_index;
+	int		line_num;
 	int		pipe_count;
 	int		**pipe_fds;
 	char	**argv;

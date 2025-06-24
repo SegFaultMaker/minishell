@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:15:19 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/05 13:46:00 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 12:59:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_data
 
 //			Expand
 void	expand_tokens(t_tokens **tokens, t_hash_table *env, int stat);
+char	*remove_and_expand_quotes(char *token, t_hash_table *env, int stat);
 
 //			Expand utils
 char	*find_var(char *str, t_hash_table *env);

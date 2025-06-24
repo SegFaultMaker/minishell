@@ -6,13 +6,14 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/21 03:43:24 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:41:35 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	input_redir_checks(t_tokens **current, t_tokens **executable)
+int	input_redir_checks(t_tokens **current, t_tokens **executable,
+	t_hash_table *env, t_stat *stat)
 {
 	if ((*executable)->type == NEWL && (*current)->type != HERE_DOC)
 	{
@@ -27,7 +28,7 @@ int	input_redir_checks(t_tokens **current, t_tokens **executable)
 		return (1);
 	}
 	if ((*current)->type == HERE_DOC)
-		return (here_doc(current, executable), 0);
+		return (here_doc(current, executable, env, stat), 0);
 	return (2);
 }
 

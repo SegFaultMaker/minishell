@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:09:12 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/17 13:56:02 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:28:19 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ static	t_stat	*create_stat_struct(void)
 
 	stat_struct = malloc(sizeof(t_stat));
 	stat_struct->must_exit = false;
+	stat_struct->here_doc_fd = -1;
+	stat_struct->line_num = 1;
+	stat_struct->here_doc_index = 0;
 	stat_struct->pipe_count = 0;
 	stat_struct->pipe_fds = NULL;
 	stat_struct->argv = NULL;

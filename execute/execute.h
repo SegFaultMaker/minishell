@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/22 19:23:10 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:39:44 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ void		handle_builtin(t_tokens *tokens, t_hash_table *envp,
 
 //				random redirs
 void		undo_builtin_redirs(int saved_in, int saved_out);
-void		here_doc(t_tokens **current, t_tokens **executable);
+void		here_doc(t_tokens **current, t_tokens **executable,
+				t_hash_table *env, t_stat *stat);
 
 //				handle tokens redirs
 int			handle_input_redir(t_tokens **current, t_tokens **executable,
-				t_stat *stat);
+				t_hash_table *env, t_stat *stat);
 int			handle_output_redir(t_tokens **current, t_tokens **executable,
 				t_stat *stat);
 void		handle_pipe_redir(t_tokens **current, t_tokens **executable,
@@ -58,6 +59,7 @@ void		free_matrix(char **matrix);
 char		*find_cmd(char *cmd, char **envp);
 t_tokens	*find_executable(t_tokens *current);
 void		dup_and_close(t_tokens *tokens, t_stat *stat_struct);
-int			input_redir_checks(t_tokens **current, t_tokens **executable);
+int			input_redir_checks(t_tokens **current, t_tokens **executable,
+				t_hash_table *env, t_stat *stat);
 
 #endif

@@ -6,17 +6,18 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/21 03:41:35 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:40:06 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	handle_input_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
+int	handle_input_redir(t_tokens **current, t_tokens **executable,
+	t_hash_table *env, t_stat *stat)
 {
 	int	check_status;
 
-	check_status = input_redir_checks(current, executable);
+	check_status = input_redir_checks(current, executable, env, stat);
 	if (check_status != 2)
 		return (check_status);
 	(*executable)->input = open_infile((*current)->next->token);
