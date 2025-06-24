@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:23:10 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/17 15:09:52 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:35:29 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@ char	*find_var(char *str, t_hash_table *env)
 	char	*res;
 
 	i = 0;
-	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\''
-		&& str[i] != '+' && str[i] != '=' && str[i] != '$')
+	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	var = malloc(sizeof(char) * (i + 1));
 	if (!var)
 		return (NULL);
 	var[i] = '\0';
 	i = 0;
-	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\''
-		&& str[i] != '+' && str[i] != '=' && str[i] != '$')
+	while (ft_isalnum(str[i]) || str[i] == '_')
 	{
 		var[i] = str[i];
 		i++;

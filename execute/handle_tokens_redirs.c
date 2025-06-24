@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/24 13:40:06 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/24 15:09:08 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable,
 
 	check_status = input_redir_checks(current, executable, env, stat);
 	if (check_status != 2)
-		return (check_status);
+		return (stat->stat = 1, check_status);
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{
@@ -45,7 +45,7 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 {
 	if ((*executable)->type == NEWL)
 		return (open_outfile((*current)->next->token, (*current)->type),
-			(*current) = (*executable), 1);
+			(*current) = (*executable), stat->stat = 1, 1);
 	if ((*executable)->type == PIPE)
 		return ((*current) = (*executable),
 			(*executable) = NULL, 1);
@@ -91,6 +91,8 @@ void	free_pipes(int ***array)
 		return ;
 	while ((*array)[i])
 	{
+		close((*array)[i][0]);
+		close((*array)[i][1]);
 		free((*array)[i]);
 		i++;
 	}
@@ -102,6 +104,8 @@ int	**allocate_pipe_fds(int pipe_count)
 	int	i;
 	int	**result;
 
+	if (pipe_count >= 1024)
+		return (NULL);
 	i = 0;
 	result = malloc(sizeof(int *) * (pipe_count + 1));
 	if (!result)
