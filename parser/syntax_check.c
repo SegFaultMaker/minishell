@@ -12,16 +12,17 @@
 
 #include "parser.h"
 
-static void	generate_error(t_tokens *tmp)
+static int	generate_error(t_tokens *tmp)
 {
 	ft_putstr_fd(SYNTAX_ERR, 2);
 	ft_putchar_fd('`', 2);
-	if (tmp->next->type == NEWL)
+	if (tmp->type == NEWL)
 		ft_putstr_fd("newline", 2);
 	else
-		ft_putstr_fd(tmp->next->token, 2);
+		ft_putstr_fd(tmp->token, 2);
 	ft_putstr_fd("\'\n", 2);
 	errno = 2;
+	return (0);
 }
 
 static int	check_quotes(char *str)
@@ -54,25 +55,19 @@ static int	check_quotes(char *str)
 int	syntax_check(t_tokens *tmp)
 {
 	if (tmp->type == PIPE)
-	{
-		generate_error(tmp);
-		return (0);
-	}
+		return (generate_error(tmp));
 	while (tmp && tmp->type != NEWL)
 	{
 		if (!check_quotes(tmp->token))
 			return (0);
 		if (is_redir_pipe(tmp->type))
 		{
-			if (is_redir_pipe(tmp->next->type) || tmp->next->type == NEWL)
-			{
-				if (is_redir_pipe(tmp->next->type != NEWL
-						&& tmp->next->next->type))
-					generate_error(tmp->next);
-				else
-					generate_error(tmp);
-				return (0);
-			}
+			if (tmp->type == tmp->next->type)
+				return (generate_error(tmp));
+			else if (tmp->next->type == NEWL)
+				return (generate_error(tmp->next));
+			else if (is_redir_pipe(tmp->type) && tmp->next->type == PIPE)
+				return (generate_error(tmp->next));
 		}
 		tmp = tmp->next;
 	}
