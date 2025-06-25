@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 03:04:48 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/25 20:36:58 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/25 21:04:25 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,30 @@ static int	stop_here_doc(char *line, char *limit, int line_number)
 	return (0);
 }
 
-static void	setup_heredoc(t_tokens **executable, t_stat *stat)
+static int	setup_heredoc(t_tokens **executable, t_stat *stat)
 {
+	char	*temp;
+
 	stat->line_num = 1;
 	if ((*executable)->type != NEWL && (*executable)->type != PIPE)
 	{
-		(*executable)->here_doc_file = ft_itoa(stat->here_doc_index);
+		temp = ft_itoa(stat->here_doc_index);
+		(*executable)->here_doc_file = ft_strjoin("./temp/here_doc_", temp);
+		free(temp);
 		stat->here_doc_index++;
 		stat->here_doc_fd = open((*executable)->here_doc_file,
 				O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (stat->here_doc_fd == -1)
+		{
+			(*executable)->execute = false;
+			ft_putendl_fd("minishell: heredoc error", STDERR_FILENO);
+			return (0);
+		}
 	}
 	else
 		stat->here_doc_fd = -1;
 	(*executable)->sigint_heredoc = false;
+	return (1);
 }
 
 static void	finish_heredoc(t_tokens **executable, pid_t pid, t_stat *stat)
@@ -107,7 +118,8 @@ void	here_doc(t_tokens **current, t_tokens **executable,
 {
 	pid_t		pid;
 
-	setup_heredoc(executable, stat);
+	if (!setup_heredoc(executable, stat))
+		return ;
 	pid = fork();
 	if (pid == 0)
 	{
