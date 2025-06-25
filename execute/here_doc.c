@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 03:04:48 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/24 13:42:44 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/25 20:36:58 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	setup_heredoc(t_tokens **executable, t_stat *stat)
 	}
 	else
 		stat->here_doc_fd = -1;
+	(*executable)->sigint_heredoc = false;
 }
 
 static void	finish_heredoc(t_tokens **executable, pid_t pid, t_stat *stat)
@@ -51,12 +52,14 @@ static void	finish_heredoc(t_tokens **executable, pid_t pid, t_stat *stat)
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	init_signals();
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 	{
 		if (stat->here_doc_fd != -1)
 			close(stat->here_doc_fd);
 		unlink((*executable)->here_doc_file);
 		(*executable)->input_is_heredoc = false;
+		(*executable)->execute = false;
+		(*executable)->sigint_heredoc = true;
 		(*executable)->input = STDIN_FILENO;
 	}
 	else

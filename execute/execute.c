@@ -39,6 +39,16 @@ static void	do_redirections(t_tokens **tokens, t_hash_table *env, t_stat *stat)
 	}
 }
 
+static void	error_code_checks(t_tokens *tokens, t_stat *stat_struct)
+{
+	if ((tokens->type == COMMAND || tokens->type == BUILTIN)
+		&& !tokens->execute)
+		stat_struct->stat = 1;
+	if ((tokens->type == COMMAND || tokens->type == BUILTIN)
+		&& tokens->sigint_heredoc && tokens->input == STDIN_FILENO)
+		stat_struct->stat = 130;
+}
+
 static void	execute_all(t_tokens *tokens, t_hash_table *env,
 			t_stat *stat_struct)
 {
@@ -61,9 +71,7 @@ static void	execute_all(t_tokens *tokens, t_hash_table *env,
 			else
 				handle_builtin(tokens, env, stat_struct);
 		}
-		if ((tokens->type == COMMAND || tokens->type == BUILTIN)
-			&& !tokens->execute)
-			stat_struct->stat = 1;
+		error_code_checks(tokens, stat_struct);
 		tokens = tokens->next;
 	}
 }
