@@ -61,6 +61,9 @@ static void	execute_all(t_tokens *tokens, t_hash_table *env,
 			else
 				handle_builtin(tokens, env, stat_struct);
 		}
+		if ((tokens->type == COMMAND || tokens->type == BUILTIN)
+			&& !tokens->execute)
+			stat_struct->stat = 1;
 		tokens = tokens->next;
 	}
 }

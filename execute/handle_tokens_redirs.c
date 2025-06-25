@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 22:48:53 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/24 15:09:08 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:00:52 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	handle_input_redir(t_tokens **current, t_tokens **executable,
 	(*executable)->input = open_infile((*current)->next->token);
 	if ((*executable)->input == -1)
 	{
-		stat->stat = 1;
 		(*executable)->execute = false;
 		while (1)
 		{
@@ -53,7 +52,6 @@ int	handle_output_redir(t_tokens **current, t_tokens **executable, t_stat *stat)
 			(*current)->type);
 	if ((*executable)->output == -1)
 	{
-		stat->stat = 1;
 		(*executable)->execute = false;
 		while (1)
 		{

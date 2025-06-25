@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/24 14:13:58 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:56:48 by armarake         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	get_last_stat(t_stat *stat_struct)
 	}
 	if (res >= 256)
 		res /= 256;
+	if (res == SIGPIPE)
+		res = 1;
 	return (res);
 }
 
