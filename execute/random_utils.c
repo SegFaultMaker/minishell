@@ -6,11 +6,23 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 15:29:49 by nasargsy          #+#    #+#             */
-/*   Updated: 2025/06/25 18:56:48 by armarake         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:37:45 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+int	check_dir(char *cmd)
+{
+	struct stat	s;
+
+	if (stat(cmd, &s) == 0)
+	{
+		if (s.st_mode & S_IFDIR)
+			return (quit_with_error(1, cmd, "Is a directory", 126));
+	}
+	return (0);
+}
 
 int	input_redir_checks(t_tokens **current, t_tokens **executable,
 	t_hash_table *env, t_stat *stat)

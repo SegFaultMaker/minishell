@@ -6,7 +6,7 @@
 /*   By: armarake <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:44:26 by armarake          #+#    #+#             */
-/*   Updated: 2025/06/24 15:08:20 by nasargsy         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:37:58 by nasargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ t_tokens	*find_executable(t_tokens *current);
 void		dup_and_close(t_tokens *tokens, t_stat *stat_struct);
 int			input_redir_checks(t_tokens **current, t_tokens **executable,
 				t_hash_table *env, t_stat *stat);
+int			check_dir(char *cmd);
 
 #endif
